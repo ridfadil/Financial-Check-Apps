@@ -1,0 +1,64 @@
+<resources>
+    <string name="app_name">AnalisiProperty</string>
+
+
+    //Home String
+    <string name="balanced">Balanced</string>
+    <string name="tanggal_home">06 Agustus 2018</string>
+    <string name="Rp.">Rp.</string>
+    <string name="nominal_home">4.000.000,.-</string>
+    <string name="finalcondition_home">Your Final Condition Is : </string>
+    <string name="good_home">GOOD</string>
+    <string name="monthly_spending">Monthly Spending</string>
+    <string name="spending">Spending</string>
+    <string name="passive_income">Passive Income</string>
+    <string name="active_income">Active Income</string>
+    <string name="setting">Setting</string>
+    <string name="user_profil">User Profil</string>
+    <string name="harga">0.-</string>
+
+    //Option Menu Home
+    <string name="bahasa">Bahasa</string>
+    <string name="tentang_kami">Tentang Kami</string>
+    <string name="butuh_bantuan">Butuh Bantuan?</string>
+    <string name="suka_Aplikasi_ini">Suka Aplikasi ini?</string>
+
+    //Income Passive
+    <string name="passive_rumahsewa">Rumah Sewa / Kos</string>
+    <string name="passive_usaha">usaha</string>
+    <string name="passive_Deposito">Deposito / Reksadana</string>
+    <string name="royalti_buku">Royalti Buku</string>
+    <string name="royalti_kaset">Royalti kaset</string>
+    <string name="royalti_sistem">Royalti sistem</string>
+    <string name="lainlain">Lain-lain</string>
+
+    //Income Aktif
+    <string name="Profesi">Profesi</string>
+    <string name="Trading">Trading</string>
+
+    //Spending
+    <string name="other_spending">Other Spending</string>
+    <string name="transaksi">10 Transaksi</string>
+    <string name="beli_luxury">Beli Luxury</string>
+    <string name="makan_luar_rumah">Makan Luar Rumah</string>
+    <string name="piknik">Piknik</string>
+
+    //Monthly Spending
+    <string name="makan_dalam_rumah">Makan Dalam Rumah</string>
+    <string name="listrik_gas_air">Listrik Gas Air</string>
+    <string name="telepon_rumah">Telepon Rumah</string>
+    <string name="telepon_hp"> Telepon HP</string>
+    <string name="sekolah_les_anak">Sekolah + Les Anak</string>
+    <string name="cicilan_hutang_rumah">Cicilan Hutang Rumah</string>
+    <string name="cicilan_kendaraan">Cicilan Kendaraan</string>
+    <string name="cicilan_kartut_kredit">Cicilan Kartu Kredit</string>
+    <string name="asuransi">Asuransi</string>
+    <string name="pembantu">Pembantu</string>
+    <string name="mobil_bensin">Mobil (Bensin dan Maintenance)</string>
+    <string name="pakaian">Pakaian</string>
+
+    //button
+    <string name="button_selanjutnya">selanjutnya</string>
+    <string name="button_check">check</string>
+    <string name="button_result">result</string>
+</resources>
