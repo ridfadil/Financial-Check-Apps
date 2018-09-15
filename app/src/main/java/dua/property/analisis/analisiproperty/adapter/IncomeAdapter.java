@@ -1,17 +1,24 @@
 package dua.property.analisis.analisiproperty.adapter;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.LinkedList;
 
 import dua.property.analisis.analisiproperty.R;
+import dua.property.analisis.analisiproperty.activity.MainActivity;
 import dua.property.analisis.analisiproperty.model.ModelMenu;
 
 public class IncomeAdapter extends RecyclerView.Adapter<IncomeAdapter.ListMenuViewHolder> {
@@ -19,6 +26,8 @@ public class IncomeAdapter extends RecyclerView.Adapter<IncomeAdapter.ListMenuVi
     //deklarasi global variabel
     private Context context;
     private final LinkedList<ModelMenu> listMenu;
+    int jumlah ;
+    int result = 0;
 
     //konstruktor untuk menerima data adapter
     public IncomeAdapter(Context context, LinkedList<ModelMenu> listMenu) {
@@ -41,10 +50,10 @@ public class IncomeAdapter extends RecyclerView.Adapter<IncomeAdapter.ListMenuVi
     @Override
     public void onBindViewHolder(ListMenuViewHolder holder, int position) {
         final ModelMenu mCurrent = listMenu.get(position);
-      holder.judul.setText(mCurrent.getJudul());
-      holder.harga.setText(mCurrent.getHarga());
-      holder.imgMenu.setImageResource(mCurrent.getImageMenu());
-      holder.imgPen.setImageResource(mCurrent.getImagePencil());
+        holder.judul.setText(mCurrent.getJudul());
+        holder.harga.setText(mCurrent.getHarga());
+        holder.imgMenu.setImageResource(mCurrent.getImageMenu());
+        holder.imgPen.setImageResource(mCurrent.getImagePencil());
     }
 
     //untuk menghitung jumlah data yang ada pada list
@@ -53,9 +62,9 @@ public class IncomeAdapter extends RecyclerView.Adapter<IncomeAdapter.ListMenuVi
         return listMenu.size();
     }
 
-    public class ListMenuViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private TextView judul,harga;
-        private ImageView imgMenu,imgPen;
+    public class ListMenuViewHolder extends RecyclerView.ViewHolder /*implements View.OnClickListener*/ {
+        private TextView judul, harga,jumHarga;
+        private ImageView imgMenu, imgPen;
 
         final IncomeAdapter mAdapter;
 
@@ -66,25 +75,51 @@ public class IncomeAdapter extends RecyclerView.Adapter<IncomeAdapter.ListMenuVi
             harga = itemView.findViewById(R.id.tv_harga);
             imgMenu = itemView.findViewById(R.id.iv_menu);
             imgPen = itemView.findViewById(R.id.iv_pen);
+            jumHarga =itemView.findViewById(R.id.tv_jumlah_aktf_income);
 
             this.mAdapter = adapter;
-            itemView.setOnClickListener(this);
+            //itemView.setOnClickListener(this);
+            imgPen.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ShowInputialog(v);
+                }
+            });
         }
 
-        //untuk menambah action click pada list item
-        @Override
-        public void onClick(View view) {
-            int mPosition = getLayoutPosition();
-            ModelMenu element = listMenu.get(mPosition);
+        public void ShowInputialog(View view) {
 
-            //intent ke main activity dengan passing data
-          /*  Intent i = new Intent(context, CounterActivity.class);
-            i.putExtra("namTimSatu", element.getTimSatu());
-            i.putExtra("namaTimDua", element.getTimDua());
-            i.putExtra("logoTimSatu", element.getLogoTimSatu());
-            i.putExtra("logoTimDua", element.getLogoTimDua());
-            context.startActivity(i);*/
-            mAdapter.notifyDataSetChanged();
+            LayoutInflater layoutInflater = LayoutInflater.from(context);
+            View promptView = layoutInflater.inflate(R.layout.input_dialog, null);
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+            alertDialogBuilder.setView(promptView);
+
+            final EditText editText = (EditText) promptView.findViewById(R.id.edittext);
+
+            alertDialogBuilder.setCancelable(false)
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            harga.setText( editText.getText());
+                            jumlah = Integer.valueOf(editText.getText().toString());
+                            //jumHarga.setText(editText.getText());
+                            //String jumlahTotal = editText.getText().toString();
+  /*                          Intent intent = new Intent("toActivity");
+                            //            intent.putExtra("quantity",Integer.parseInt(quantity.getText().toString()));
+                            intent.putExtra("jumlah",jumlahTotal);
+                            LocalBroadcastManager.getInstance(context).sendBroadcast(intent);*/
+                        }
+                    })
+                    .setNegativeButton("Batal",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+
+            AlertDialog alert = alertDialogBuilder.create();
+            alert.show();
         }
+
     }
+
 }

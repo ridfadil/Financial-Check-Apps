@@ -62,6 +62,7 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/tv_jumlah_aktf_income"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="4dp"
@@ -79,14 +80,25 @@
     </android.support.v7.widget.RecyclerView>
 
     <Button
-        android:id="@+id/btn_active_income"
+        android:id="@+id/btn_check"
         android:layout_marginTop="7dp"
         android:layout_marginLeft="7dp"
         android:layout_marginRight="7dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/white"
-        android:text="@string/button_selanjutnya"
+        android:text="@string/button_check"
+        android:background="@drawable/custom_button"/>
+
+    <Button
+        android:id="@+id/btn_result"
+        android:layout_marginTop="7dp"
+        android:layout_marginLeft="7dp"
+        android:layout_marginRight="7dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:text="@string/button_result"
         android:background="@drawable/custom_button"/>
 
 </LinearLayout>

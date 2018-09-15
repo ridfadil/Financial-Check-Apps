@@ -1,10 +1,15 @@
 package dua.property.analisis.analisiproperty.adapter;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -52,8 +57,8 @@ public class MonthlySpendingAdapter extends RecyclerView.Adapter<MonthlySpending
         return listMenu.size();
     }
 
-    public class ListMenuViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private TextView judul,harga;
+    public class ListMenuViewHolder extends RecyclerView.ViewHolder {
+        private TextView judul,harga,jumHarga;
         private ImageView imgMenu,imgPen;
 
         final MonthlySpendingAdapter mAdapter;
@@ -65,25 +70,49 @@ public class MonthlySpendingAdapter extends RecyclerView.Adapter<MonthlySpending
             harga = itemView.findViewById(R.id.tv_harga);
             imgMenu = itemView.findViewById(R.id.iv_menu);
             imgPen = itemView.findViewById(R.id.iv_pen);
+            jumHarga =itemView.findViewById(R.id.jumlah_spendin_month);
 
             this.mAdapter = adapter;
-            itemView.setOnClickListener(this);
+            imgPen.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ShowInputialog(v);
+                }
+            });
+
         }
 
-        //untuk menambah action click pada list item
-        @Override
-        public void onClick(View view) {
-            int mPosition = getLayoutPosition();
-            ModelMenu element = listMenu.get(mPosition);
+        public void ShowInputialog(View view) {
 
-            //intent ke main activity dengan passing data
-          /*  Intent i = new Intent(context, CounterActivity.class);
-            i.putExtra("namTimSatu", element.getTimSatu());
-            i.putExtra("namaTimDua", element.getTimDua());
-            i.putExtra("logoTimSatu", element.getLogoTimSatu());
-            i.putExtra("logoTimDua", element.getLogoTimDua());
-            context.startActivity(i);*/
-            mAdapter.notifyDataSetChanged();
+            LayoutInflater layoutInflater = LayoutInflater.from(context);
+            View promptView = layoutInflater.inflate(R.layout.input_dialog, null);
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+            alertDialogBuilder.setView(promptView);
+
+            final EditText editText = (EditText) promptView.findViewById(R.id.edittext);
+
+            alertDialogBuilder.setCancelable(false)
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            harga.setText( editText.getText());
+                            /*jumlah = Integer.valueOf(editText.getText().toString());
+                            //jumHarga.setText(editText.getText());
+                            String ItemName = editText.getText().toString();
+                            Intent intent = new Intent("custom-message");
+                            //            intent.putExtra("quantity",Integer.parseInt(quantity.getText().toString()));
+                            intent.putExtra("item",ItemName);
+                            LocalBroadcastManager.getInstance(context).sendBroadcast(intent);*/
+                        }
+                    })
+                    .setNegativeButton("Batal",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+
+            AlertDialog alert = alertDialogBuilder.create();
+            alert.show();
         }
     }
 }
