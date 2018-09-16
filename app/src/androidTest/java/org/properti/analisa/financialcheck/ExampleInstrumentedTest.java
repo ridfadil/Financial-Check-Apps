@@ -1,4 +1,4 @@
-package dua.property.analisis.analisiproperty;
+package org.properti.analisa.financialcheck;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

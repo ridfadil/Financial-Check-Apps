@@ -1,4 +1,4 @@
-package dua.property.analisis.analisiproperty.model;
+package org.properti.analisa.financialcheck.model;
 
 public class ModelMenu {
     private String judul;

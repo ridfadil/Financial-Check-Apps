@@ -1,4 +1,4 @@
-package dua.property.analisis.analisiproperty.adapter;
+package org.properti.analisa.financialcheck.adapter;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -13,8 +13,8 @@ import android.widget.TextView;
 
 import java.util.LinkedList;
 
-import dua.property.analisis.analisiproperty.R;
-import dua.property.analisis.analisiproperty.model.ModelMenu;
+import org.properti.analisa.financialcheck.R;
+import org.properti.analisa.financialcheck.model.ModelMenu;
 
 public class PassiveIncomeAdapter extends RecyclerView.Adapter<PassiveIncomeAdapter.ListMenuViewHolder> {
 

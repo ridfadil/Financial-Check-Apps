@@ -1,4 +1,4 @@
-package dua.property.analisis.analisiproperty.activity;
+package org.properti.analisa.financialcheck.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,9 +11,9 @@ import android.view.MenuItem;
 
 import java.util.LinkedList;
 
-import dua.property.analisis.analisiproperty.R;
-import dua.property.analisis.analisiproperty.adapter.PassiveIncomeAdapter;
-import dua.property.analisis.analisiproperty.model.ModelMenu;
+import org.properti.analisa.financialcheck.R;
+import org.properti.analisa.financialcheck.adapter.PassiveIncomeAdapter;
+import org.properti.analisa.financialcheck.model.ModelMenu;
 
 public class SpendingActivity extends AppCompatActivity {
     private final LinkedList<ModelMenu> listMenu = new LinkedList<>();

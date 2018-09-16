@@ -1,9 +1,9 @@
-package dua.property.analisis.analisiproperty.activity;
+package org.properti.analisa.financialcheck.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import dua.property.analisis.analisiproperty.R;
+import org.properti.analisa.financialcheck.R;
 
 public class CheckActivity extends AppCompatActivity {
 

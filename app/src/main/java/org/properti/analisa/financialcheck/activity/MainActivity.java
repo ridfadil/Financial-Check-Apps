@@ -1,4 +1,4 @@
-package dua.property.analisis.analisiproperty.activity;
+package org.properti.analisa.financialcheck.activity;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -9,7 +9,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 
-import dua.property.analisis.analisiproperty.R;
+import org.properti.analisa.financialcheck.R;
 
 public class MainActivity extends AppCompatActivity {
     CardView cdIncome,cdSpending,cdMonthSpending,cdPassiveIncome;
