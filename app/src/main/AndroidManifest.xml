@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.properti.analisa.financialcheck">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,7 +11,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.MainActivity">
+
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+
+        <activity android:name=".activity.auth.RegisterActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -17,22 +24,31 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.IncomeActivity"
+            android:name=".activity.MainActivity"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".activity.common.IncomeActivity"
             android:theme="@style/AppThemeNoActionBar" />
         <activity
-            android:name=".activity.PassiveIncomeActivity"
+            android:name=".activity.common.PassiveIncomeActivity"
             android:theme="@style/AppThemeNoActionBar" />
         <activity
-            android:name=".activity.SpendingActivity"
+            android:name=".activity.common.SpendingActivity"
             android:theme="@style/AppThemeNoActionBar" />
         <activity
-            android:name=".activity.SpendingMothActivity"
+            android:name=".activity.common.SpendingMonthActivity"
             android:theme="@style/AppThemeNoActionBar" />
         <activity
             android:name=".activity.UserProfilActivity"
             android:theme="@style/AppThemeNoActionBar" />
         <activity android:name=".activity.CheckActivity" />
-        <activity android:name=".activity.ResultActivity"></activity>
+        <activity android:name=".activity.ResultActivity" />
+        <activity android:name=".activity.auth.LoginActivity"
+            android:theme="@style/AppThemeNoActionBar"/>
+        <!--<activity android:name=".activity.auth.RegisterActivity"-->
+            <!--android:theme="@style/AppThemeNoActionBar"/>-->
+        <activity android:name=".activity.auth.ForgotPasswordActivity"
+            android:theme="@style/AppThemeNoActionBar"/>
     </application>
 
 </manifest>

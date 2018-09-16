@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "396638707286",
+    "firebase_url": "https://test-financial.firebaseio.com",
+    "project_id": "test-financial",
+    "storage_bucket": "test-financial.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:396638707286:android:b97c4dfb19e6b94c",
+        "android_client_info": {
+          "package_name": "org.properti.analisa.financialcheck"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "396638707286-mrglldv8k34nl9th3hd043qjln176mjr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "org.properti.analisa.financialcheck",
+            "certificate_hash": "9a7bfe8aef64d4a49f77f7aa48eb09d6ac88bf2b"
+          }
+        },
+        {
+          "client_id": "396638707286-pliqgrda1rte2f2ho2v6rdfgkvamuufm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBzs9FtX27lFM3GeQna4Ank1xxCzLwS8dc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "396638707286-pliqgrda1rte2f2ho2v6rdfgkvamuufm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

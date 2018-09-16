@@ -1,6 +1,24 @@
 <resources>
-    <string name="app_name">AnalisiProperty</string>
+    <string name="app_name">Financial Check</string>
 
+    //authentication
+    <string name="id_user">ID User</string>
+    <string name="login">Masuk</string>
+    <string name="lupa_password">Lupa Password ?</string>
+    <string name="belum_punya_akun">Belum punya akun ? Daftar di sini</string>
+    <string name="reg_nama">Nama Lengkap</string>
+    <string name="reg_email">Email</string>
+    <string name="reg_no_hp">Nomor HP</string>
+    <string name="reg_password">Password</string>
+    <string name="password_lama">Password Lama</string>
+    <string name="password_baru">Password Baru</string>
+    <string name="password_baru_2">Ulangi Password Baru</string>
+    <string name="simpan">Simpan</string>
+    <string name="register">Daftar</string>
+    <string name="kirim">Kirim</string>
+    <string name="sudah_punya_akun">Sudah punya akun ? Masuk di sini</string>
+    <string name="login_berhasil">Berhasil Masuk</string>
+    <string name="register_berhasil">Berhasil Daftar</string>
 
     //Home String
     <string name="balanced">Balanced</string>
@@ -25,7 +43,7 @@
 
     //Income Passive
     <string name="passive_rumahsewa">Rumah Sewa / Kos</string>
-    <string name="passive_usaha">usaha</string>
+    <string name="passive_usaha">Usaha</string>
     <string name="passive_Deposito">Deposito / Reksadana</string>
     <string name="royalti_buku">Royalti Buku</string>
     <string name="royalti_kaset">Royalti kaset</string>
@@ -57,8 +75,35 @@
     <string name="mobil_bensin">Mobil (Bensin dan Maintenance)</string>
     <string name="pakaian">Pakaian</string>
 
+    <!--dialog-->
+    <string name="data_password_belum_lengkap">Data password belum lengkap !</string>
+    <string name="password_baru_tidak_match">Password baru tidak match !</string>
+    <string name="password_lama_salah">Password lama salah !</string>
+    <string name="berhasil_disimpan">Data berhasil disimpan</string>
+    <string name="gagal_disimpan">Data gagal disimpan !</string>
+    <string name="berhasil_diubah">Data berhasil diubah</string>
+    <string name="gagal_diubah">Data gagal diubah !</string>
+    <string name="berhasil_dihapus">Data berhasil dihapus</string>
+    <string name="gagal_dihapus">Data gagal dihapus !</string>
+    <string name="data_kosong">Data belum diisi !</string>
+    <string name="gagal_login_not_match">Login Gagal (Email dan Password tidak cocok) !</string>
+    <string name="gagal_register">Gagal daftar !</string>
+    <string name="gagal_koneksi">Gagal koneksi !</string>
+    <string name="koneksi_internet_bermasalah">Koneksi internet bermasalah !</string>
+    <string name="yakin_ingin_keluar">Apakah anda yakin ingin keluar ?</string>
+    <string name="data_belum_lengkap">Data belum Lengkap !</string>
+    <string name="yakin_ingin_reset_password">Anda yakin ingin mereset password ?</string>
+    <string name="ya">Ya</string>
+    <string name="tidak">Tidak</string>
+
+    //language
+    <string name="inggris">Inggris</string>
+    <string name="indonesia">Indonesia</string>
+
     //button
     <string name="button_selanjutnya">selanjutnya</string>
     <string name="button_check">check</string>
     <string name="button_result">result</string>
+
+    <string name="facebook_app_id">1741753252610047</string>
 </resources>

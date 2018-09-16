@@ -1,4 +1,4 @@
-package org.properti.analisa.financialcheck.activity;
+package org.properti.analisa.financialcheck.activity.common;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,12 +12,10 @@ import android.view.MenuItem;
 import java.util.LinkedList;
 
 import org.properti.analisa.financialcheck.R;
-import org.properti.analisa.financialcheck.adapter.IncomeAdapter;
 import org.properti.analisa.financialcheck.adapter.MonthlySpendingAdapter;
-import org.properti.analisa.financialcheck.adapter.PassiveIncomeAdapter;
 import org.properti.analisa.financialcheck.model.ModelMenu;
 
-public class SpendingMothActivity extends AppCompatActivity {
+public class SpendingMonthActivity extends AppCompatActivity {
 
     private final LinkedList<ModelMenu> listMenu = new LinkedList<>();
 
@@ -47,7 +45,7 @@ public class SpendingMothActivity extends AppCompatActivity {
 
         mRecyclerView = (RecyclerView) findViewById(R.id.rv_month_spending);
 
-        mAdapter = new MonthlySpendingAdapter(SpendingMothActivity.this, listMenu);
+        mAdapter = new MonthlySpendingAdapter(SpendingMonthActivity.this, listMenu);
 
         mRecyclerView.setAdapter(mAdapter);
 

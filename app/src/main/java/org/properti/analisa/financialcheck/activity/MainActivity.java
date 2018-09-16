@@ -4,12 +4,15 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
-import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 
 import org.properti.analisa.financialcheck.R;
+import org.properti.analisa.financialcheck.activity.common.IncomeActivity;
+import org.properti.analisa.financialcheck.activity.common.PassiveIncomeActivity;
+import org.properti.analisa.financialcheck.activity.common.SpendingActivity;
+import org.properti.analisa.financialcheck.activity.common.SpendingMonthActivity;
 
 public class MainActivity extends AppCompatActivity {
     CardView cdIncome,cdSpending,cdMonthSpending,cdPassiveIncome;
@@ -51,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         cdMonthSpending.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this,SpendingMothActivity.class);
+                Intent i = new Intent(MainActivity.this,SpendingMonthActivity.class);
                 startActivity(i);
             }
         });
