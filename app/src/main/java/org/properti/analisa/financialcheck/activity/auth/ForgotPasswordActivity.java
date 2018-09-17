@@ -9,8 +9,11 @@ import android.text.TextUtils;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import org.properti.analisa.financialcheck.R;
 import org.properti.analisa.financialcheck.activity.utils.DialogUtils;
+import org.properti.analisa.financialcheck.firebase.FirebaseApplication;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -23,6 +26,8 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
     private ProgressDialog loading;
 
+    private FirebaseAuth mAuth;
+
     String email;
 
     @Override
@@ -30,14 +35,18 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forgot_password);
 
+        mAuth = ((FirebaseApplication)getApplication()).getFirebaseAuth();
+
         ButterKnife.bind(this);
         loading = DialogUtils.showProgressDialog(this, "Loading", "Reseting your password");
     }
 
     @OnClick(R.id.btn_kirim)
     public void resetPassword(){
+        loading.show();
         if(TextUtils.isEmpty(etEmail.getText().toString())){
             Toast.makeText(getApplicationContext(), getString(R.string.data_belum_lengkap), Toast.LENGTH_SHORT).show();
+            loading.dismiss();
         }
         else{
             new AlertDialog.Builder(ForgotPasswordActivity.this)
@@ -46,8 +55,8 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             email = etEmail.getText().toString();
-//                            checkProfile(email);
-                            Toast.makeText(ForgotPasswordActivity.this, "Reset Password Berhasil !", Toast.LENGTH_SHORT).show();
+                            ((FirebaseApplication)getApplication()).resetPassword(ForgotPasswordActivity.this, email);
+                            loading.dismiss();
                         }
                     })
                     .setNegativeButton("Batal", new DialogInterface.OnClickListener() {

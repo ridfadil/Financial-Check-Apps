@@ -53,16 +53,18 @@ public class FirebaseApplication extends Application {
                 if(null != user){
                     Intent profileIntent = new Intent(context, MainActivity.class);
                     context.startActivity(profileIntent);
+                    Log.e("SESSION", "ada");
                 }
                 else{
                     Intent loginIntent = new Intent(context, LoginActivity.class);
                     context.startActivity(loginIntent);
+                    Log.e("SESSION", "gak ada");
                 }
             }
         };
     }
 
-    public static void createNewUser(final Context context, String email, String password, FirebaseAuth firebaseAuth){
+    public void createNewUser(final Context context, String email, String password){
         firebaseAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener((Activity) context, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -71,26 +73,41 @@ public class FirebaseApplication extends Application {
                         if (!task.isSuccessful()) {
                             Toast.makeText(context, "Failed to login. Invalid user", Toast.LENGTH_SHORT).show();
                         }
+                        else{
+                            Toast.makeText(context, "Registration successfully", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
     }
 
-    public void loginAUser(final Context context, String email, String password, final TextView errorMessage){
+    public void loginAUser(final Context context, String email, String password){
         firebaseAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener((Activity)context, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (!task.isSuccessful()) {
                             Log.w(TAG, "signInWithEmail", task.getException());
-                            errorMessage.setText("Failed to login");
+                            Toast.makeText(context, "Failed to login", Toast.LENGTH_SHORT).show();
                         }
                         else {
-                            Toast.makeText(context, "User has been login", Toast.LENGTH_SHORT).show();
                             Intent profileIntent = new Intent(context, MainActivity.class);
                             context.startActivity(profileIntent);
                         }
                     }
                 });
+    }
+
+    public void resetPassword(final Context context, String email){
+        firebaseAuth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Toast.makeText(context, "We have sent you instructions to reset your password!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(context, "Failed to send reset email!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
 }

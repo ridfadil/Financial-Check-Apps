@@ -10,9 +10,11 @@ import android.widget.Toast;
 
 import com.facebook.FacebookSdk;
 import com.facebook.login.widget.LoginButton;
+import com.google.firebase.auth.FirebaseAuth;
 
 import org.properti.analisa.financialcheck.R;
 import org.properti.analisa.financialcheck.activity.utils.DialogUtils;
+import org.properti.analisa.financialcheck.firebase.FirebaseApplication;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,6 +31,8 @@ public class LoginActivity extends AppCompatActivity {
 
     String email, password;
 
+    private FirebaseAuth mAuth;
+
     private ProgressDialog loading;
 
     @Override
@@ -36,6 +40,9 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_login);
+
+        mAuth = ((FirebaseApplication)getApplication()).getFirebaseAuth();
+        ((FirebaseApplication)getApplication()).checkUserLogin(this);
 
         ButterKnife.bind(this);
         loading = DialogUtils.showProgressDialog(this, "Loading", "Checking Data");
@@ -51,8 +58,10 @@ public class LoginActivity extends AppCompatActivity {
         else{
             email = etEmail.getText().toString();
             password = etPassword.getText().toString();
-//            checkLogin(email, password);
-            Toast.makeText(this, "Login Success"+email+" - "+password, Toast.LENGTH_SHORT).show();
+
+            ((FirebaseApplication)getApplication()).loginAUser(this, email, password);
+
+            loading.dismiss();
         }
     }
 
