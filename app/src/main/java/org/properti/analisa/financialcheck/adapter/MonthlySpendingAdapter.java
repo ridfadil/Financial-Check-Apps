@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,21 +14,32 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.LinkedList;
 
 import org.properti.analisa.financialcheck.R;
+import org.properti.analisa.financialcheck.model.Common;
 import org.properti.analisa.financialcheck.model.ModelMenu;
 
 public class MonthlySpendingAdapter extends RecyclerView.Adapter<MonthlySpendingAdapter.ListMenuViewHolder> {
 
     //deklarasi global variabel
     private Context context;
-    private final LinkedList<ModelMenu> listMenu;
+    private final LinkedList<Common> listMenu;
+
+    DatabaseReference dbSpendingMonth;
+
+    int pos;
+    String idUser;
 
     //konstruktor untuk menerima data adapter
-    public MonthlySpendingAdapter(Context context, LinkedList<ModelMenu> listMenu) {
+    public MonthlySpendingAdapter(Context context, LinkedList<Common> listMenu, String idUser) {
         this.context = context;
         this.listMenu = listMenu;
+        this.idUser = idUser;
     }
 
     //view holder berfungsi untuk setting list item yang digunakan
@@ -44,11 +56,14 @@ public class MonthlySpendingAdapter extends RecyclerView.Adapter<MonthlySpending
     //bind view holder berfungsi untuk set data ke view yang ditampilkan pada list item
     @Override
     public void onBindViewHolder(ListMenuViewHolder holder, int position) {
-        final ModelMenu mCurrent = listMenu.get(position);
+        final Common mCurrent = listMenu.get(position);
         holder.judul.setText(mCurrent.getJudul());
         holder.harga.setText(mCurrent.getHarga());
-        holder.imgMenu.setImageResource(mCurrent.getImageMenu());
-        holder.imgPen.setImageResource(mCurrent.getImagePencil());
+        Glide.with(context).
+                load(mCurrent.getImage()).
+                placeholder(R.drawable.mothlyspendling).
+                into(holder.imgMenu);
+        holder.imgPen.setImageResource(R.drawable.bluepen);
     }
 
     //untuk menghitung jumlah data yang ada pada list
@@ -58,8 +73,8 @@ public class MonthlySpendingAdapter extends RecyclerView.Adapter<MonthlySpending
     }
 
     public class ListMenuViewHolder extends RecyclerView.ViewHolder {
-        private TextView judul,harga,jumHarga;
-        private ImageView imgMenu,imgPen;
+        private TextView judul, harga;
+        private ImageView imgMenu, imgPen;
 
         final MonthlySpendingAdapter mAdapter;
 
@@ -70,9 +85,9 @@ public class MonthlySpendingAdapter extends RecyclerView.Adapter<MonthlySpending
             harga = itemView.findViewById(R.id.tv_harga);
             imgMenu = itemView.findViewById(R.id.iv_menu);
             imgPen = itemView.findViewById(R.id.iv_pen);
-            jumHarga =itemView.findViewById(R.id.jumlah_spendin_month);
 
             this.mAdapter = adapter;
+
             imgPen.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -91,25 +106,24 @@ public class MonthlySpendingAdapter extends RecyclerView.Adapter<MonthlySpending
 
             final EditText editText = (EditText) promptView.findViewById(R.id.edittext);
 
-            alertDialogBuilder.setCancelable(false)
-                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            alertDialogBuilder.setCancelable(true)
+                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            harga.setText( editText.getText());
-                            /*jumlah = Integer.valueOf(editText.getText().toString());
-                            //jumHarga.setText(editText.getText());
-                            String ItemName = editText.getText().toString();
-                            Intent intent = new Intent("custom-message");
-                            //            intent.putExtra("quantity",Integer.parseInt(quantity.getText().toString()));
-                            intent.putExtra("item",ItemName);
-                            LocalBroadcastManager.getInstance(context).sendBroadcast(intent);*/
+                            pos = getAdapterPosition();
+
+                            dbSpendingMonth = FirebaseDatabase.getInstance().getReference("spending_month").child(idUser).child(listMenu.get(pos).getId());
+                            Common spendingMonth = new Common(listMenu.get(pos).getJudul(), editText.getText().toString(), "");
+                            spendingMonth.setId(listMenu.get(pos).getId());
+                            dbSpendingMonth.setValue(spendingMonth);
+
+                            harga.setText(editText.getText());
                         }
                     })
-                    .setNegativeButton("Batal",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    dialog.cancel();
-                                }
-                            });
+                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    });
 
             AlertDialog alert = alertDialogBuilder.create();
             alert.show();

@@ -107,21 +107,25 @@ public class RegisterActivity extends AppCompatActivity {
                             int i;
                             for(i=0; i<listSpendingMonth.size(); i++){
                                 String idSpendingMonth = databaseSpendingMonth.push().getKey();
+                                listSpendingMonth.get(i).setId(idSpendingMonth);
                                 databaseSpendingMonth.child(idSpendingMonth).setValue(listSpendingMonth.get(i));
                             }
 
                             for(i=0; i<listSpending.size(); i++){
                                 String idSpending = databaseSpending.push().getKey();
+                                listSpending.get(i).setId(idSpending);
                                 databaseSpending.child(idSpending).setValue(listSpending.get(i));
                             }
 
                             for(i=0; i<listPassiveIncome.size(); i++){
                                 String idPassive = databasePassiveIncome.push().getKey();
+                                listPassiveIncome.get(i).setId(idPassive);
                                 databasePassiveIncome.child(idPassive).setValue(listPassiveIncome.get(i));
                             }
 
                             for(i=0; i<listActiveIncome.size(); i++){
                                 String idActive = databaseActiveIncome.push().getKey();
+                                listActiveIncome.get(i).setId(idActive);
                                 databaseActiveIncome.child(idActive).setValue(listActiveIncome.get(i));
                             }
 

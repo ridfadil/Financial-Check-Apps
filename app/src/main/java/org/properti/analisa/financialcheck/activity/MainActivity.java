@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
@@ -15,8 +16,11 @@ import android.widget.Button;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.Auth;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.properti.analisa.financialcheck.R;
 import org.properti.analisa.financialcheck.activity.auth.LoginActivity;
@@ -32,6 +36,8 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static final String UID_USER = "UID_USER";
+
     CardView cdIncome,cdSpending,cdMonthSpending,cdPassiveIncome;
     Button btnLogout;
 
@@ -44,23 +50,107 @@ public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
 
+    String id;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        dbUser = FirebaseDatabase.getInstance().getReference("users").child("");
-
         mAuth = ((FirebaseApplication)getApplication()).getFirebaseAuth();
+        id = mAuth.getCurrentUser().getUid();
+
+        dbUser = FirebaseDatabase.getInstance().getReference("users").child(id);
+        dbSpendingMonth = FirebaseDatabase.getInstance().getReference("spending_month").child(id);
+        dbSpending = FirebaseDatabase.getInstance().getReference("spending").child(id);
+        dbPassiveIncome = FirebaseDatabase.getInstance().getReference("passive_income").child(id);
+        dbActiveIncome = FirebaseDatabase.getInstance().getReference("active_income").child(id);
 
         init();
         actionClicked();
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        dbSpendingMonth.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                listSpendingMonth.clear();
+                long totalSpendingMonth = 0;
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    Common spendingMonth = postSnapshot.getValue(Common.class);
+                    listSpendingMonth.add(spendingMonth);
+                    totalSpendingMonth = totalSpendingMonth + Long.parseLong(spendingMonth.getHarga());
+                }
+
+
+                dbSpending.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        listSpending.clear();
+                        for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                            Common spending = postSnapshot.getValue(Common.class);
+                            listSpending.add(spending);
+                        }
+
+                        dbPassiveIncome.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                listPassiveIncome.clear();
+                                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                                    Common passiveIncome = postSnapshot.getValue(Common.class);
+                                    listPassiveIncome.add(passiveIncome);
+                                }
+
+                                dbActiveIncome.addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        listActiveIncome.clear();
+                                        for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                                            Common activeIncome = postSnapshot.getValue(Common.class);
+                                            listActiveIncome.add(activeIncome);
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
+
+
+                                //TODO: tinggal nunggu rumus perbandingannya aja nih nanti baru bisa nentuin jumlah uang dan kondisinya
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     public void actionClicked(){
         cdIncome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(MainActivity.this,IncomeActivity.class);
+                i.putExtra(UID_USER, id);
                 startActivity(i);
             }
         });
@@ -69,6 +159,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(MainActivity.this,PassiveIncomeActivity.class);
+                i.putExtra(UID_USER, id);
                 startActivity(i);
             }
         });
@@ -77,6 +168,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(MainActivity.this,SpendingActivity.class);
+                i.putExtra(UID_USER, id);
                 startActivity(i);
             }
         });
@@ -85,6 +177,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(MainActivity.this,SpendingMonthActivity.class);
+                i.putExtra(UID_USER, id);
                 startActivity(i);
             }
         });
