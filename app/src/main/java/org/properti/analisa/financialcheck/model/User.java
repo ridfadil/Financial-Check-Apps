@@ -2,20 +2,14 @@ package org.properti.analisa.financialcheck.model;
 
 public class User {
 
-    private String userId;
     private String nama;
     private String email;
     private String phone;
 
-    public User(String userId, String nama, String email, String phone) {
-        this.userId = userId;
+    public User(String nama, String email, String phone) {
         this.nama = nama;
         this.email = email;
         this.phone = phone;
-    }
-
-    public String getUserId() {
-        return userId;
     }
 
     public String getNama() {

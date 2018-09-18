@@ -3,6 +3,7 @@ package org.properti.analisa.financialcheck.activity.auth;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -72,13 +73,15 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
     @OnClick(R.id.btn_to_login)
     public void toLogin(){
+        startActivity(new Intent(this, LoginActivity.class));
         finish();
         overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
     }
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        startActivity(new Intent(this, LoginActivity.class));
+        finish();
         overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
     }
 }

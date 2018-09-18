@@ -10,19 +10,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="5dp">
+        android:padding="8dp">
 
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="7dp">
+            android:layout_height="wrap_content">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/gradient"
                 android:orientation="vertical"
-                android:padding="5dp">
+                android:padding="12dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -82,28 +81,29 @@
                     android:textStyle="bold" />
 
                 <Button
+                    android:id="@+id/btn_logout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="16dp"
                     android:text="Logout"
-                    android:onClick="logout"
                     android:background="@color/colorAccent"
                     android:textColor="@color/white"
                     android:textStyle="bold"/>
             </LinearLayout>
+
         </android.support.v7.widget.CardView>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:orientation="horizontal">
 
             <android.support.v7.widget.CardView
                 android:id="@+id/cv_month_spending"
-                android:layout_marginLeft="7dp"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:layout_marginRight="10dp"
+                android:layout_marginRight="5dp"
                 android:layout_height="wrap_content">
 
                 <LinearLayout
@@ -130,10 +130,9 @@
 
             <android.support.v7.widget.CardView
                 android:id="@+id/cv_spending"
-                android:layout_marginLeft="7dp"
+                android:layout_marginLeft="5dp"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:layout_marginRight="10dp"
                 android:layout_height="wrap_content">
 
                 <LinearLayout
@@ -166,10 +165,9 @@
 
             <android.support.v7.widget.CardView
                 android:id="@+id/cv_passive_income"
-                android:layout_marginLeft="7dp"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:layout_marginRight="10dp"
+                android:layout_marginRight="5dp"
                 android:layout_height="wrap_content">
 
                 <LinearLayout
@@ -196,10 +194,9 @@
 
             <android.support.v7.widget.CardView
                 android:id="@+id/income_aktif"
-                android:layout_marginLeft="7dp"
+                android:layout_marginLeft="5dp"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:layout_marginRight="10dp"
                 android:layout_height="wrap_content">
 
                 <LinearLayout
@@ -231,10 +228,9 @@
             android:orientation="horizontal">
 
             <android.support.v7.widget.CardView
-                android:layout_marginLeft="7dp"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:layout_marginRight="10dp"
+                android:layout_marginRight="5dp"
                 android:layout_height="wrap_content">
 
                 <LinearLayout
@@ -259,10 +255,9 @@
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
-                android:layout_marginLeft="7dp"
+                android:layout_marginLeft="5dp"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:layout_marginRight="10dp"
                 android:layout_height="wrap_content">
 
                 <LinearLayout

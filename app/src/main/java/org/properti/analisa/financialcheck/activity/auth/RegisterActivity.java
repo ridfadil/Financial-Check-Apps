@@ -1,17 +1,25 @@
 package org.properti.analisa.financialcheck.activity.auth;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import org.properti.analisa.financialcheck.R;
+import org.properti.analisa.financialcheck.activity.MainActivity;
 import org.properti.analisa.financialcheck.activity.utils.DialogUtils;
 import org.properti.analisa.financialcheck.firebase.FirebaseApplication;
 import org.properti.analisa.financialcheck.model.Common;
@@ -45,6 +53,7 @@ public class RegisterActivity extends AppCompatActivity {
     private ProgressDialog loading;
 
     private FirebaseAuth mAuth;
+
     DatabaseReference databaseUser, databaseSpendingMonth, databaseSpending, databasePassiveIncome, databaseActiveIncome;
 
     @Override
@@ -55,12 +64,11 @@ public class RegisterActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         loading = DialogUtils.showProgressDialog(this, "Loading", "Registering your account");
 
-        mAuth = ((FirebaseApplication)getApplication()).getFirebaseAuth();
+        mAuth = FirebaseAuth.getInstance();
     }
 
     @OnClick(R.id.btn_register)
     public void register(){
-        loading.show();
         if(TextUtils.isEmpty(etNama.getText().toString()) || TextUtils.isEmpty(etEmail.getText().toString()) || TextUtils.isEmpty(etPhoneNumber.getText().toString()) || TextUtils.isEmpty(etPassword.getText().toString())){
             Toast.makeText(this, getString(R.string.data_belum_lengkap), Toast.LENGTH_SHORT).show();
         }
@@ -73,45 +81,59 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
-    private void registerData(String nama, String email, String phone, String password) {
-        ((FirebaseApplication)getApplication()).createNewUser(this, email, password);
+    private void registerData(final String nama, final String email, final String phone, String password) {
+        loading.show();
+        mAuth.createUserWithEmailAndPassword(email, password).
+                addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (!task.isSuccessful()) {
+                            Toast.makeText(RegisterActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            String id = user.getUid();
 
-        initData();
+                            databaseUser = FirebaseDatabase.getInstance().getReference("users");
+                            databaseUser.child(id).setValue(new User(nama, email, phone));
 
-        databaseUser = FirebaseDatabase.getInstance().getReference("users");
+                            initData();
 
-        String id = databaseUser.push().getKey();
-        String userId = nama+"-"+String.valueOf(Math.random());
+                            databaseSpendingMonth = FirebaseDatabase.getInstance().getReference("spending_month").child(id);
+                            databaseSpending = FirebaseDatabase.getInstance().getReference("spending").child(id);
+                            databasePassiveIncome = FirebaseDatabase.getInstance().getReference("passive_income").child(id);
+                            databaseActiveIncome = FirebaseDatabase.getInstance().getReference("active_income").child(id);
 
-        databaseUser.child(id).setValue(new User(userId, nama, email, phone));
+                            int i;
+                            for(i=0; i<listSpendingMonth.size(); i++){
+                                String idSpendingMonth = databaseSpendingMonth.push().getKey();
+                                databaseSpendingMonth.child(idSpendingMonth).setValue(listSpendingMonth.get(i));
+                            }
 
-        databaseSpendingMonth = FirebaseDatabase.getInstance().getReference("spending_month").child(id);
-        databaseSpending = FirebaseDatabase.getInstance().getReference("spending").child(id);
-        databasePassiveIncome = FirebaseDatabase.getInstance().getReference("passive_income").child(id);
-        databaseActiveIncome = FirebaseDatabase.getInstance().getReference("active_income").child(id);
+                            for(i=0; i<listSpending.size(); i++){
+                                String idSpending = databaseSpending.push().getKey();
+                                databaseSpending.child(idSpending).setValue(listSpending.get(i));
+                            }
 
-        int i;
-        for(i=0; i<listSpendingMonth.size(); i++){
-            String idSpendingMonth = databaseSpendingMonth.push().getKey();
-            databaseSpendingMonth.child(idSpendingMonth).setValue(listSpendingMonth.get(i));
-        }
+                            for(i=0; i<listPassiveIncome.size(); i++){
+                                String idPassive = databasePassiveIncome.push().getKey();
+                                databasePassiveIncome.child(idPassive).setValue(listPassiveIncome.get(i));
+                            }
 
-        for(i=0; i<listSpending.size(); i++){
-            String idSpending = databaseSpending.push().getKey();
-            databaseSpending.child(idSpending).setValue(listSpending.get(i));
-        }
+                            for(i=0; i<listActiveIncome.size(); i++){
+                                String idActive = databaseActiveIncome.push().getKey();
+                                databaseActiveIncome.child(idActive).setValue(listActiveIncome.get(i));
+                            }
 
-        for(i=0; i<listPassiveIncome.size(); i++){
-            String idPassive = databasePassiveIncome.push().getKey();
-            databasePassiveIncome.child(idPassive).setValue(listPassiveIncome.get(i));
-        }
-
-        for(i=0; i<listActiveIncome.size(); i++){
-            String idActive = databaseActiveIncome.push().getKey();
-            databaseActiveIncome.child(idActive).setValue(listActiveIncome.get(i));
-        }
+                            Toast.makeText(RegisterActivity.this, "Registration Successful", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(RegisterActivity.this, MainActivity.class));
+                            finish();
+                        }
+                    }
+                });
 
         loading.dismiss();
+
     }
 
     private void initData() {
@@ -145,13 +167,15 @@ public class RegisterActivity extends AppCompatActivity {
 
     @OnClick(R.id.btn_to_login)
     public void toLogin(){
+        startActivity(new Intent(this, LoginActivity.class));
         finish();
         overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
     }
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        startActivity(new Intent(this, LoginActivity.class));
+        finish();
         overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
     }
 }

@@ -67,14 +67,15 @@ public class LoginActivity extends AppCompatActivity {
 
     @OnClick(R.id.btn_to_register)
     public void toRegister(){
-        Intent i = new Intent(getApplicationContext(), RegisterActivity.class);
-        startActivity(i);
+        startActivity(new Intent(this, RegisterActivity.class));
+        finish();
         overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
     }
 
     @OnClick(R.id.btn_to_forgot_password)
     public void toForgotPassword(){
         startActivity(new Intent(getApplicationContext(), ForgotPasswordActivity.class));
+        finish();
         overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
     }
 }
