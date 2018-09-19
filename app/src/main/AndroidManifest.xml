@@ -12,7 +12,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
@@ -44,12 +43,15 @@
             android:theme="@style/AppThemeNoActionBar" />
         <activity android:name=".activity.CheckActivity" />
         <activity android:name=".activity.ResultActivity" />
-        <!--<activity android:name=".activity.auth.LoginActivity"-->
-            <!--android:theme="@style/AppThemeNoActionBar"/>-->
-        <activity android:name=".activity.auth.RegisterActivity"
-            android:theme="@style/AppThemeNoActionBar"/>
-        <activity android:name=".activity.auth.ForgotPasswordActivity"
-            android:theme="@style/AppThemeNoActionBar"/>
+        <!-- <activity android:name=".activity.auth.LoginActivity" -->
+        <!-- android:theme="@style/AppThemeNoActionBar"/> -->
+        <activity
+            android:name=".activity.auth.RegisterActivity"
+            android:theme="@style/AppThemeNoActionBar" />
+        <activity
+            android:name=".activity.auth.ForgotPasswordActivity"
+            android:theme="@style/AppThemeNoActionBar" />
+        <activity android:name=".activity.EditProfileActivity"></activity>
     </application>
 
 </manifest>
