@@ -51,7 +51,15 @@
         <activity
             android:name=".activity.auth.ForgotPasswordActivity"
             android:theme="@style/AppThemeNoActionBar" />
-        <activity android:name=".activity.EditProfileActivity"></activity>
+        <activity
+            android:name=".activity.EditProfileActivity"
+            android:theme="@style/AppThemeNoActionBar"/>
+        <activity
+            android:name=".activity.SettingActivity"
+            android:theme="@style/AppThemeNoActionBar"/>
+        <activity
+            android:name=".activity.HelpActivity"
+            android:theme="@style/AppThemeNoActionBar"></activity>
     </application>
 
 </manifest>

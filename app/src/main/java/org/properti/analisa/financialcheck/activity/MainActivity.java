@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String UID_USER = "UID_USER";
 
-    CardView cdIncome, cdSpending, cdMonthSpending, cdPassiveIncome;
+    CardView cdIncome, cdSpending, cdMonthSpending, cdPassiveIncome,cdSetting,cdProfil;
     Button btnLogout;
     TextView txtFinancialCondition, txtFinancialTotal;
 
@@ -212,6 +212,22 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+        cdProfil.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(MainActivity.this,UserProfilActivity.class);
+                i.putExtra(UID_USER, id);
+                startActivity(i);
+            }
+        });
+        cdSetting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(MainActivity.this,SettingActivity.class);
+                i.putExtra(UID_USER, id);
+                startActivity(i);
+            }
+        });
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -247,6 +263,8 @@ public class MainActivity extends AppCompatActivity {
         btnLogout = findViewById(R.id.btn_logout);
         txtFinancialCondition = findViewById(R.id.txt_financial_condition);
         txtFinancialTotal = findViewById(R.id.txt_financial_total);
+        cdSetting = findViewById(R.id.cv_setting);
+        cdProfil = findViewById(R.id.cv_user_profile);
     }
 
     @Override
