@@ -10,7 +10,7 @@ import android.os.Bundle;
 
 import org.properti.analisa.financialcheck.R;
 import org.properti.analisa.financialcheck.activity.auth.LoginActivity;
-import org.properti.analisa.financialcheck.activity.utils.DialogUtils;
+import org.properti.analisa.financialcheck.utils.DialogUtils;
 
 public class SplashScreenActivity extends AppCompatActivity {
 

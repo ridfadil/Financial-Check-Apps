@@ -5,19 +5,37 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.TextView;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.LinkedList;
 
 import org.properti.analisa.financialcheck.R;
 import org.properti.analisa.financialcheck.adapter.PassiveIncomeAdapter;
-import org.properti.analisa.financialcheck.model.ModelMenu;
+import org.properti.analisa.financialcheck.model.Common;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+import static org.properti.analisa.financialcheck.activity.MainActivity.UID_USER;
 
 public class PassiveIncomeActivity extends AppCompatActivity {
 
-    private final LinkedList<ModelMenu> listMenu = new LinkedList<>();
+    private final LinkedList<Common> listMenu = new LinkedList<>();
+    String idUser;
+
+    @BindView(R.id.txt_jumlah_transaksi)
+    TextView txtJumlahTransaksi;
+    @BindView(R.id.txt_total_biaya)
+    TextView txtTotalBiaya;
+
+    DatabaseReference dbPassiveIncome;
 
     private RecyclerView mRecyclerView;
     private PassiveIncomeAdapter mAdapter;
@@ -26,32 +44,41 @@ public class PassiveIncomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_passive_income);
+        ButterKnife.bind(this);
         toolbar();
 
-        listMenu.addLast(new ModelMenu(getString(R.string.passive_rumahsewa),getString(R.string.harga), R.drawable.rumahsewa, R.drawable.bluepen));
-        listMenu.addLast(new ModelMenu(getString(R.string.passive_usaha),getString(R.string.harga), R.drawable.usaha, R.drawable.redpen));
-        listMenu.addLast(new ModelMenu(getString(R.string.passive_Deposito),getString(R.string.harga), R.drawable.deposito, R.drawable.greenpen));
-        listMenu.addLast(new ModelMenu(getString(R.string.royalti_buku),getString(R.string.harga), R.drawable.deposito, R.drawable.greenpen));
-        listMenu.addLast(new ModelMenu(getString(R.string.royalti_kaset),getString(R.string.harga), R.drawable.deposito, R.drawable.greenpen));
-        listMenu.addLast(new ModelMenu(getString(R.string.royalti_sistem),getString(R.string.harga), R.drawable.deposito, R.drawable.greenpen));
-        listMenu.addLast(new ModelMenu(getString(R.string.lainlain),getString(R.string.harga), R.drawable.lainlain, R.drawable.bluepen));
+        idUser = getIntent().getStringExtra(UID_USER);
+        dbPassiveIncome = FirebaseDatabase.getInstance().getReference("passive_income").child(idUser);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.rv_passive_income);
-
-        mAdapter = new PassiveIncomeAdapter(PassiveIncomeActivity.this, listMenu);
-
+        mAdapter = new PassiveIncomeAdapter(PassiveIncomeActivity.this, listMenu, idUser);
         mRecyclerView.setAdapter(mAdapter);
-
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.save_menu, menu);
+    protected void onStart() {
+        super.onStart();
 
-        // return true so that the menu pop up is opened
-        return true;
+        dbPassiveIncome.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                listMenu.clear();
+                long total = 0;
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    Common passiveIncome = postSnapshot.getValue(Common.class);
+                    listMenu.add(passiveIncome);
+                    total = total + Long.parseLong(passiveIncome.getHarga());
+                }
+                txtJumlahTransaksi.setText(listMenu.size()+" Transaksi");
+                txtTotalBiaya.setText(""+total);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     public void toolbar(){
@@ -60,6 +87,7 @@ public class PassiveIncomeActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Passive Income");
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {

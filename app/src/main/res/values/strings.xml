@@ -23,7 +23,7 @@
     //Home String
     <string name="balanced">Balanced</string>
     <string name="tanggal_home">06 Agustus 2018</string>
-    <string name="Rp.">Rp.</string>
+    <string name="Rp.">Rp. </string>
     <string name="nominal_home">4.000.000,.-</string>
     <string name="finalcondition_home">Your Final Condition Is : </string>
     <string name="good_home">GOOD</string>

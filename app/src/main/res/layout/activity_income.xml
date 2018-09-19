@@ -38,6 +38,7 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/txt_jumlah_transaksi"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -62,7 +63,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/tv_jumlah_aktf_income"
+                android:id="@+id/txt_total_biaya"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="4dp"

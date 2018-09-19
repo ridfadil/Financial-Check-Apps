@@ -8,47 +8,81 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.TextView;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.LinkedList;
 
 import org.properti.analisa.financialcheck.R;
 import org.properti.analisa.financialcheck.adapter.PassiveIncomeAdapter;
+import org.properti.analisa.financialcheck.adapter.SpendingAdapter;
+import org.properti.analisa.financialcheck.model.Common;
 import org.properti.analisa.financialcheck.model.ModelMenu;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+import static org.properti.analisa.financialcheck.activity.MainActivity.UID_USER;
+
 public class SpendingActivity extends AppCompatActivity {
-    private final LinkedList<ModelMenu> listMenu = new LinkedList<>();
+
+    private final LinkedList<Common> listMenu = new LinkedList<>();
+    String idUser;
+
+    @BindView(R.id.txt_jumlah_transaksi)
+    TextView txtJumlahTransaksi;
+    @BindView(R.id.txt_total_biaya)
+    TextView txtTotalBiaya;
+
+    DatabaseReference dbSpending;
 
     private RecyclerView mRecyclerView;
-    private PassiveIncomeAdapter mAdapter;
-
+    private SpendingAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_spending);
+        ButterKnife.bind(this);
         toolbar();
 
-        listMenu.addLast(new ModelMenu(getString(R.string.makan_luar_rumah),getString(R.string.harga), R.drawable.rumahsewa, R.drawable.bluepen));
-        listMenu.addLast(new ModelMenu(getString(R.string.beli_luxury),getString(R.string.harga), R.drawable.usaha, R.drawable.redpen));
-        listMenu.addLast(new ModelMenu(getString(R.string.piknik),getString(R.string.harga), R.drawable.deposito, R.drawable.greenpen));
-
+        idUser = getIntent().getStringExtra(UID_USER);
+        dbSpending = FirebaseDatabase.getInstance().getReference("spending").child(idUser);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.rv_spending);
-
-        mAdapter = new PassiveIncomeAdapter(SpendingActivity.this, listMenu);
-
+        mAdapter = new SpendingAdapter(SpendingActivity.this, listMenu, idUser);
         mRecyclerView.setAdapter(mAdapter);
-
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.save_menu, menu);
+    protected void onStart() {
+        super.onStart();
 
-        // return true so that the menu pop up is opened
-        return true;
+        dbSpending.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                listMenu.clear();
+                long total = 0;
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    Common spending = postSnapshot.getValue(Common.class);
+                    listMenu.add(spending);
+                    total = total + Long.parseLong(spending.getHarga());
+                }
+                txtJumlahTransaksi.setText(listMenu.size()+" Transaksi");
+                txtTotalBiaya.setText(""+total);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     public void toolbar(){

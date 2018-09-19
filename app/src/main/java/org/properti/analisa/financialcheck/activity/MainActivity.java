@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.Auth;
@@ -38,8 +39,9 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String UID_USER = "UID_USER";
 
-    CardView cdIncome,cdSpending,cdMonthSpending,cdPassiveIncome;
+    CardView cdIncome, cdSpending, cdMonthSpending, cdPassiveIncome;
     Button btnLogout;
+    TextView txtFinancialCondition, txtFinancialTotal;
 
     List<Common> listSpendingMonth = new ArrayList<>();
     List<Common> listSpending = new ArrayList<>();
@@ -57,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        init();
+
         mAuth = ((FirebaseApplication)getApplication()).getFirebaseAuth();
         id = mAuth.getCurrentUser().getUid();
 
@@ -66,7 +70,6 @@ public class MainActivity extends AppCompatActivity {
         dbPassiveIncome = FirebaseDatabase.getInstance().getReference("passive_income").child(id);
         dbActiveIncome = FirebaseDatabase.getInstance().getReference("active_income").child(id);
 
-        init();
         actionClicked();
     }
 
@@ -85,33 +88,60 @@ public class MainActivity extends AppCompatActivity {
                     totalSpendingMonth = totalSpendingMonth + Long.parseLong(spendingMonth.getHarga());
                 }
 
-
+                final long finalTotalSpendingMonth = totalSpendingMonth;
                 dbSpending.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         listSpending.clear();
+                        long totalSpending = 0;
                         for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                             Common spending = postSnapshot.getValue(Common.class);
                             listSpending.add(spending);
+                            totalSpending = totalSpending + Long.parseLong(spending.getHarga());
                         }
 
+                        final long finalTotalSpending = totalSpending;
                         dbPassiveIncome.addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 listPassiveIncome.clear();
+                                long totalPassiveIncome = 0;
                                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                                     Common passiveIncome = postSnapshot.getValue(Common.class);
                                     listPassiveIncome.add(passiveIncome);
+                                    totalPassiveIncome = totalPassiveIncome + Long.parseLong(passiveIncome.getHarga());
                                 }
 
+                                final long finalTotalPassiveIncome = totalPassiveIncome;
                                 dbActiveIncome.addValueEventListener(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
                                         listActiveIncome.clear();
+                                        long totalActiveIncome = 0;
                                         for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                                             Common activeIncome = postSnapshot.getValue(Common.class);
                                             listActiveIncome.add(activeIncome);
+                                            totalActiveIncome = totalActiveIncome + Long.parseLong(activeIncome.getHarga());
                                         }
+
+                                        //pengecekan
+                                        String kondisi = "";
+                                        if(finalTotalSpendingMonth + finalTotalSpending > finalTotalPassiveIncome + totalActiveIncome){
+                                            kondisi = "NOT GOOD";
+                                        }
+                                        else if(finalTotalSpendingMonth + finalTotalSpending == finalTotalPassiveIncome + totalActiveIncome){
+                                            kondisi = "GOOD";
+                                        }
+                                        else if(finalTotalSpendingMonth + finalTotalSpending < finalTotalPassiveIncome + totalActiveIncome){
+                                            kondisi = "VERY GOOD";
+                                        }
+                                        else if(finalTotalPassiveIncome > finalTotalSpendingMonth + finalTotalSpending){
+                                            kondisi = "FINANCIAL INDEPENDENT";
+                                        }
+
+                                        txtFinancialCondition.setText(kondisi);
+                                        txtFinancialTotal.setText(" "+(finalTotalPassiveIncome + totalActiveIncome - finalTotalSpendingMonth - finalTotalSpending));
+
                                     }
 
                                     @Override
@@ -119,9 +149,6 @@ public class MainActivity extends AppCompatActivity {
 
                                     }
                                 });
-
-
-                                //TODO: tinggal nunggu rumus perbandingannya aja nih nanti baru bisa nentuin jumlah uang dan kondisinya
                             }
 
                             @Override
@@ -143,6 +170,10 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    public void checkCondition(long a, long b, long c, long d){
+
     }
 
     public void actionClicked(){
@@ -208,12 +239,14 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public  void init() {
+    public void init() {
         cdIncome =  findViewById(R.id.income_aktif);
         cdMonthSpending = findViewById(R.id.cv_month_spending);
         cdSpending = findViewById(R.id.cv_spending);
         cdPassiveIncome = findViewById(R.id.cv_passive_income);
         btnLogout = findViewById(R.id.btn_logout);
+        txtFinancialCondition = findViewById(R.id.txt_financial_condition);
+        txtFinancialTotal = findViewById(R.id.txt_financial_total);
     }
 
     @Override

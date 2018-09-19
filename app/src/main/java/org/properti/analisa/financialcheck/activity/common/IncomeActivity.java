@@ -5,73 +5,80 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.LinkedList;
 
 import org.properti.analisa.financialcheck.R;
 import org.properti.analisa.financialcheck.adapter.IncomeAdapter;
-import org.properti.analisa.financialcheck.model.ModelMenu;
+import org.properti.analisa.financialcheck.model.Common;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+import static org.properti.analisa.financialcheck.activity.MainActivity.UID_USER;
 
 public class IncomeActivity extends AppCompatActivity {
 
-    private final LinkedList<ModelMenu> listMenu = new LinkedList<>();
+    private final LinkedList<Common> listMenu = new LinkedList<>();
+    String idUser;
+
+    @BindView(R.id.txt_jumlah_transaksi)
+    TextView txtJumlahTransaksi;
+    @BindView(R.id.txt_total_biaya)
+    TextView txtTotalBiaya;
+
+    DatabaseReference dbActiveIncome;
 
     private RecyclerView mRecyclerView;
     private IncomeAdapter mAdapter;
-    TextView jumlah;
-    String sJum,sHasil;
-    int hasil=0 ,jum;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_income);
+        ButterKnife.bind(this);
         toolbar();
-        init();
-        //Intent dari Adapter
-       // LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver, new IntentFilter("custom-message"));
 
-        listMenu.addLast(new ModelMenu(getString(R.string.Profesi),getString(R.string.harga), R.drawable.profesi, R.drawable.bluepen));
-        listMenu.addLast(new ModelMenu(getString(R.string.Trading),getString(R.string.harga), R.drawable.trading, R.drawable.redpen));
-        listMenu.addLast(new ModelMenu(getString(R.string.lainlain),getString(R.string.lainlain), R.drawable.lainlain, R.drawable.bluepen));
+        idUser = getIntent().getStringExtra(UID_USER);
+        dbActiveIncome = FirebaseDatabase.getInstance().getReference("active_income").child(idUser);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.rv_income);
-
-        mAdapter = new IncomeAdapter(IncomeActivity.this, listMenu);
-
+        mAdapter = new IncomeAdapter(IncomeActivity.this, listMenu, idUser);
         mRecyclerView.setAdapter(mAdapter);
-
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-    }
-
-   /* public BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            // Get extra data included in the Intent
-            String ItemName = intent.getStringExtra("item");
-            jum = Integer.valueOf(ItemName);
-            hasil= hasil+jum;
-            sHasil = Integer.toString(hasil);
-            jumlah.setText(sHasil);
-        }
-    };*/
-
-    public void init(){
-        jumlah = findViewById(R.id.tv_jumlah_aktf_income);
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.save_menu, menu);
+    protected void onStart() {
+        super.onStart();
 
-        // return true so that the menu pop up is opened
-        return true;
+        dbActiveIncome.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                listMenu.clear();
+                long total = 0;
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    Common activeIncome = postSnapshot.getValue(Common.class);
+                    listMenu.add(activeIncome);
+                    total = total + Long.parseLong(activeIncome.getHarga());
+                }
+                txtJumlahTransaksi.setText(listMenu.size()+" Transaksi");
+                txtTotalBiaya.setText(""+total);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     public void toolbar(){

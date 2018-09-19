@@ -11,21 +11,31 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.LinkedList;
 
 import org.properti.analisa.financialcheck.R;
-import org.properti.analisa.financialcheck.model.ModelMenu;
+import org.properti.analisa.financialcheck.model.Common;
 
 public class SpendingAdapter extends RecyclerView.Adapter<SpendingAdapter.ListMenuViewHolder> {
 
     //deklarasi global variabel
     private Context context;
-    private final LinkedList<ModelMenu> listMenu;
+    private final LinkedList<Common> listMenu;
+
+    DatabaseReference dbSpending;
+
+    int pos;
+    String idUser;
 
     //konstruktor untuk menerima data adapter
-    public SpendingAdapter(Context context, LinkedList<ModelMenu> listMenu) {
+    public SpendingAdapter(Context context, LinkedList<Common> listMenu, String idUser) {
         this.context = context;
         this.listMenu = listMenu;
+        this.idUser = idUser;
     }
 
     //view holder berfungsi untuk setting list item yang digunakan
@@ -42,11 +52,14 @@ public class SpendingAdapter extends RecyclerView.Adapter<SpendingAdapter.ListMe
     //bind view holder berfungsi untuk set data ke view yang ditampilkan pada list item
     @Override
     public void onBindViewHolder(ListMenuViewHolder holder, int position) {
-        final ModelMenu mCurrent = listMenu.get(position);
+        final Common mCurrent = listMenu.get(position);
         holder.judul.setText(mCurrent.getJudul());
         holder.harga.setText(mCurrent.getHarga());
-        holder.imgMenu.setImageResource(mCurrent.getImageMenu());
-        holder.imgPen.setImageResource(mCurrent.getImagePencil());
+        Glide.with(context).
+                load(mCurrent.getImage()).
+                placeholder(R.drawable.spending).
+                into(holder.imgMenu);
+        holder.imgPen.setImageResource(R.drawable.redpen);
     }
 
     //untuk menghitung jumlah data yang ada pada list
@@ -56,7 +69,7 @@ public class SpendingAdapter extends RecyclerView.Adapter<SpendingAdapter.ListMe
     }
 
     public class ListMenuViewHolder extends RecyclerView.ViewHolder {
-        private TextView judul,harga,jumHarga;
+        private TextView judul,harga;
         private ImageView imgMenu,imgPen;
 
         final SpendingAdapter mAdapter;
@@ -68,7 +81,6 @@ public class SpendingAdapter extends RecyclerView.Adapter<SpendingAdapter.ListMe
             harga = itemView.findViewById(R.id.tv_harga);
             imgMenu = itemView.findViewById(R.id.iv_menu);
             imgPen = itemView.findViewById(R.id.iv_pen);
-            jumHarga =itemView.findViewById(R.id.tv_jumlah_spending);
             this.mAdapter = adapter;
 
             imgPen.setOnClickListener(new View.OnClickListener() {
@@ -92,14 +104,14 @@ public class SpendingAdapter extends RecyclerView.Adapter<SpendingAdapter.ListMe
             alertDialogBuilder.setCancelable(false)
                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
+                            pos = getAdapterPosition();
+
+                            dbSpending = FirebaseDatabase.getInstance().getReference("spending").child(idUser).child(listMenu.get(pos).getId());
+                            Common spending = new Common(listMenu.get(pos).getJudul(), editText.getText().toString(), "");
+                            spending.setId(listMenu.get(pos).getId());
+                            dbSpending.setValue(spending);
+
                             harga.setText( editText.getText());
-                            //jumlah = Integer.valueOf(editText.getText().toString());
-                            //jumHarga.setText(editText.getText());
-                            //String jumlahTotal = editText.getText().toString();
-  /*                          Intent intent = new Intent("toActivity");
-                            //            intent.putExtra("quantity",Integer.parseInt(quantity.getText().toString()));
-                            intent.putExtra("jumlah",jumlahTotal);
-                            LocalBroadcastManager.getInstance(context).sendBroadcast(intent);*/
                         }
                     })
                     .setNegativeButton("Batal",
@@ -115,5 +127,3 @@ public class SpendingAdapter extends RecyclerView.Adapter<SpendingAdapter.ListMe
 
     }
 }
-
-

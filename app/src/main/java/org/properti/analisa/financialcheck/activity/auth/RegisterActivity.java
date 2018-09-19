@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -20,8 +19,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import org.properti.analisa.financialcheck.R;
 import org.properti.analisa.financialcheck.activity.MainActivity;
-import org.properti.analisa.financialcheck.activity.utils.DialogUtils;
-import org.properti.analisa.financialcheck.firebase.FirebaseApplication;
+import org.properti.analisa.financialcheck.utils.DialogUtils;
 import org.properti.analisa.financialcheck.model.Common;
 import org.properti.analisa.financialcheck.model.User;
 

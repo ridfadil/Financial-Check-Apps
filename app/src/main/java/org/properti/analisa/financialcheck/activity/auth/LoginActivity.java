@@ -13,7 +13,7 @@ import com.facebook.login.widget.LoginButton;
 import com.google.firebase.auth.FirebaseAuth;
 
 import org.properti.analisa.financialcheck.R;
-import org.properti.analisa.financialcheck.activity.utils.DialogUtils;
+import org.properti.analisa.financialcheck.utils.DialogUtils;
 import org.properti.analisa.financialcheck.firebase.FirebaseApplication;
 
 import butterknife.BindView;

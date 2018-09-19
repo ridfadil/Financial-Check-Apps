@@ -1,4 +1,4 @@
-package org.properti.analisa.financialcheck.activity.utils;
+package org.properti.analisa.financialcheck.utils;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
