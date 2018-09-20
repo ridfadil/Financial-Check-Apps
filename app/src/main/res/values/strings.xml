@@ -105,5 +105,6 @@
     <string name="button_check">check</string>
     <string name="button_result">result</string>
 
-    <string name="facebook_app_id">1741753252610047</string>
+    <string name="facebook_app_id">1383676748429921</string>
+    <string name="fb_login_protocol_scheme">fb1383676748429921</string>
 </resources>
