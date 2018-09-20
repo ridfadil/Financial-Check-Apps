@@ -98,19 +98,19 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
 
-        mAuth = ((FirebaseApplication)getApplication()).getFirebaseAuth();
+        mAuth = ((FirebaseApplication) getApplication()).getFirebaseAuth();
         initGoogleConf();
         initFacebookConf();
 
-        ((FirebaseApplication)getApplication()).checkUserLogin(this);
+        ((FirebaseApplication) getApplication()).checkUserLogin(this);
 
         loading = DialogUtils.showProgressDialog(this, "Loading", "Checking Data");
     }
 
     private void printKeyHash() {
-        try{
+        try {
             PackageInfo info = getPackageManager().getPackageInfo("org.properti.analisa.financialcheck", PackageManager.GET_SIGNATURES);
-            for(Signature signature:info.signatures){
+            for (Signature signature : info.signatures) {
                 MessageDigest md = MessageDigest.getInstance("SHA");
                 md.update(signature.toByteArray());
                 Log.d("KeyHash", Base64.encodeToString(md.digest(), Base64.DEFAULT));
@@ -129,7 +129,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 firebaseAuthWithFacebook(loginResult.getAccessToken());
-                Log.e("TOKEN :", ""+loginResult.getAccessToken());
+                Log.e("TOKEN :", "" + loginResult.getAccessToken());
             }
 
             @Override
@@ -145,7 +145,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     @OnClick(R.id.btn_login_google)
-    public void googleLogin(){
+    public void googleLogin() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleSignInClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
@@ -168,17 +168,16 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     @OnClick(R.id.btn_login)
-    public void login(){
+    public void login() {
         loading.show();
-        if(TextUtils.isEmpty(etEmail.getText().toString()) || TextUtils.isEmpty(etPassword.getText().toString())){
+        if (TextUtils.isEmpty(etEmail.getText().toString()) || TextUtils.isEmpty(etPassword.getText().toString())) {
             Toast.makeText(this, getString(R.string.data_kosong), Toast.LENGTH_SHORT).show();
             loading.dismiss();
-        }
-        else{
+        } else {
             email = etEmail.getText().toString();
             password = etPassword.getText().toString();
 
-            ((FirebaseApplication)getApplication()).loginAUser(this, email, password);
+            ((FirebaseApplication) getApplication()).loginAUser(this, email, password);
 
             loading.dismiss();
         }
@@ -201,7 +200,7 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    private void firebaseAuthWithFacebook(AccessToken token){
+    private void firebaseAuthWithFacebook(AccessToken token) {
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -210,8 +209,7 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             FirebaseUser user = mAuth.getCurrentUser();
                             sendFacebookUserData(user);
-                        }
-                        else {
+                        } else {
                             Toast.makeText(LoginActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -227,15 +225,14 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             FirebaseUser user = mAuth.getCurrentUser();
                             sendGoogleUserData(user);
-                        }
-                        else {
-                            Toast.makeText(LoginActivity.this,"you are not able to log in to google",Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(LoginActivity.this, "you are not able to log in to google", Toast.LENGTH_LONG).show();
                         }
                     }
                 });
     }
 
-    private void sendFacebookUserData(FirebaseUser user){
+    private void sendFacebookUserData(FirebaseUser user) {
         final String nama = user.getDisplayName();
         final String email = user.getEmail();
         final String phone = user.getPhoneNumber();
@@ -245,10 +242,9 @@ public class LoginActivity extends AppCompatActivity {
         ref.child("users").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()){
+                if (dataSnapshot.exists()) {
                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                }
-                else {
+                } else {
                     databaseUser = FirebaseDatabase.getInstance().getReference("users");
                     databaseUser.child(id).setValue(new User(nama, email, phone));
 
@@ -260,25 +256,25 @@ public class LoginActivity extends AppCompatActivity {
                     databaseActiveIncome = FirebaseDatabase.getInstance().getReference("active_income").child(id);
 
                     int i;
-                    for(i=0; i<listSpendingMonth.size(); i++){
+                    for (i = 0; i < listSpendingMonth.size(); i++) {
                         String idSpendingMonth = databaseSpendingMonth.push().getKey();
                         listSpendingMonth.get(i).setId(idSpendingMonth);
                         databaseSpendingMonth.child(idSpendingMonth).setValue(listSpendingMonth.get(i));
                     }
 
-                    for(i=0; i<listSpending.size(); i++){
+                    for (i = 0; i < listSpending.size(); i++) {
                         String idSpending = databaseSpending.push().getKey();
                         listSpending.get(i).setId(idSpending);
                         databaseSpending.child(idSpending).setValue(listSpending.get(i));
                     }
 
-                    for(i=0; i<listPassiveIncome.size(); i++){
+                    for (i = 0; i < listPassiveIncome.size(); i++) {
                         String idPassive = databasePassiveIncome.push().getKey();
                         listPassiveIncome.get(i).setId(idPassive);
                         databasePassiveIncome.child(idPassive).setValue(listPassiveIncome.get(i));
                     }
 
-                    for(i=0; i<listActiveIncome.size(); i++){
+                    for (i = 0; i < listActiveIncome.size(); i++) {
                         String idActive = databaseActiveIncome.push().getKey();
                         listActiveIncome.get(i).setId(idActive);
                         databaseActiveIncome.child(idActive).setValue(listActiveIncome.get(i));
@@ -307,10 +303,9 @@ public class LoginActivity extends AppCompatActivity {
             ref.child("users").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    if(dataSnapshot.exists()){
+                    if (dataSnapshot.exists()) {
                         startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                    }
-                    else {
+                    } else {
                         databaseUser = FirebaseDatabase.getInstance().getReference("users");
                         databaseUser.child(id).setValue(new User(nama, email, phone));
 
@@ -322,25 +317,25 @@ public class LoginActivity extends AppCompatActivity {
                         databaseActiveIncome = FirebaseDatabase.getInstance().getReference("active_income").child(id);
 
                         int i;
-                        for(i=0; i<listSpendingMonth.size(); i++){
+                        for (i = 0; i < listSpendingMonth.size(); i++) {
                             String idSpendingMonth = databaseSpendingMonth.push().getKey();
                             listSpendingMonth.get(i).setId(idSpendingMonth);
                             databaseSpendingMonth.child(idSpendingMonth).setValue(listSpendingMonth.get(i));
                         }
 
-                        for(i=0; i<listSpending.size(); i++){
+                        for (i = 0; i < listSpending.size(); i++) {
                             String idSpending = databaseSpending.push().getKey();
                             listSpending.get(i).setId(idSpending);
                             databaseSpending.child(idSpending).setValue(listSpending.get(i));
                         }
 
-                        for(i=0; i<listPassiveIncome.size(); i++){
+                        for (i = 0; i < listPassiveIncome.size(); i++) {
                             String idPassive = databasePassiveIncome.push().getKey();
                             listPassiveIncome.get(i).setId(idPassive);
                             databasePassiveIncome.child(idPassive).setValue(listPassiveIncome.get(i));
                         }
 
-                        for(i=0; i<listActiveIncome.size(); i++){
+                        for (i = 0; i < listActiveIncome.size(); i++) {
                             String idActive = databaseActiveIncome.push().getKey();
                             listActiveIncome.get(i).setId(idActive);
                             databaseActiveIncome.child(idActive).setValue(listActiveIncome.get(i));
@@ -359,43 +354,43 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void initData() {
-        listSpendingMonth.add(new Common( "Makan Dalam Rumah", "0", ""));
-        listSpendingMonth.add(new Common( "Listrik Gas Air", "0", ""));
-        listSpendingMonth.add(new Common( "Telepon Rumah", "0", ""));
-        listSpendingMonth.add(new Common( "Telepon HP", "0", ""));
-        listSpendingMonth.add(new Common( "Sekolah + Les Anak", "0", ""));
-        listSpendingMonth.add(new Common( "Cicilan Hutang Rumah", "0", ""));
-        listSpendingMonth.add(new Common( "Cicilan Kendaraan", "0", ""));
-        listSpendingMonth.add(new Common( "Cicilan Kartu Kredit", "0", ""));
-        listSpendingMonth.add(new Common( "Asuransi", "0", ""));
-        listSpendingMonth.add(new Common( "Pembantu", "0", ""));
-        listSpendingMonth.add(new Common( "Mobil (Bensin dan Maintenance)", "0", ""));
-        listSpendingMonth.add(new Common( "Pakaian", "0", ""));
+        listSpendingMonth.add(new Common("Makan Dalam Rumah", "0", ""));
+        listSpendingMonth.add(new Common("Listrik Gas Air", "0", ""));
+        listSpendingMonth.add(new Common("Telepon Rumah", "0", ""));
+        listSpendingMonth.add(new Common("Telepon HP", "0", ""));
+        listSpendingMonth.add(new Common("Sekolah + Les Anak", "0", ""));
+        listSpendingMonth.add(new Common("Cicilan Hutang Rumah", "0", ""));
+        listSpendingMonth.add(new Common("Cicilan Kendaraan", "0", ""));
+        listSpendingMonth.add(new Common("Cicilan Kartu Kredit", "0", ""));
+        listSpendingMonth.add(new Common("Asuransi", "0", ""));
+        listSpendingMonth.add(new Common("Pembantu", "0", ""));
+        listSpendingMonth.add(new Common("Mobil (Bensin dan Maintenance)", "0", ""));
+        listSpendingMonth.add(new Common("Pakaian", "0", ""));
 
-        listSpending.add(new Common( "Makan Luar Rumah", "0", ""));
-        listSpending.add(new Common( "Beli Luxury", "0", ""));
-        listSpending.add(new Common( "Piknik", "0", ""));
+        listSpending.add(new Common("Makan Luar Rumah", "0", ""));
+        listSpending.add(new Common("Beli Luxury", "0", ""));
+        listSpending.add(new Common("Piknik", "0", ""));
 
-        listPassiveIncome.add(new Common( "Rumah Sewa / Kos", "0", ""));
-        listPassiveIncome.add(new Common( "Usaha", "0", ""));
-        listPassiveIncome.add(new Common( "Deposito / Reksadana", "0", ""));
-        listPassiveIncome.add(new Common( "Royalti Buku", "0", ""));
-        listPassiveIncome.add(new Common( "Royalti Kaset", "0", ""));
-        listPassiveIncome.add(new Common( "Royalti Sistem", "0", ""));
+        listPassiveIncome.add(new Common("Rumah Sewa / Kos", "0", ""));
+        listPassiveIncome.add(new Common("Usaha", "0", ""));
+        listPassiveIncome.add(new Common("Deposito / Reksadana", "0", ""));
+        listPassiveIncome.add(new Common("Royalti Buku", "0", ""));
+        listPassiveIncome.add(new Common("Royalti Kaset", "0", ""));
+        listPassiveIncome.add(new Common("Royalti Sistem", "0", ""));
 
-        listActiveIncome.add(new Common( "Profesi", "0", ""));
-        listActiveIncome.add(new Common( "Trading", "0", ""));
+        listActiveIncome.add(new Common("Profesi", "0", ""));
+        listActiveIncome.add(new Common("Trading", "0", ""));
     }
 
     @OnClick(R.id.btn_to_register)
-    public void toRegister(){
+    public void toRegister() {
         startActivity(new Intent(this, RegisterActivity.class));
         finish();
         overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
     }
 
     @OnClick(R.id.btn_to_forgot_password)
-    public void toForgotPassword(){
+    public void toForgotPassword() {
         startActivity(new Intent(getApplicationContext(), ForgotPasswordActivity.class));
         finish();
         overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
