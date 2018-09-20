@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient"
     android:orientation="vertical"
     tools:context=".activity.SettingActivity">
 
@@ -22,101 +21,88 @@
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp">
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <android.support.v7.widget.CardView
+            <TextView
+                android:id="@+id/tv_setting_bahasa"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp">
+                android:layout_marginLeft="7dp"
+                android:text="@string/bahasa"
+                android:textSize="25sp" />
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/gradient"
-                    android:orientation="vertical">
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp">
 
-                    <TextView
-                        android:id="@+id/tv_setting_bahasa"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:text="@string/bahasa"
-                        android:textColor="@color/white"
-                        android:textSize="30sp" />
-                </LinearLayout>
-            </android.support.v7.widget.CardView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <android.support.v7.widget.CardView
+            <TextView
+                android:id="@+id/tv_setting_tentang"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp">
+                android:layout_marginLeft="7dp"
+                android:text="@string/tentang_kami"
+                android:textSize="25sp" />
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/gradient"
-                    android:orientation="vertical">
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp">
 
-                    <TextView
-                        android:id="@+id/tv_setting_tentang"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:text="@string/tentang_kami"
-                        android:textColor="@color/white"
-                        android:textSize="30sp" />
-                </LinearLayout>
-            </android.support.v7.widget.CardView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <android.support.v7.widget.CardView
+            <TextView
+                android:id="@+id/tv_setting_bantuan"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp">
+                android:layout_marginLeft="7dp"
+                android:text="@string/butuh_bantuan"
+                android:textSize="25sp" />
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/gradient"
-                    android:orientation="vertical">
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/tv_setting_bantuan"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:text="@string/butuh_bantuan"
-                        android:textColor="@color/white"
-                        android:textSize="30sp" />
-                </LinearLayout>
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
+            <TextView
+                android:id="@+id/tv_like"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/gradient"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/tv_like"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:text="@string/suka_Aplikasi_ini"
-                        android:textColor="@color/white"
-                        android:textSize="30sp" />
-                </LinearLayout>
-            </android.support.v7.widget.CardView>
+                android:layout_marginLeft="7dp"
+                android:text="@string/suka_Aplikasi_ini"
+                android:textSize="25sp" />
         </LinearLayout>
     </android.support.v7.widget.CardView>
 </LinearLayout>

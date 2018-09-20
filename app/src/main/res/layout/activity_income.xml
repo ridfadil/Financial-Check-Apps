@@ -89,7 +89,7 @@
         android:layout_height="wrap_content"
         android:textColor="@color/white"
         android:text="@string/button_check"
-        android:background="@drawable/custom_button"/>
+        android:background="@color/colorPrimary"/>
 
     <Button
         android:id="@+id/btn_result"
@@ -100,6 +100,6 @@
         android:layout_height="wrap_content"
         android:textColor="@color/white"
         android:text="@string/button_result"
-        android:background="@drawable/custom_button"/>
+        android:background="@color/colorPrimary"/>
 
 </LinearLayout>

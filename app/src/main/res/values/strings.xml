@@ -104,6 +104,8 @@
     <string name="button_selanjutnya">selanjutnya</string>
     <string name="button_check">check</string>
     <string name="button_result">result</string>
-
     <string name="facebook_app_id">1741753252610047</string>
+    <string name="btn_kembali">Kembali</string>
+
+
 </resources>

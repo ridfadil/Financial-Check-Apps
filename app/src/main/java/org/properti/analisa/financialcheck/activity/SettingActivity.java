@@ -1,5 +1,6 @@
 package org.properti.analisa.financialcheck.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -36,10 +37,16 @@ public class SettingActivity extends AppCompatActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_setting_bahasa:
+                Intent c = new Intent (SettingActivity.this,LanguageActivity.class);
+                startActivity(c);
                 break;
             case R.id.tv_setting_tentang:
+                Intent a = new Intent (SettingActivity.this,AboutActivity.class);
+                startActivity(a);
                 break;
             case R.id.tv_setting_bantuan:
+                Intent b = new Intent (SettingActivity.this,HelpActivity.class);
+                startActivity(b);
                 break;
             case R.id.tv_like:
                 break;
