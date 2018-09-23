@@ -99,7 +99,8 @@ public class IncomeAdapter extends RecyclerView.Adapter<IncomeAdapter.ListMenuVi
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
             alertDialogBuilder.setView(promptView);
 
-            final EditText editText = (EditText) promptView.findViewById(R.id.edittext);
+            final EditText etKeterangan = (EditText) promptView.findViewById(R.id.et_keterangan);
+            final EditText etNominal = (EditText) promptView.findViewById(R.id.et_nominal);
 
             alertDialogBuilder.setCancelable(false)
                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -107,11 +108,12 @@ public class IncomeAdapter extends RecyclerView.Adapter<IncomeAdapter.ListMenuVi
                             pos = getAdapterPosition();
 
                             dbActiveIncome = FirebaseDatabase.getInstance().getReference("active_income").child(idUser).child(listMenu.get(pos).getId());
-                            Common activeIncome = new Common(listMenu.get(pos).getJudul(), editText.getText().toString(), "");
+                            Common activeIncome = new Common(etKeterangan.getText().toString(), etNominal.getText().toString(), listMenu.get(pos).getImage());
                             activeIncome.setId(listMenu.get(pos).getId());
                             dbActiveIncome.setValue(activeIncome);
 
-                            harga.setText( editText.getText());
+                            judul.setText(etKeterangan.getText());
+                            harga.setText(etNominal.getText());
                         }
                     })
                     .setNegativeButton("Batal",

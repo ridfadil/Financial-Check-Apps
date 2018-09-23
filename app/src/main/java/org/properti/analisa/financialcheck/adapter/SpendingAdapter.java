@@ -99,7 +99,8 @@ public class SpendingAdapter extends RecyclerView.Adapter<SpendingAdapter.ListMe
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
             alertDialogBuilder.setView(promptView);
 
-            final EditText editText = (EditText) promptView.findViewById(R.id.edittext);
+            final EditText etKeterangan = (EditText) promptView.findViewById(R.id.et_keterangan);
+            final EditText etNominal = (EditText) promptView.findViewById(R.id.et_nominal);
 
             alertDialogBuilder.setCancelable(false)
                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -107,11 +108,12 @@ public class SpendingAdapter extends RecyclerView.Adapter<SpendingAdapter.ListMe
                             pos = getAdapterPosition();
 
                             dbSpending = FirebaseDatabase.getInstance().getReference("spending").child(idUser).child(listMenu.get(pos).getId());
-                            Common spending = new Common(listMenu.get(pos).getJudul(), editText.getText().toString(), "");
+                            Common spending = new Common(etKeterangan.getText().toString(), etNominal.getText().toString(), listMenu.get(pos).getImage());
                             spending.setId(listMenu.get(pos).getId());
                             dbSpending.setValue(spending);
 
-                            harga.setText( editText.getText());
+                            judul.setText(etKeterangan.getText());
+                            harga.setText(etNominal.getText());
                         }
                     })
                     .setNegativeButton("Batal",

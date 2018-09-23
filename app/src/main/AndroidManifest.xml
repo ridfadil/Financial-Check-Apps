@@ -7,9 +7,9 @@
     <application
         android:name=".firebase.FirebaseApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <meta-data
@@ -42,10 +42,12 @@
             android:name=".activity.common.SpendingMonthActivity"
             android:theme="@style/AppThemeNoActionBar" />
         <activity
-            android:name=".activity.UserProfilActivity"
+            android:name=".activity.profile.UserProfilActivity"
             android:theme="@style/AppThemeNoActionBar" />
-        <activity android:name=".activity.CheckActivity" />
-        <activity android:name=".activity.ResultActivity" />
+        <activity android:name=".activity.common.CheckActivity"
+            android:theme="@style/AppThemeNoActionBar"/>
+        <activity android:name=".activity.common.ResultActivity"
+            android:theme="@style/AppThemeNoActionBar"/>
         <!--<activity android:name=".activity.auth.LoginActivity"-->
         <!--android:theme="@style/AppThemeNoActionBar"/>-->
         <activity
@@ -73,20 +75,20 @@
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
         <activity
-            android:name=".activity.EditProfileActivity"
+            android:name=".activity.profile.EditProfileActivity"
             android:theme="@style/AppThemeNoActionBar" />
         <activity
-            android:name=".activity.SettingActivity"
+            android:name=".activity.setting.SettingActivity"
             android:theme="@style/AppThemeNoActionBar" />
         <activity
-            android:name=".activity.HelpActivity"
+            android:name=".activity.setting.HelpActivity"
             android:theme="@style/AppThemeNoActionBar" />
         <activity
-            android:name=".activity.LanguageActivity"
+            android:name=".activity.setting.LanguageActivity"
             android:theme="@style/AppThemeNoActionBar" />
         <activity
-            android:name=".activity.AboutActivity"
-            android:theme="@style/AppThemeNoActionBar" ></activity>
+            android:name=".activity.setting.AboutActivity"
+            android:theme="@style/AppThemeNoActionBar" />
     </application>
 
 </manifest>

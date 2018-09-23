@@ -1,21 +1,22 @@
 package org.properti.analisa.financialcheck.activity;
 
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.annotation.NonNull;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ShareActionProvider;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.facebook.login.LoginManager;
-import com.google.android.gms.auth.api.Auth;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -29,6 +30,9 @@ import org.properti.analisa.financialcheck.activity.common.IncomeActivity;
 import org.properti.analisa.financialcheck.activity.common.PassiveIncomeActivity;
 import org.properti.analisa.financialcheck.activity.common.SpendingActivity;
 import org.properti.analisa.financialcheck.activity.common.SpendingMonthActivity;
+import org.properti.analisa.financialcheck.activity.profile.UserProfilActivity;
+import org.properti.analisa.financialcheck.activity.setting.AboutActivity;
+import org.properti.analisa.financialcheck.activity.setting.SettingActivity;
 import org.properti.analisa.financialcheck.firebase.FirebaseApplication;
 import org.properti.analisa.financialcheck.model.Common;
 
@@ -40,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
     public static final String UID_USER = "UID_USER";
 
     CardView cdIncome, cdSpending, cdMonthSpending, cdPassiveIncome,cdSetting,cdProfil;
-    Button btnLogout;
     TextView txtFinancialCondition, txtFinancialTotal;
 
     List<Common> listSpendingMonth = new ArrayList<>();
@@ -53,6 +56,12 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
 
     String id;
+
+    //TODO: tambahin format currency di tiap textview dan edittext
+    //TODO: setting bahasa
+    //TODO: tambahin iklan
+    //TODO: masukkin konten ke about
+    //TODO: bug fixing di login dengan facebook
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
                                         }
 
                                         txtFinancialCondition.setText(kondisi);
-                                        txtFinancialTotal.setText(" "+(finalTotalPassiveIncome + totalActiveIncome - finalTotalSpendingMonth - finalTotalSpending));
+                                        txtFinancialTotal.setText(String.valueOf(finalTotalPassiveIncome + totalActiveIncome - finalTotalSpendingMonth - finalTotalSpending));
 
                                     }
 
@@ -170,10 +179,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-    }
-
-    public void checkCondition(long a, long b, long c, long d){
-
     }
 
     public void actionClicked(){
@@ -228,9 +233,61 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
-        btnLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+    }
+
+    public void init() {
+        cdIncome =  findViewById(R.id.income_aktif);
+        cdMonthSpending = findViewById(R.id.cv_month_spending);
+        cdSpending = findViewById(R.id.cv_spending);
+        cdPassiveIncome = findViewById(R.id.cv_passive_income);
+        txtFinancialCondition = findViewById(R.id.txt_financial_condition);
+        txtFinancialTotal = findViewById(R.id.txt_financial_total);
+        cdSetting = findViewById(R.id.cv_setting);
+        cdProfil = findViewById(R.id.cv_user_profile);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.option_menu_home, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId())
+        {
+            case R.id.nav_bahasa:
+                Toast.makeText(this, "Change Bahasa", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.nav_tentang:
+                startActivity(new Intent(this, AboutActivity.class));
+                break;
+            case R.id.nav_share:
+                Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                sharingIntent.setType("text/plain");
+                String shareBodyText = "Hitung anggaran belanjamu agar lebih teratur hanya di aplikasi ini. Dapatkan sekarang : http://play.google.com/store/apps/details?id=" + getApplicationContext().getPackageName();
+
+                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,"Financial Check");
+                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBodyText);
+                startActivity(Intent.createChooser(sharingIntent, "Financial Check"));
+                break;
+            case R.id.nav_suka:
+                Uri uri = Uri.parse("market://details?id=" + getApplicationContext().getPackageName());
+                Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
+                goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY |
+                        Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
+                        Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+                try {
+                    startActivity(goToMarket);
+                }
+                catch (ActivityNotFoundException e) {
+                    startActivity(new Intent(Intent.ACTION_VIEW,
+                            Uri.parse("http://play.google.com/store/apps/details?id=" + getApplicationContext().getPackageName())));
+                }
+                break;
+            case R.id.nav_logout:
                 new AlertDialog.Builder(MainActivity.this)
                         .setTitle(getString(R.string.yakin_ingin_keluar))
                         .setPositiveButton(getString(R.string.ya), new DialogInterface.OnClickListener() {
@@ -251,28 +308,8 @@ public class MainActivity extends AppCompatActivity {
                         })
                         .setCancelable(false)
                         .show();
-            }
-        });
-    }
-
-    public void init() {
-        cdIncome =  findViewById(R.id.income_aktif);
-        cdMonthSpending = findViewById(R.id.cv_month_spending);
-        cdSpending = findViewById(R.id.cv_spending);
-        cdPassiveIncome = findViewById(R.id.cv_passive_income);
-        btnLogout = findViewById(R.id.btn_logout);
-        txtFinancialCondition = findViewById(R.id.txt_financial_condition);
-        txtFinancialTotal = findViewById(R.id.txt_financial_total);
-        cdSetting = findViewById(R.id.cv_setting);
-        cdProfil = findViewById(R.id.cv_user_profile);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.option_menu_home, menu);
-
-        // return true so that the menu pop up is opened
+                break;
+        }
         return true;
     }
 }

@@ -1,11 +1,11 @@
-package org.properti.analisa.financialcheck.activity;
+package org.properti.analisa.financialcheck.activity.profile;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.EditText;
 
 import org.properti.analisa.financialcheck.R;
 
@@ -13,22 +13,32 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class CheckActivity extends AppCompatActivity {
+public class EditProfileActivity extends AppCompatActivity {
 
-    @BindView(R.id.rv_check)
-    RecyclerView rvCheck;
-    @BindView(R.id.btn_check)
-    Button btnCheck;
+    @BindView(R.id.et_nama)
+    EditText etNama;
+    @BindView(R.id.et_email)
+    EditText etEmail;
+    @BindView(R.id.et_no_hp)
+    EditText etNoHp;
+    @BindView(R.id.et_password_lama)
+    EditText etPasswordLama;
+    @BindView(R.id.et_password_baru)
+    EditText etPasswordBaru;
+    @BindView(R.id.et_password_baru_2)
+    EditText etPasswordBaru2;
+    @BindView(R.id.btn_simpan)
+    Button btnSimpan;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_check);
+        setContentView(R.layout.activity_edit_profile);
         ButterKnife.bind(this);
         toolbar();
     }
 
-    @OnClick(R.id.btn_check)
+    @OnClick(R.id.btn_simpan)
     public void onViewClicked() {
     }
 
@@ -36,7 +46,7 @@ public class CheckActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar); //Inisialisasi dan Implementasi id Toolbar
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Check");
+        getSupportActionBar().setTitle("Edit Profile");
     }
 
     @Override

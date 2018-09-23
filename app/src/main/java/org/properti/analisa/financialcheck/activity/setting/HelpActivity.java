@@ -1,52 +1,42 @@
-package org.properti.analisa.financialcheck.activity;
+package org.properti.analisa.financialcheck.activity.setting;
 
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import org.properti.analisa.financialcheck.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
-public class EditProfileActivity extends AppCompatActivity {
+public class HelpActivity extends AppCompatActivity {
 
-    @BindView(R.id.et_nama)
-    EditText etNama;
-    @BindView(R.id.et_email)
-    EditText etEmail;
-    @BindView(R.id.et_no_hp)
-    EditText etNoHp;
-    @BindView(R.id.et_password_lama)
-    EditText etPasswordLama;
-    @BindView(R.id.et_password_baru)
-    EditText etPasswordBaru;
-    @BindView(R.id.et_password_baru_2)
-    EditText etPasswordBaru2;
-    @BindView(R.id.btn_simpan)
-    Button btnSimpan;
+    @BindView(R.id.tv_pertanyaan)
+    TextView tvPertanyaan;
+    @BindView(R.id.tv_answer)
+    TextView tvJawaban;
+    @BindView(R.id.btn_back)
+    Button btnKembali;
+    @BindView(R.id.btn_next)
+    Button btnSelanjutnya;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_profile);
-        ButterKnife.bind(this);
+        setContentView(R.layout.activity_help);
         toolbar();
-    }
-
-    @OnClick(R.id.btn_simpan)
-    public void onViewClicked() {
+        ButterKnife.bind(this);
     }
 
     public void toolbar(){
         Toolbar toolbar = findViewById(R.id.toolbar); //Inisialisasi dan Implementasi id Toolbar
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Edit Profile");
+        getSupportActionBar().setTitle("Bantuan");
     }
 
     @Override

@@ -1,14 +1,13 @@
 package org.properti.analisa.financialcheck.activity.common;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -20,13 +19,12 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.LinkedList;
 
 import org.properti.analisa.financialcheck.R;
-import org.properti.analisa.financialcheck.activity.MainActivity;
 import org.properti.analisa.financialcheck.adapter.MonthlySpendingAdapter;
 import org.properti.analisa.financialcheck.model.Common;
-import org.properti.analisa.financialcheck.model.ModelMenu;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 import static org.properti.analisa.financialcheck.activity.MainActivity.UID_USER;
 
@@ -87,6 +85,25 @@ public class SpendingMonthActivity extends AppCompatActivity {
         });
     }
 
+    @OnClick({R.id.btn_next, R.id.btn_back})
+    public void onViewClicked(View v){
+        switch (v.getId()){
+            case R.id.btn_back : {
+                finish();
+                overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                break;
+            }
+            case R.id.btn_next : {
+                Intent i = new Intent(SpendingMonthActivity.this, SpendingActivity.class);
+                i.putExtra(UID_USER, idUser);
+                startActivity(i);
+                overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                finish();
+                break;
+            }
+        }
+    }
+
     public void toolbar(){
         Toolbar toolbar = findViewById(R.id.toolbar); //Inisialisasi dan Implementasi id Toolbar
         setSupportActionBar(toolbar);
@@ -97,6 +114,7 @@ public class SpendingMonthActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             finish();
+            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
         }
         return super.onOptionsItemSelected(item);
     }

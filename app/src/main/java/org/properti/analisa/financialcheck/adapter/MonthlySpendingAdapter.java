@@ -2,11 +2,8 @@ package org.properti.analisa.financialcheck.adapter;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +19,6 @@ import java.util.LinkedList;
 
 import org.properti.analisa.financialcheck.R;
 import org.properti.analisa.financialcheck.model.Common;
-import org.properti.analisa.financialcheck.model.ModelMenu;
 
 public class MonthlySpendingAdapter extends RecyclerView.Adapter<MonthlySpendingAdapter.ListMenuViewHolder> {
 
@@ -104,19 +100,24 @@ public class MonthlySpendingAdapter extends RecyclerView.Adapter<MonthlySpending
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
             alertDialogBuilder.setView(promptView);
 
-            final EditText editText = (EditText) promptView.findViewById(R.id.edittext);
+            final EditText etKeterangan = (EditText) promptView.findViewById(R.id.et_keterangan);
+            final EditText etNominal = (EditText) promptView.findViewById(R.id.et_nominal);
+
+            pos = getAdapterPosition();
+            Common mCurrent = listMenu.get(pos);
+            etKeterangan.setText(mCurrent.getJudul());
+            etNominal.setText(mCurrent.getHarga());
 
             alertDialogBuilder.setCancelable(true)
                     .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            pos = getAdapterPosition();
-
                             dbSpendingMonth = FirebaseDatabase.getInstance().getReference("spending_month").child(idUser).child(listMenu.get(pos).getId());
-                            Common spendingMonth = new Common(listMenu.get(pos).getJudul(), editText.getText().toString(), "");
+                            Common spendingMonth = new Common(etKeterangan.getText().toString(), etNominal.getText().toString(), listMenu.get(pos).getImage());
                             spendingMonth.setId(listMenu.get(pos).getId());
                             dbSpendingMonth.setValue(spendingMonth);
 
-                            harga.setText(editText.getText());
+                            judul.setText(etKeterangan.getText());
+                            harga.setText(etNominal.getText());
                         }
                     })
                     .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

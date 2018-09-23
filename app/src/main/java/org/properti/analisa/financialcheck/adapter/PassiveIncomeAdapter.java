@@ -98,7 +98,8 @@ public class PassiveIncomeAdapter extends RecyclerView.Adapter<PassiveIncomeAdap
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
             alertDialogBuilder.setView(promptView);
 
-            final EditText editText = (EditText) promptView.findViewById(R.id.edittext);
+            final EditText etKeterangan = (EditText) promptView.findViewById(R.id.et_keterangan);
+            final EditText etNominal = (EditText) promptView.findViewById(R.id.et_nominal);
 
             alertDialogBuilder.setCancelable(false)
                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -106,11 +107,12 @@ public class PassiveIncomeAdapter extends RecyclerView.Adapter<PassiveIncomeAdap
                             pos = getAdapterPosition();
 
                             dbPassiveIncome = FirebaseDatabase.getInstance().getReference("passive_income").child(idUser).child(listMenu.get(pos).getId());
-                            Common passiveIncome = new Common(listMenu.get(pos).getJudul(), editText.getText().toString(), "");
+                            Common passiveIncome = new Common(etKeterangan.getText().toString(), etNominal.getText().toString(), listMenu.get(pos).getImage());
                             passiveIncome.setId(listMenu.get(pos).getId());
                             dbPassiveIncome.setValue(passiveIncome);
 
-                            harga.setText( editText.getText());
+                            judul.setText(etKeterangan.getText());
+                            harga.setText(etNominal.getText());
                         }
                     })
                     .setNegativeButton("Batal",

@@ -19,12 +19,6 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.LinkedList;
 
 import org.properti.analisa.financialcheck.R;
-import org.properti.analisa.financialcheck.activity.AboutActivity;
-import org.properti.analisa.financialcheck.activity.CheckActivity;
-import org.properti.analisa.financialcheck.activity.HelpActivity;
-import org.properti.analisa.financialcheck.activity.LanguageActivity;
-import org.properti.analisa.financialcheck.activity.ResultActivity;
-import org.properti.analisa.financialcheck.activity.SettingActivity;
 import org.properti.analisa.financialcheck.adapter.IncomeAdapter;
 import org.properti.analisa.financialcheck.model.Common;
 
@@ -69,20 +63,35 @@ public class IncomeActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
-    @OnClick({R.id.btn_check, R.id.btn_result})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.btn_check:
-                Intent c = new Intent (IncomeActivity.this,CheckActivity.class);
-                startActivity(c);
+    @OnClick({R.id.btn_check, R.id.btn_result, R.id.btn_back})
+    public void onViewClicked(View v){
+        switch (v.getId()){
+            case R.id.btn_back : {
+                Intent i = new Intent(IncomeActivity.this, PassiveIncomeActivity.class);
+                i.putExtra(UID_USER, idUser);
+                startActivity(i);
+                overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                finish();
                 break;
-            case R.id.btn_result:
-                Intent a = new Intent (IncomeActivity.this,ResultActivity.class);
-                startActivity(a);
+            }
+            case R.id.btn_check : {
+                Intent i = new Intent(IncomeActivity.this, CheckActivity.class);
+                i.putExtra(UID_USER, idUser);
+                startActivity(i);
+                overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                finish();
                 break;
+            }
+            case R.id.btn_result : {
+                Intent i = new Intent(IncomeActivity.this, ResultActivity.class);
+                i.putExtra(UID_USER, idUser);
+                startActivity(i);
+                overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                finish();
+                break;
+            }
         }
     }
-
 
     @Override
     protected void onStart() {
@@ -124,3 +133,4 @@ public class IncomeActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 }
+

@@ -21,7 +21,7 @@
     <string name="register_berhasil">Berhasil Daftar</string>
 
     //Home String
-    <string name="balanced">Balanced</string>
+    <string name="balanced">Your balance :</string>
     <string name="tanggal_home">06 Agustus 2018</string>
     <string name="Rp.">Rp. </string>
     <string name="nominal_home">4.000.000,.-</string>
@@ -38,8 +38,8 @@
     //Option Menu Home
     <string name="bahasa">Bahasa</string>
     <string name="tentang_kami">Tentang Kami</string>
-    <string name="butuh_bantuan">Butuh Bantuan?</string>
-    <string name="suka_Aplikasi_ini">Suka Aplikasi ini?</string>
+    <string name="butuh_bantuan">Butuh Bantuan ?</string>
+    <string name="suka_Aplikasi_ini">Like this App ?</string>
 
     //Income Passive
     <string name="passive_rumahsewa">Rumah Sewa / Kos</string>
@@ -107,4 +107,5 @@
     <string name="facebook_app_id">1383676748429921</string>
     <string name="fb_login_protocol_scheme">fb1383676748429921</string>
     <string name="btn_kembali">Kembali</string>
+    <string name="share_this_apps">Share this Apps</string>
 </resources>
