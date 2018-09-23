@@ -52,7 +52,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         else{
             new AlertDialog.Builder(ForgotPasswordActivity.this)
                     .setTitle(getString(R.string.yakin_ingin_reset_password))
-                    .setPositiveButton("Ya", new DialogInterface.OnClickListener() {
+                    .setPositiveButton(getString(R.string.ya), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             email = etEmail.getText().toString();
@@ -60,7 +60,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                             loading.dismiss();
                         }
                     })
-                    .setNegativeButton("Batal", new DialogInterface.OnClickListener() {
+                    .setNegativeButton(getString(R.string.batal), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
 

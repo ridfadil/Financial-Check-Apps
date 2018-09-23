@@ -12,8 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:text="Edit Profile :"
-        android:textStyle="bold"
+        android:text="@string/edit_profile"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <android.support.design.widget.TextInputLayout
@@ -27,7 +26,7 @@
             android:layout_margin="8dp"
             android:inputType="text"
             android:textColorHint="@color/white"
-            android:hint="Masukkan Nama" />
+            android:hint="@string/reg_nama" />
 
     </android.support.design.widget.TextInputLayout>
 
@@ -42,7 +41,7 @@
             android:layout_margin="8dp"
             android:inputType="textEmailAddress"
             android:textColorHint="@color/white"
-            android:hint="Masukkan Email" />
+            android:hint="@string/reg_email" />
 
     </android.support.design.widget.TextInputLayout>
 
@@ -57,7 +56,7 @@
             android:layout_margin="8dp"
             android:inputType="phone"
             android:textColorHint="@color/white"
-            android:hint="Masukkan Nomor HP" />
+            android:hint="@string/reg_no_hp" />
 
     </android.support.design.widget.TextInputLayout>
 
@@ -66,8 +65,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:text="Change Password :"
-        android:textStyle="bold"
+        android:text="@string/change_password"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <android.support.design.widget.TextInputLayout
@@ -81,7 +79,7 @@
             android:layout_margin="8dp"
             android:inputType="textPassword"
             android:textColorHint="@color/white"
-            android:hint="Masukkan Password Baru" />
+            android:hint="@string/password_baru" />
 
     </android.support.design.widget.TextInputLayout>
 

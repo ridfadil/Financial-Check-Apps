@@ -19,6 +19,7 @@ import java.util.LinkedList;
 
 import org.properti.analisa.financialcheck.R;
 import org.properti.analisa.financialcheck.model.Common;
+import org.properti.analisa.financialcheck.utils.CurrencyEditText;
 
 public class SpendingAdapter extends RecyclerView.Adapter<SpendingAdapter.ListMenuViewHolder> {
 
@@ -54,10 +55,10 @@ public class SpendingAdapter extends RecyclerView.Adapter<SpendingAdapter.ListMe
     public void onBindViewHolder(ListMenuViewHolder holder, int position) {
         final Common mCurrent = listMenu.get(position);
         holder.judul.setText(mCurrent.getJudul());
-        holder.harga.setText(mCurrent.getHarga());
+        holder.harga.setText(CurrencyEditText.currencyFormatterLong(Long.parseLong(mCurrent.getHarga())));
         Glide.with(context).
                 load(mCurrent.getImage()).
-                placeholder(R.drawable.spending).
+                placeholder(R.drawable.pengeluaranlainnya).
                 into(holder.imgMenu);
         holder.imgPen.setImageResource(R.drawable.redpen);
     }
@@ -102,11 +103,16 @@ public class SpendingAdapter extends RecyclerView.Adapter<SpendingAdapter.ListMe
             final EditText etKeterangan = (EditText) promptView.findViewById(R.id.et_keterangan);
             final EditText etNominal = (EditText) promptView.findViewById(R.id.et_nominal);
 
-            alertDialogBuilder.setCancelable(false)
-                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            pos = getAdapterPosition();
+            new CurrencyEditText(etNominal);
 
+            pos = getAdapterPosition();
+            Common mCurrent = listMenu.get(pos);
+            etKeterangan.setText(mCurrent.getJudul());
+            etNominal.setText(mCurrent.getHarga());
+
+            alertDialogBuilder.setCancelable(false)
+                    .setPositiveButton(context.getString(R.string.simpan), new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
                             dbSpending = FirebaseDatabase.getInstance().getReference("spending").child(idUser).child(listMenu.get(pos).getId());
                             Common spending = new Common(etKeterangan.getText().toString(), etNominal.getText().toString(), listMenu.get(pos).getImage());
                             spending.setId(listMenu.get(pos).getId());
@@ -116,7 +122,7 @@ public class SpendingAdapter extends RecyclerView.Adapter<SpendingAdapter.ListMe
                             harga.setText(etNominal.getText());
                         }
                     })
-                    .setNegativeButton("Batal",
+                    .setNegativeButton(context.getString(R.string.batal),
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     dialog.cancel();

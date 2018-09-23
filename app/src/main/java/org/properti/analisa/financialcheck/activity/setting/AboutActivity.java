@@ -3,24 +3,35 @@ package org.properti.analisa.financialcheck.activity.setting;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import org.properti.analisa.financialcheck.R;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class AboutActivity extends AppCompatActivity {
+
+    @BindView(R.id.txt_tentang)
+    TextView txtTentang;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
+        ButterKnife.bind(this);
         toolbar();
+
+        txtTentang.setText(Html.fromHtml(getString(R.string.tentang)));
     }
 
     public void toolbar(){
         Toolbar toolbar = findViewById(R.id.toolbar); //Inisialisasi dan Implementasi id Toolbar
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Tentang Kami");
+        getSupportActionBar().setTitle(getString(R.string.tentang_kami));
     }
 
     @Override

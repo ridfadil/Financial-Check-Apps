@@ -4,10 +4,36 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.util.Locale;
 
 public class CurrencyEditText {
+
+    public static String currencyFormatterLong(long number){
+        DecimalFormat kursIndo = (DecimalFormat) DecimalFormat.getCurrencyInstance();
+        DecimalFormatSymbols formatRp = new DecimalFormatSymbols();
+
+        formatRp.setCurrencySymbol("Rp. ");
+        formatRp.setMonetaryDecimalSeparator(',');
+        formatRp.setGroupingSeparator('.');
+
+        kursIndo.setDecimalFormatSymbols(formatRp);
+        return kursIndo.format(number);
+    }
+
+    public static String currencyFormatter(int number){
+        DecimalFormat kursIndo = (DecimalFormat) DecimalFormat.getCurrencyInstance();
+        DecimalFormatSymbols formatRp = new DecimalFormatSymbols();
+
+        formatRp.setCurrencySymbol("Rp. ");
+        formatRp.setMonetaryDecimalSeparator(',');
+        formatRp.setGroupingSeparator('.');
+
+        kursIndo.setDecimalFormatSymbols(formatRp);
+        return kursIndo.format(number);
+    }
 
     public CurrencyEditText(final EditText edt){
         setCurrency(edt);

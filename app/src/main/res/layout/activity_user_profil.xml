@@ -133,7 +133,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:background="@color/colorPrimary"
-            android:text="Edit Profil"
+            android:text="@string/edit_profil"
             android:textColor="@color/white"
             android:textStyle="bold" />
 

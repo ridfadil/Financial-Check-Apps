@@ -10,6 +10,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -21,6 +23,7 @@ import java.util.LinkedList;
 import org.properti.analisa.financialcheck.R;
 import org.properti.analisa.financialcheck.adapter.PassiveIncomeAdapter;
 import org.properti.analisa.financialcheck.model.Common;
+import org.properti.analisa.financialcheck.utils.CurrencyEditText;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,6 +41,9 @@ public class PassiveIncomeActivity extends AppCompatActivity {
     @BindView(R.id.txt_total_biaya)
     TextView txtTotalBiaya;
 
+    @BindView(R.id.ad_bottom)
+    AdView bottomAds;
+
     DatabaseReference dbPassiveIncome;
 
     private RecyclerView mRecyclerView;
@@ -49,6 +55,10 @@ public class PassiveIncomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_passive_income);
         ButterKnife.bind(this);
         toolbar();
+
+        AdRequest adRequest = new AdRequest.Builder()
+                .build();
+        bottomAds.loadAd(adRequest);
 
         idUser = getIntent().getStringExtra(UID_USER);
         dbPassiveIncome = FirebaseDatabase.getInstance().getReference("passive_income").child(idUser);
@@ -95,8 +105,8 @@ public class PassiveIncomeActivity extends AppCompatActivity {
                     listMenu.add(passiveIncome);
                     total = total + Long.parseLong(passiveIncome.getHarga());
                 }
-                txtJumlahTransaksi.setText(listMenu.size()+" Transaksi");
-                txtTotalBiaya.setText(""+total);
+                txtJumlahTransaksi.setText(listMenu.size()+" "+getString(R.string.transaksi));
+                txtTotalBiaya.setText(CurrencyEditText.currencyFormatterLong(total));
             }
 
             @Override
@@ -110,7 +120,7 @@ public class PassiveIncomeActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar); //Inisialisasi dan Implementasi id Toolbar
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Passive Income");
+        getSupportActionBar().setTitle(getString(R.string.passive_income));
     }
 
     @Override

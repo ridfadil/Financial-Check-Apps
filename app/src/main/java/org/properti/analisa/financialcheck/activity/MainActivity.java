@@ -5,6 +5,7 @@ import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -12,11 +13,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ShareActionProvider;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -32,18 +33,21 @@ import org.properti.analisa.financialcheck.activity.common.SpendingActivity;
 import org.properti.analisa.financialcheck.activity.common.SpendingMonthActivity;
 import org.properti.analisa.financialcheck.activity.profile.UserProfilActivity;
 import org.properti.analisa.financialcheck.activity.setting.AboutActivity;
-import org.properti.analisa.financialcheck.activity.setting.SettingActivity;
 import org.properti.analisa.financialcheck.firebase.FirebaseApplication;
 import org.properti.analisa.financialcheck.model.Common;
+import org.properti.analisa.financialcheck.utils.CurrencyEditText;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
 
     public static final String UID_USER = "UID_USER";
 
-    CardView cdIncome, cdSpending, cdMonthSpending, cdPassiveIncome,cdSetting,cdProfil;
+    CardView cdIncome, cdSpending, cdMonthSpending, cdPassiveIncome, cdProfil;
     TextView txtFinancialCondition, txtFinancialTotal;
 
     List<Common> listSpendingMonth = new ArrayList<>();
@@ -57,18 +61,22 @@ public class MainActivity extends AppCompatActivity {
 
     String id;
 
-    //TODO: tambahin format currency di tiap textview dan edittext
-    //TODO: setting bahasa
+    @BindView(R.id.ad_bottom)
+    AdView bottomAds;
+
     //TODO: tambahin iklan
-    //TODO: masukkin konten ke about
     //TODO: bug fixing di login dengan facebook
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         init();
+        ButterKnife.bind(this);
+
+        AdRequest adRequest = new AdRequest.Builder()
+                .build();
+        bottomAds.loadAd(adRequest);
 
         mAuth = ((FirebaseApplication)getApplication()).getFirebaseAuth();
         id = mAuth.getCurrentUser().getUid();
@@ -136,20 +144,20 @@ public class MainActivity extends AppCompatActivity {
                                         //pengecekan
                                         String kondisi = "";
                                         if(finalTotalSpendingMonth + finalTotalSpending > finalTotalPassiveIncome + totalActiveIncome){
-                                            kondisi = "NOT GOOD";
+                                            kondisi = getString(R.string.not_good);
                                         }
                                         else if(finalTotalSpendingMonth + finalTotalSpending == finalTotalPassiveIncome + totalActiveIncome){
-                                            kondisi = "GOOD";
+                                            kondisi = getString(R.string.good);
                                         }
                                         else if(finalTotalSpendingMonth + finalTotalSpending < finalTotalPassiveIncome + totalActiveIncome){
-                                            kondisi = "VERY GOOD";
+                                            kondisi = getString(R.string.very_good);
                                         }
                                         else if(finalTotalPassiveIncome > finalTotalSpendingMonth + finalTotalSpending){
-                                            kondisi = "FINANCIAL INDEPENDENT";
+                                            kondisi = getString(R.string.financial_independent);
                                         }
 
                                         txtFinancialCondition.setText(kondisi);
-                                        txtFinancialTotal.setText(String.valueOf(finalTotalPassiveIncome + totalActiveIncome - finalTotalSpendingMonth - finalTotalSpending));
+                                        txtFinancialTotal.setText(CurrencyEditText.currencyFormatterLong(finalTotalPassiveIncome + totalActiveIncome - finalTotalSpendingMonth - finalTotalSpending));
 
                                     }
 
@@ -225,14 +233,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
-        cdSetting.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(MainActivity.this,SettingActivity.class);
-                i.putExtra(UID_USER, id);
-                startActivity(i);
-            }
-        });
     }
 
     public void init() {
@@ -242,7 +242,6 @@ public class MainActivity extends AppCompatActivity {
         cdPassiveIncome = findViewById(R.id.cv_passive_income);
         txtFinancialCondition = findViewById(R.id.txt_financial_condition);
         txtFinancialTotal = findViewById(R.id.txt_financial_total);
-        cdSetting = findViewById(R.id.cv_setting);
         cdProfil = findViewById(R.id.cv_user_profile);
     }
 
@@ -259,7 +258,9 @@ public class MainActivity extends AppCompatActivity {
         switch(item.getItemId())
         {
             case R.id.nav_bahasa:
-                Toast.makeText(this, "Change Bahasa", Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(Settings.ACTION_LOCALE_SETTINGS);
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(i);
                 break;
             case R.id.nav_tentang:
                 startActivity(new Intent(this, AboutActivity.class));
@@ -311,5 +312,11 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 }

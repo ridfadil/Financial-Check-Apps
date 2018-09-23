@@ -13,8 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:text="Edit Data Keuangan :"
-        android:textStyle="bold"
+        android:text="@string/edit_data_keuangan"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <android.support.design.widget.TextInputLayout
@@ -28,7 +27,7 @@
             android:layout_margin="8dp"
             android:inputType="text"
             android:textColorHint="@color/white"
-            android:hint="Masukkan Keterangan" />
+            android:hint="@string/masukkan_keterangan" />
 
     </android.support.design.widget.TextInputLayout>
 
@@ -43,7 +42,7 @@
             android:layout_margin="8dp"
             android:inputType="number"
             android:textColorHint="@color/white"
-            android:hint="Masukkan Nominal (Rp.)" />
+            android:hint="@string/masukkan_nominal_rp" />
 
     </android.support.design.widget.TextInputLayout>
 

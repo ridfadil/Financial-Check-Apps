@@ -244,6 +244,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                    finish();
                 } else {
                     databaseUser = FirebaseDatabase.getInstance().getReference("users");
                     databaseUser.child(id).setValue(new User(nama, email, phone));
@@ -281,6 +282,7 @@ public class LoginActivity extends AppCompatActivity {
                     }
 
                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                    finish();
                 }
             }
 
@@ -305,7 +307,9 @@ public class LoginActivity extends AppCompatActivity {
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     if (dataSnapshot.exists()) {
                         startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                    } else {
+                        finish();
+                    }
+                    else {
                         databaseUser = FirebaseDatabase.getInstance().getReference("users");
                         databaseUser.child(id).setValue(new User(nama, email, phone));
 
@@ -342,6 +346,7 @@ public class LoginActivity extends AppCompatActivity {
                         }
 
                         startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                        finish();
                     }
                 }
 
@@ -354,32 +359,34 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void initData() {
-        listSpendingMonth.add(new Common("Makan Dalam Rumah", "0", ""));
-        listSpendingMonth.add(new Common("Listrik Gas Air", "0", ""));
-        listSpendingMonth.add(new Common("Telepon Rumah", "0", ""));
-        listSpendingMonth.add(new Common("Telepon HP", "0", ""));
-        listSpendingMonth.add(new Common("Sekolah + Les Anak", "0", ""));
-        listSpendingMonth.add(new Common("Cicilan Hutang Rumah", "0", ""));
-        listSpendingMonth.add(new Common("Cicilan Kendaraan", "0", ""));
-        listSpendingMonth.add(new Common("Cicilan Kartu Kredit", "0", ""));
-        listSpendingMonth.add(new Common("Asuransi", "0", ""));
-        listSpendingMonth.add(new Common("Pembantu", "0", ""));
-        listSpendingMonth.add(new Common("Mobil (Bensin dan Maintenance)", "0", ""));
-        listSpendingMonth.add(new Common("Pakaian", "0", ""));
+        final String baseImage = "gs://test-financial.appspot.com/icon/";
 
-        listSpending.add(new Common("Makan Luar Rumah", "0", ""));
-        listSpending.add(new Common("Beli Luxury", "0", ""));
-        listSpending.add(new Common("Piknik", "0", ""));
+        listSpendingMonth.add(new Common( "Makan Dalam Rumah", "0", baseImage+"profesi.PNG"));
+        listSpendingMonth.add(new Common( "Listrik Gas Air", "0", baseImage+"listrikgas.PNG"));
+        listSpendingMonth.add(new Common( "Telepon Rumah", "0", baseImage+"belihandphone.PNG"));
+        listSpendingMonth.add(new Common( "Telepon HP", "0", baseImage+"belihandphone.PNG"));
+        listSpendingMonth.add(new Common( "Sekolah + Les Anak", "0", baseImage+"pengeluaranbulanan.PNG"));
+        listSpendingMonth.add(new Common( "Cicilan Hutang Rumah", "0", baseImage+"rumahsewa.PNG"));
+        listSpendingMonth.add(new Common( "Cicilan Kendaraan", "0", baseImage+"servicemobil.PNG"));
+        listSpendingMonth.add(new Common( "Cicilan Kartu Kredit", "0", baseImage+"deposito.PNG"));
+        listSpendingMonth.add(new Common( "Asuransi", "0", baseImage+"pengeluaranbulanan.PNG"));
+        listSpendingMonth.add(new Common( "Pembantu", "0", baseImage+"pengeluaranlainnya.PNG"));
+        listSpendingMonth.add(new Common( "Mobil (Bensin dan Maintenance)", "0", baseImage+"servicemobil.PNG"));
+        listSpendingMonth.add(new Common( "Pakaian", "0", baseImage+"pengeluaranlainnya.PNG"));
 
-        listPassiveIncome.add(new Common("Rumah Sewa / Kos", "0", ""));
-        listPassiveIncome.add(new Common("Usaha", "0", ""));
-        listPassiveIncome.add(new Common("Deposito / Reksadana", "0", ""));
-        listPassiveIncome.add(new Common("Royalti Buku", "0", ""));
-        listPassiveIncome.add(new Common("Royalti Kaset", "0", ""));
-        listPassiveIncome.add(new Common("Royalti Sistem", "0", ""));
+        listSpending.add(new Common( "Makan Luar Rumah", "0", baseImage+"profesi.PNG"));
+        listSpending.add(new Common( "Beli Luxury", "0", baseImage+"aktifincome.PNG"));
+        listSpending.add(new Common( "Piknik", "0", baseImage+"rekreasi.PNG"));
 
-        listActiveIncome.add(new Common("Profesi", "0", ""));
-        listActiveIncome.add(new Common("Trading", "0", ""));
+        listPassiveIncome.add(new Common( "Rumah Sewa / Kos", "0", baseImage+"rumahsewa.PNG"));
+        listPassiveIncome.add(new Common( "Usaha", "0", baseImage+"usaha.PNG"));
+        listPassiveIncome.add(new Common( "Deposito / Reksadana", "0", baseImage+"deposito.PNG"));
+        listPassiveIncome.add(new Common( "Royalti Buku", "0", baseImage+"pasifincome.PNG"));
+        listPassiveIncome.add(new Common( "Royalti Kaset", "0", baseImage+"lainlain.PNG"));
+        listPassiveIncome.add(new Common( "Royalti Sistem", "0", baseImage+"pengeluaranbulanan.PNG"));
+
+        listActiveIncome.add(new Common( "Profesi", "0", baseImage+"usaha.PNG"));
+        listActiveIncome.add(new Common( "Trading", "0", baseImage+"trading.PNG"));
     }
 
     @OnClick(R.id.btn_to_register)

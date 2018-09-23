@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -21,6 +23,7 @@ import org.properti.analisa.financialcheck.R;
 import org.properti.analisa.financialcheck.firebase.FirebaseApplication;
 import org.properti.analisa.financialcheck.model.Common;
 import org.properti.analisa.financialcheck.model.User;
+import org.properti.analisa.financialcheck.utils.CurrencyEditText;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +51,11 @@ public class ResultActivity extends AppCompatActivity {
     @BindView(R.id.txt_nama_user)
     TextView txtNamaUser;
 
+//    @BindView(R.id.ad_top)
+//    AdView topAds;
+    @BindView(R.id.ad_bottom)
+    AdView bottomAds;
+
     String id;
 
     List<Common> listSpendingMonth = new ArrayList<>();
@@ -67,6 +75,11 @@ public class ResultActivity extends AppCompatActivity {
         setContentView(R.layout.activity_result);
         ButterKnife.bind(this);
         toolbar();
+
+        AdRequest adRequest = new AdRequest.Builder()
+                .build();
+//        topAds.loadAd(adRequest);
+        bottomAds.loadAd(adRequest);
 
         mAuth = ((FirebaseApplication)getApplication()).getFirebaseAuth();
         id = getIntent().getStringExtra(UID_USER);
@@ -92,7 +105,7 @@ public class ResultActivity extends AppCompatActivity {
                     totalSpendingMonth = totalSpendingMonth + Long.parseLong(spendingMonth.getHarga());
                 }
                 final long finalTotalSpendingMonth = totalSpendingMonth;
-                txtMonthlySpending.setText(String.valueOf(finalTotalSpendingMonth));
+                txtMonthlySpending.setText(CurrencyEditText.currencyFormatterLong(finalTotalSpendingMonth));
                 dbSpending.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -105,7 +118,7 @@ public class ResultActivity extends AppCompatActivity {
                         }
 
                         final long finalTotalSpending = totalSpending;
-                        txtSpending.setText(String.valueOf(finalTotalSpending));
+                        txtSpending.setText(CurrencyEditText.currencyFormatterLong(finalTotalSpending));
                         dbPassiveIncome.addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -118,7 +131,7 @@ public class ResultActivity extends AppCompatActivity {
                                 }
 
                                 final long finalTotalPassiveIncome = totalPassiveIncome;
-                                txtPassiveIncome.setText(String.valueOf(finalTotalPassiveIncome));
+                                txtPassiveIncome.setText(CurrencyEditText.currencyFormatterLong(finalTotalPassiveIncome));
                                 dbActiveIncome.addValueEventListener(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -129,9 +142,8 @@ public class ResultActivity extends AppCompatActivity {
                                             listActiveIncome.add(activeIncome);
                                             totalActiveIncome = totalActiveIncome + Long.parseLong(activeIncome.getHarga());
                                         }
-
                                         final long finalTotalActiveIncome = totalActiveIncome;
-                                        txtActiveIncome.setText(String.valueOf(finalTotalActiveIncome));
+                                        txtActiveIncome.setText(CurrencyEditText.currencyFormatterLong(finalTotalActiveIncome));
                                         dbUser.addValueEventListener(new ValueEventListener() {
                                             @Override
                                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -139,19 +151,19 @@ public class ResultActivity extends AppCompatActivity {
                                                 //pengecekan
                                                 String kondisi = "";
                                                 if(finalTotalSpendingMonth + finalTotalSpending > finalTotalPassiveIncome + finalTotalActiveIncome){
-                                                    kondisi = "NOT GOOD";
+                                                    kondisi = getString(R.string.not_good);
                                                 }
                                                 else if(finalTotalSpendingMonth + finalTotalSpending == finalTotalPassiveIncome + finalTotalActiveIncome){
-                                                    kondisi = "GOOD";
+                                                    kondisi = getString(R.string.good);
                                                 }
                                                 else if(finalTotalSpendingMonth + finalTotalSpending < finalTotalPassiveIncome + finalTotalActiveIncome){
-                                                    kondisi = "VERY GOOD";
+                                                    kondisi = getString(R.string.very_good);
                                                 }
                                                 else if(finalTotalPassiveIncome > finalTotalSpendingMonth + finalTotalSpending){
-                                                    kondisi = "FINANCIAL INDEPENDENT";
+                                                    kondisi = getString(R.string.financial_independent);
                                                 }
 
-                                                txtNamaUser.setText("Hi, "+user.getNama());
+                                                txtNamaUser.setText(getString(R.string.hi)+" "+user.getNama());
                                                 txtCondition.setText(kondisi);
                                             }
 
@@ -237,7 +249,7 @@ public class ResultActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar); //Inisialisasi dan Implementasi id Toolbar
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Result");
+        getSupportActionBar().setTitle(getString(R.string.button_result));
     }
 
     @Override

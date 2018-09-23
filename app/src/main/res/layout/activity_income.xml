@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     tools:context=".activity.common.IncomeActivity">
 
     <android.support.v7.widget.Toolbar
@@ -52,20 +53,10 @@
             android:orientation="horizontal">
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="4dp"
-                android:text="Rp."
-                android:textColor="@color/blueFirst"
-                android:textSize="17sp"
-                android:textStyle="bold" />
-
-            <TextView
                 android:id="@+id/txt_total_biaya"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="4dp"
-                android:text="4.000.000"
                 android:textColor="@color/blueFirst"
                 android:textSize="17sp"
                 android:textStyle="bold" />
@@ -95,18 +86,6 @@
             android:background="@color/colorPrimary"/>
 
         <Button
-            android:id="@+id/btn_check"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_marginLeft="4dp"
-            android:layout_marginRight="4dp"
-            android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:visibility="gone"
-            android:text="@string/button_check"
-            android:background="@color/colorPrimary"/>
-
-        <Button
             android:id="@+id/btn_result"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -117,5 +96,13 @@
             android:background="@color/colorPrimary"/>
 
     </LinearLayout>
+
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/ad_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        ads:adSize="BANNER"
+        ads:adUnitId="@string/ad_id_banner_tes" />
 
 </LinearLayout>

@@ -10,6 +10,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -21,6 +23,7 @@ import java.util.LinkedList;
 import org.properti.analisa.financialcheck.R;
 import org.properti.analisa.financialcheck.adapter.IncomeAdapter;
 import org.properti.analisa.financialcheck.model.Common;
+import org.properti.analisa.financialcheck.utils.CurrencyEditText;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -37,10 +40,9 @@ public class IncomeActivity extends AppCompatActivity {
     TextView txtJumlahTransaksi;
     @BindView(R.id.txt_total_biaya)
     TextView txtTotalBiaya;
-    @BindView(R.id.btn_check)
-    TextView btnCheck;
-    @BindView(R.id.btn_result)
-    TextView btnResult;
+
+    @BindView(R.id.ad_bottom)
+    AdView bottomAds;
 
     DatabaseReference dbActiveIncome;
 
@@ -54,6 +56,10 @@ public class IncomeActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         toolbar();
 
+        AdRequest adRequest = new AdRequest.Builder()
+                .build();
+        bottomAds.loadAd(adRequest);
+
         idUser = getIntent().getStringExtra(UID_USER);
         dbActiveIncome = FirebaseDatabase.getInstance().getReference("active_income").child(idUser);
 
@@ -63,19 +69,11 @@ public class IncomeActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
-    @OnClick({R.id.btn_check, R.id.btn_result, R.id.btn_back})
+    @OnClick({R.id.btn_result, R.id.btn_back})
     public void onViewClicked(View v){
         switch (v.getId()){
             case R.id.btn_back : {
                 Intent i = new Intent(IncomeActivity.this, PassiveIncomeActivity.class);
-                i.putExtra(UID_USER, idUser);
-                startActivity(i);
-                overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-                finish();
-                break;
-            }
-            case R.id.btn_check : {
-                Intent i = new Intent(IncomeActivity.this, CheckActivity.class);
                 i.putExtra(UID_USER, idUser);
                 startActivity(i);
                 overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
@@ -107,8 +105,8 @@ public class IncomeActivity extends AppCompatActivity {
                     listMenu.add(activeIncome);
                     total = total + Long.parseLong(activeIncome.getHarga());
                 }
-                txtJumlahTransaksi.setText(listMenu.size()+" Transaksi");
-                txtTotalBiaya.setText(""+total);
+                txtJumlahTransaksi.setText(listMenu.size()+" "+getString(R.string.transaksi));
+                txtTotalBiaya.setText(CurrencyEditText.currencyFormatterLong(total));
             }
 
             @Override
@@ -122,7 +120,7 @@ public class IncomeActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar); //Inisialisasi dan Implementasi id Toolbar
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Income");
+        getSupportActionBar().setTitle(getString(R.string.active_income));
     }
 
     @Override

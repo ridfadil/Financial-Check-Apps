@@ -90,7 +90,7 @@ public class UserProfilActivity extends AppCompatActivity {
         });
 
         alertDialogBuilder.setCancelable(false)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                .setPositiveButton(getString(R.string.simpan), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -105,7 +105,7 @@ public class UserProfilActivity extends AppCompatActivity {
                             user.updateEmail(email);
                         }
                         else{
-                            Toast.makeText(UserProfilActivity.this, "Email tidak boleh kosong !", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(UserProfilActivity.this, R.string.email_is_empty, Toast.LENGTH_SHORT).show();
                             dialog.cancel();
                         }
                         if(!TextUtils.isEmpty(etNoHp.getText().toString())){
@@ -125,7 +125,7 @@ public class UserProfilActivity extends AppCompatActivity {
                         tvProfilNoHp.setText(noHp);
                     }
                 })
-                .setNegativeButton("Batal",
+                .setNegativeButton(getString(R.string.batal),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 dialog.cancel();
@@ -159,8 +159,6 @@ public class UserProfilActivity extends AppCompatActivity {
 
     @OnClick(R.id.btn_edit_profil)
     public void onViewClicked(View v) {
-//        Intent i = new Intent(UserProfilActivity.this,EditProfileActivity.class);
-//        startActivity(i);
         showInputDialog(v);
     }
 
@@ -168,7 +166,7 @@ public class UserProfilActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("User Profile");
+        getSupportActionBar().setTitle(getString(R.string.user_profil));
     }
 
     @Override

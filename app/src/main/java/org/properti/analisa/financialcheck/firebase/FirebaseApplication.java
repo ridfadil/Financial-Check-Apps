@@ -92,6 +92,7 @@ public class FirebaseApplication extends Application {
                         else {
                             Intent profileIntent = new Intent(context, MainActivity.class);
                             context.startActivity(profileIntent);
+                            ((Activity) context).finish();
                         }
                     }
                 });

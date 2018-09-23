@@ -10,6 +10,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -21,6 +23,7 @@ import java.util.LinkedList;
 import org.properti.analisa.financialcheck.R;
 import org.properti.analisa.financialcheck.adapter.MonthlySpendingAdapter;
 import org.properti.analisa.financialcheck.model.Common;
+import org.properti.analisa.financialcheck.utils.CurrencyEditText;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,6 +41,9 @@ public class SpendingMonthActivity extends AppCompatActivity {
     @BindView(R.id.txt_total_biaya)
     TextView txtTotalBiaya;
 
+    @BindView(R.id.ad_bottom)
+    AdView bottomAds;
+
     DatabaseReference dbSpendingMonth;
 
     private RecyclerView mRecyclerView;
@@ -50,6 +56,10 @@ public class SpendingMonthActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
         toolbar();
+
+        AdRequest adRequest = new AdRequest.Builder()
+                .build();
+        bottomAds.loadAd(adRequest);
 
         idUser = getIntent().getStringExtra(UID_USER);
         dbSpendingMonth = FirebaseDatabase.getInstance().getReference("spending_month").child(idUser);
@@ -74,8 +84,8 @@ public class SpendingMonthActivity extends AppCompatActivity {
                     listMenu.add(spendingMonth);
                     total = total + Long.parseLong(spendingMonth.getHarga());
                 }
-                txtJumlahTransaksi.setText(listMenu.size()+" Transaksi");
-                txtTotalBiaya.setText(""+total);
+                txtJumlahTransaksi.setText(listMenu.size()+" "+getString(R.string.transaksi));
+                txtTotalBiaya.setText(CurrencyEditText.currencyFormatterLong(total));
             }
 
             @Override
@@ -108,7 +118,7 @@ public class SpendingMonthActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar); //Inisialisasi dan Implementasi id Toolbar
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Monthly Spending");
+        getSupportActionBar().setTitle(getString(R.string.monthly_spending));
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

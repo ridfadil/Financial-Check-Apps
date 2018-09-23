@@ -19,7 +19,8 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".activity.auth.LoginActivity">
+        <activity android:name=".activity.SplashScreenActivity"
+            android:theme="@style/AppThemeNoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -44,12 +45,10 @@
         <activity
             android:name=".activity.profile.UserProfilActivity"
             android:theme="@style/AppThemeNoActionBar" />
-        <activity android:name=".activity.common.CheckActivity"
-            android:theme="@style/AppThemeNoActionBar"/>
         <activity android:name=".activity.common.ResultActivity"
             android:theme="@style/AppThemeNoActionBar"/>
-        <!--<activity android:name=".activity.auth.LoginActivity"-->
-        <!--android:theme="@style/AppThemeNoActionBar"/>-->
+        <activity android:name=".activity.auth.LoginActivity"
+        android:theme="@style/AppThemeNoActionBar"/>
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
@@ -74,18 +73,7 @@
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
-        <activity
-            android:name=".activity.profile.EditProfileActivity"
-            android:theme="@style/AppThemeNoActionBar" />
-        <activity
-            android:name=".activity.setting.SettingActivity"
-            android:theme="@style/AppThemeNoActionBar" />
-        <activity
-            android:name=".activity.setting.HelpActivity"
-            android:theme="@style/AppThemeNoActionBar" />
-        <activity
-            android:name=".activity.setting.LanguageActivity"
-            android:theme="@style/AppThemeNoActionBar" />
+
         <activity
             android:name=".activity.setting.AboutActivity"
             android:theme="@style/AppThemeNoActionBar" />

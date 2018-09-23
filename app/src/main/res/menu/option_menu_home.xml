@@ -2,7 +2,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:title="Main Menu"
+    <item
+        android:title="Main Menu"
         app:showAsAction="always"
         android:icon="@drawable/ic_option">
         <menu>
@@ -10,29 +11,29 @@
                 android:id="@+id/nav_bahasa"
                 android:title="@string/bahasa"
                 android:orderInCategory="100"
-                android:icon="@drawable/deposito"/>
+                android:icon="@drawable/pngworld" />
             <item
                 android:id="@+id/nav_tentang"
                 android:title="@string/tentang_kami"
                 android:orderInCategory="100"
-                android:icon="@drawable/deposito"/>
+                android:icon="@drawable/pnginformation"/>
 
             <item
                 android:id="@+id/nav_share"
                 android:title="@string/share_this_apps"
                 android:orderInCategory="100"
-                android:icon="@drawable/deposito"/>
+                android:icon="@drawable/pngshare"/>
             <item
                 android:id="@+id/nav_suka"
                 android:title="@string/suka_Aplikasi_ini"
                 android:orderInCategory="100"
-                android:icon="@drawable/deposito"/>
+                android:icon="@drawable/pnglike"/>
 
             <item
                 android:id="@+id/nav_logout"
-                android:title="Keluar"
+                android:title="@string/keluar"
                 android:orderInCategory="100"
-                android:icon="@drawable/deposito"/>
+                android:icon="@drawable/pnglogout"/>
         </menu>
     </item>
 
