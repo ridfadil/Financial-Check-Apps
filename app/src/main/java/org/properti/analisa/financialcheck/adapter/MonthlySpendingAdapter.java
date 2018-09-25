@@ -115,12 +115,12 @@ public class MonthlySpendingAdapter extends RecyclerView.Adapter<MonthlySpending
                     .setPositiveButton(context.getString(R.string.simpan), new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             dbSpendingMonth = FirebaseDatabase.getInstance().getReference("spending_month").child(idUser).child(listMenu.get(pos).getId());
-                            Common spendingMonth = new Common(etKeterangan.getText().toString(), etNominal.getText().toString(), listMenu.get(pos).getImage());
+                            Common spendingMonth = new Common(etKeterangan.getText().toString(), etNominal.getText().toString().replace(".", ""), listMenu.get(pos).getImage());
                             spendingMonth.setId(listMenu.get(pos).getId());
                             dbSpendingMonth.setValue(spendingMonth);
 
                             judul.setText(etKeterangan.getText());
-                            harga.setText(etNominal.getText());
+                            harga.setText(String.valueOf(CurrencyEditText.currencyFormatterLong(Long.parseLong(etNominal.getText().toString().replace(".", "")))));
                         }
                     })
                     .setNegativeButton(context.getString(R.string.batal), new DialogInterface.OnClickListener() {

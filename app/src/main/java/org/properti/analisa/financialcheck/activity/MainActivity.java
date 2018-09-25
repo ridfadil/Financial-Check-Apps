@@ -1,9 +1,11 @@
 package org.properti.analisa.financialcheck.activity;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
@@ -36,6 +38,7 @@ import org.properti.analisa.financialcheck.activity.setting.AboutActivity;
 import org.properti.analisa.financialcheck.firebase.FirebaseApplication;
 import org.properti.analisa.financialcheck.model.Common;
 import org.properti.analisa.financialcheck.utils.CurrencyEditText;
+import org.properti.analisa.financialcheck.utils.LocalizationUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,13 +67,13 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.ad_bottom)
     AdView bottomAds;
 
-    //TODO: tambahin iklan
-    //TODO: bug fixing di login dengan facebook
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        SharedPreferences pref = getSharedPreferences("setting", Activity.MODE_PRIVATE);
+        LocalizationUtils.setLocale(pref.getString("language", ""), getBaseContext());
+
         init();
         ButterKnife.bind(this);
 
@@ -253,25 +256,37 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    public void setLangPref(String lang){
+        SharedPreferences.Editor editor = getSharedPreferences("setting", MODE_PRIVATE).edit();
+        editor.putString("language", lang);
+        editor.apply();
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Intent i = new Intent(this, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         switch(item.getItemId())
         {
-            case R.id.nav_bahasa:
-                Intent i = new Intent(Settings.ACTION_LOCALE_SETTINGS);
-                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            case R.id.nav_indonesia:
+                LocalizationUtils.setLocale("in", getBaseContext());
+                setLangPref("in");
+                startActivity(i);
+                break;
+            case R.id.nav_inggris:
+                LocalizationUtils.setLocale("en", getBaseContext());
+                setLangPref("en");
                 startActivity(i);
                 break;
             case R.id.nav_tentang:
                 startActivity(new Intent(this, AboutActivity.class));
                 break;
             case R.id.nav_share:
-                Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                Intent sharingIntent = new Intent(Intent.ACTION_SEND);
                 sharingIntent.setType("text/plain");
                 String shareBodyText = "Hitung anggaran belanjamu agar lebih teratur hanya di aplikasi ini. Dapatkan sekarang : http://play.google.com/store/apps/details?id=" + getApplicationContext().getPackageName();
 
-                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,"Financial Check");
-                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBodyText);
+                sharingIntent.putExtra(Intent.EXTRA_SUBJECT,"Financial Check");
+                sharingIntent.putExtra(Intent.EXTRA_TEXT, shareBodyText);
                 startActivity(Intent.createChooser(sharingIntent, "Financial Check"));
                 break;
             case R.id.nav_suka:

@@ -1,7 +1,9 @@
 package org.properti.analisa.financialcheck.activity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Handler;
@@ -11,6 +13,7 @@ import android.os.Bundle;
 import org.properti.analisa.financialcheck.R;
 import org.properti.analisa.financialcheck.activity.auth.LoginActivity;
 import org.properti.analisa.financialcheck.utils.DialogUtils;
+import org.properti.analisa.financialcheck.utils.LocalizationUtils;
 
 public class SplashScreenActivity extends AppCompatActivity {
 
@@ -19,6 +22,16 @@ public class SplashScreenActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        SharedPreferences pref = getSharedPreferences("setting", Activity.MODE_PRIVATE);
+        String lang;
+        if(pref != null){
+            lang = pref.getString("language", "");
+        }
+        else{
+            lang = "en";
+        }
+        LocalizationUtils.setLocale(lang, getBaseContext());
 
         setContentView(R.layout.activity_splash_screen);
 

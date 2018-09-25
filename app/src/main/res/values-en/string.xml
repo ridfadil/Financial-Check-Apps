@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Financial Check</string>
+    <string name="app_name">Financial Checker</string>
 
     //authentication
     <string name="id_user">ID User</string>
@@ -13,7 +13,7 @@
     <string name="password_lama">Old Password</string>
     <string name="password_baru">New Password</string>
     <string name="password_baru_2">Repeat New Password</string>
-    <string name="register">Daftar</string>
+    <string name="register">Register</string>
     <string name="simpan">Save</string>
     <string name="kirim">Send</string>
     <string name="sudah_punya_akun">Have been registered ? Please login here</string>

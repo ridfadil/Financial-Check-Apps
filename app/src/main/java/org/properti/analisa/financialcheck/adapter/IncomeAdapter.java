@@ -114,12 +114,12 @@ public class IncomeAdapter extends RecyclerView.Adapter<IncomeAdapter.ListMenuVi
                     .setPositiveButton(context.getString(R.string.simpan), new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             dbActiveIncome = FirebaseDatabase.getInstance().getReference("active_income").child(idUser).child(listMenu.get(pos).getId());
-                            Common activeIncome = new Common(etKeterangan.getText().toString(), etNominal.getText().toString(), listMenu.get(pos).getImage());
+                            Common activeIncome = new Common(etKeterangan.getText().toString(), etNominal.getText().toString().replace(".", ""), listMenu.get(pos).getImage());
                             activeIncome.setId(listMenu.get(pos).getId());
                             dbActiveIncome.setValue(activeIncome);
 
                             judul.setText(etKeterangan.getText());
-                            harga.setText(etNominal.getText());
+                            harga.setText(String.valueOf(CurrencyEditText.currencyFormatterLong(Long.parseLong(etNominal.getText().toString().replace(".", "")))));
                         }
                     })
                     .setNegativeButton(context.getString(R.string.batal),

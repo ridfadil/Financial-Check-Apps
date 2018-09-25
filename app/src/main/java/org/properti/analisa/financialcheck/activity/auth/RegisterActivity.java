@@ -1,7 +1,9 @@
 package org.properti.analisa.financialcheck.activity.auth;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,6 +24,7 @@ import org.properti.analisa.financialcheck.activity.MainActivity;
 import org.properti.analisa.financialcheck.utils.DialogUtils;
 import org.properti.analisa.financialcheck.model.Common;
 import org.properti.analisa.financialcheck.model.User;
+import org.properti.analisa.financialcheck.utils.LocalizationUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,6 +61,8 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+        SharedPreferences pref = getSharedPreferences("setting", Activity.MODE_PRIVATE);
+        LocalizationUtils.setLocale(pref.getString("language", ""), getBaseContext());
 
         ButterKnife.bind(this);
         loading = DialogUtils.showProgressDialog(this, "Loading", "Registering your account");

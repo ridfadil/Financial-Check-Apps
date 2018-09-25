@@ -1,7 +1,9 @@
 package org.properti.analisa.financialcheck.activity.auth;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
@@ -51,6 +53,7 @@ import org.properti.analisa.financialcheck.model.Common;
 import org.properti.analisa.financialcheck.model.User;
 import org.properti.analisa.financialcheck.utils.DialogUtils;
 import org.properti.analisa.financialcheck.firebase.FirebaseApplication;
+import org.properti.analisa.financialcheck.utils.LocalizationUtils;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -91,6 +94,9 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SharedPreferences pref = getSharedPreferences("setting", Activity.MODE_PRIVATE);
+        LocalizationUtils.setLocale(pref.getString("language", ""), getBaseContext());
+
         FacebookSdk.sdkInitialize(getApplicationContext());
 
         printKeyHash();

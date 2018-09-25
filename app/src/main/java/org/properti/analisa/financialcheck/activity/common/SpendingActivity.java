@@ -1,6 +1,8 @@
 package org.properti.analisa.financialcheck.activity.common;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,6 +26,7 @@ import org.properti.analisa.financialcheck.R;
 import org.properti.analisa.financialcheck.adapter.SpendingAdapter;
 import org.properti.analisa.financialcheck.model.Common;
 import org.properti.analisa.financialcheck.utils.CurrencyEditText;
+import org.properti.analisa.financialcheck.utils.LocalizationUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -53,6 +56,8 @@ public class SpendingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_spending);
+        SharedPreferences pref = getSharedPreferences("setting", Activity.MODE_PRIVATE);
+        LocalizationUtils.setLocale(pref.getString("language", ""), getBaseContext());
         ButterKnife.bind(this);
         toolbar();
 

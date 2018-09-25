@@ -42,6 +42,7 @@ public class FirebaseApplication extends Application {
         if(firebaseAuth.getCurrentUser() != null){
             Intent profileIntent = new Intent(context, MainActivity.class);
             context.startActivity(profileIntent);
+            ((Activity) context).finish();
         }
     }
 

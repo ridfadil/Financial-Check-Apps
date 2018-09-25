@@ -1,9 +1,11 @@
 package org.properti.analisa.financialcheck.activity.auth;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -15,6 +17,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import org.properti.analisa.financialcheck.R;
 import org.properti.analisa.financialcheck.utils.DialogUtils;
 import org.properti.analisa.financialcheck.firebase.FirebaseApplication;
+import org.properti.analisa.financialcheck.utils.LocalizationUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,6 +38,8 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forgot_password);
+        SharedPreferences pref = getSharedPreferences("setting", Activity.MODE_PRIVATE);
+        LocalizationUtils.setLocale(pref.getString("language", ""), getBaseContext());
 
         mAuth = ((FirebaseApplication)getApplication()).getFirebaseAuth();
 

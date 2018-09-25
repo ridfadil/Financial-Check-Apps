@@ -114,12 +114,12 @@ public class SpendingAdapter extends RecyclerView.Adapter<SpendingAdapter.ListMe
                     .setPositiveButton(context.getString(R.string.simpan), new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             dbSpending = FirebaseDatabase.getInstance().getReference("spending").child(idUser).child(listMenu.get(pos).getId());
-                            Common spending = new Common(etKeterangan.getText().toString(), etNominal.getText().toString(), listMenu.get(pos).getImage());
+                            Common spending = new Common(etKeterangan.getText().toString(), ""+Long.parseLong(etNominal.getText().toString()), listMenu.get(pos).getImage());
                             spending.setId(listMenu.get(pos).getId());
                             dbSpending.setValue(spending);
 
                             judul.setText(etKeterangan.getText());
-                            harga.setText(etNominal.getText());
+                            harga.setText(String.valueOf(CurrencyEditText.currencyFormatterLong(Long.parseLong(etNominal.getText().toString().replace(".", "")))));
                         }
                     })
                     .setNegativeButton(context.getString(R.string.batal),

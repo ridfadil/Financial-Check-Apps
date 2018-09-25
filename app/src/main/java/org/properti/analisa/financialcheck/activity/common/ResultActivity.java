@@ -1,6 +1,8 @@
 package org.properti.analisa.financialcheck.activity.common;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -24,6 +26,7 @@ import org.properti.analisa.financialcheck.firebase.FirebaseApplication;
 import org.properti.analisa.financialcheck.model.Common;
 import org.properti.analisa.financialcheck.model.User;
 import org.properti.analisa.financialcheck.utils.CurrencyEditText;
+import org.properti.analisa.financialcheck.utils.LocalizationUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,6 +76,8 @@ public class ResultActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
+        SharedPreferences pref = getSharedPreferences("setting", Activity.MODE_PRIVATE);
+        LocalizationUtils.setLocale(pref.getString("language", ""), getBaseContext());
         ButterKnife.bind(this);
         toolbar();
 

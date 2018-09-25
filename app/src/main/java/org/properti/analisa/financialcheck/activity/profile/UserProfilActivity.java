@@ -1,7 +1,9 @@
 package org.properti.analisa.financialcheck.activity.profile;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
@@ -29,6 +31,7 @@ import com.google.firebase.database.ValueEventListener;
 import org.properti.analisa.financialcheck.R;
 import org.properti.analisa.financialcheck.model.Common;
 import org.properti.analisa.financialcheck.model.User;
+import org.properti.analisa.financialcheck.utils.LocalizationUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -54,6 +57,8 @@ public class UserProfilActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SharedPreferences pref = getSharedPreferences("setting", Activity.MODE_PRIVATE);
+        LocalizationUtils.setLocale(pref.getString("language", ""), getBaseContext());
         setContentView(R.layout.activity_user_profil);
         ButterKnife.bind(this);
         toolbar();

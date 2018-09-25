@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Financial Check</string>
+    <string name="app_name">Financial Checker</string>
 
     //authentication
     <string name="id_user">ID User</string>

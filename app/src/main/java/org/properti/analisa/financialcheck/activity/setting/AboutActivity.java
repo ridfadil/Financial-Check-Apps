@@ -1,5 +1,7 @@
 package org.properti.analisa.financialcheck.activity.setting;
 
+import android.app.Activity;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -8,6 +10,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import org.properti.analisa.financialcheck.R;
+import org.properti.analisa.financialcheck.utils.LocalizationUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -20,6 +23,8 @@ public class AboutActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SharedPreferences pref = getSharedPreferences("setting", Activity.MODE_PRIVATE);
+        LocalizationUtils.setLocale(pref.getString("language", ""), getBaseContext());
         setContentView(R.layout.activity_about);
         ButterKnife.bind(this);
         toolbar();
