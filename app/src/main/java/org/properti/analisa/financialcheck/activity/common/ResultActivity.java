@@ -54,12 +54,13 @@ public class ResultActivity extends AppCompatActivity {
     @BindView(R.id.txt_nama_user)
     TextView txtNamaUser;
 
-//    @BindView(R.id.ad_top)
-//    AdView topAds;
+    @BindView(R.id.ad_top)
+    AdView topAds;
     @BindView(R.id.ad_bottom)
     AdView bottomAds;
 
     String id;
+    int imageSource;
 
     List<Common> listSpendingMonth = new ArrayList<>();
     List<Common> listSpending = new ArrayList<>();
@@ -72,6 +73,8 @@ public class ResultActivity extends AppCompatActivity {
 
     User user;
 
+    //TODO: ubah default bahasa ke bahasa inggris pada data
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,7 +86,7 @@ public class ResultActivity extends AppCompatActivity {
 
         AdRequest adRequest = new AdRequest.Builder()
                 .build();
-//        topAds.loadAd(adRequest);
+        topAds.loadAd(adRequest);
         bottomAds.loadAd(adRequest);
 
         mAuth = ((FirebaseApplication)getApplication()).getFirebaseAuth();
@@ -155,19 +158,27 @@ public class ResultActivity extends AppCompatActivity {
                                                 user = dataSnapshot.getValue(User.class);
                                                 //pengecekan
                                                 String kondisi = "";
-                                                if(finalTotalSpendingMonth + finalTotalSpending > finalTotalPassiveIncome + finalTotalActiveIncome){
+                                                if(finalTotalPassiveIncome==0 && finalTotalActiveIncome==0 && finalTotalSpending==0 && finalTotalSpendingMonth==0){
+                                                    kondisi = "-";
+                                                }
+                                                else if(finalTotalSpendingMonth + finalTotalSpending > finalTotalPassiveIncome + finalTotalActiveIncome){
                                                     kondisi = getString(R.string.not_good);
+                                                    imageSource = R.drawable.ic_notgood;
                                                 }
                                                 else if(finalTotalSpendingMonth + finalTotalSpending == finalTotalPassiveIncome + finalTotalActiveIncome){
                                                     kondisi = getString(R.string.good);
+                                                    imageSource = R.drawable.ic_good;
                                                 }
                                                 else if(finalTotalSpendingMonth + finalTotalSpending < finalTotalPassiveIncome + finalTotalActiveIncome){
                                                     kondisi = getString(R.string.very_good);
+                                                    imageSource = R.drawable.ic_verygood;
                                                 }
                                                 else if(finalTotalPassiveIncome > finalTotalSpendingMonth + finalTotalSpending){
                                                     kondisi = getString(R.string.financial_independent);
+                                                    imageSource = R.drawable.ic_fin_ind;
                                                 }
 
+                                                imageCondition.setImageResource(imageSource);
                                                 txtNamaUser.setText(getString(R.string.hi)+" "+user.getNama());
                                                 txtCondition.setText(kondisi);
                                             }

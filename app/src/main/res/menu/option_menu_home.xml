@@ -8,6 +8,11 @@
         android:icon="@drawable/ic_option">
         <menu>
             <item
+                android:id="@+id/nav_profile"
+                android:title="@string/user_profil"
+                android:orderInCategory="100"
+                android:icon="@drawable/pngprofil"/>
+            <item
                 android:id="@+id/nav_bahasa"
                 android:title="@string/bahasa"
                 android:orderInCategory="100"

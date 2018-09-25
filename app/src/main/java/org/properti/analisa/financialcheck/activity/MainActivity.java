@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String UID_USER = "UID_USER";
 
-    CardView cdIncome, cdSpending, cdMonthSpending, cdPassiveIncome, cdProfil;
+    CardView cdIncome, cdSpending, cdMonthSpending, cdPassiveIncome;
     TextView txtFinancialCondition, txtFinancialTotal;
 
     List<Common> listSpendingMonth = new ArrayList<>();
@@ -146,7 +146,10 @@ public class MainActivity extends AppCompatActivity {
 
                                         //pengecekan
                                         String kondisi = "";
-                                        if(finalTotalSpendingMonth + finalTotalSpending > finalTotalPassiveIncome + totalActiveIncome){
+                                        if(finalTotalPassiveIncome==0 && totalActiveIncome==0 && finalTotalSpending==0 && finalTotalSpendingMonth==0){
+                                            kondisi = "-";
+                                        }
+                                        else if(finalTotalSpendingMonth + finalTotalSpending > finalTotalPassiveIncome + totalActiveIncome){
                                             kondisi = getString(R.string.not_good);
                                         }
                                         else if(finalTotalSpendingMonth + finalTotalSpending == finalTotalPassiveIncome + totalActiveIncome){
@@ -228,14 +231,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
-        cdProfil.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(MainActivity.this,UserProfilActivity.class);
-                i.putExtra(UID_USER, id);
-                startActivity(i);
-            }
-        });
     }
 
     public void init() {
@@ -245,7 +240,6 @@ public class MainActivity extends AppCompatActivity {
         cdPassiveIncome = findViewById(R.id.cv_passive_income);
         txtFinancialCondition = findViewById(R.id.txt_financial_condition);
         txtFinancialTotal = findViewById(R.id.txt_financial_total);
-        cdProfil = findViewById(R.id.cv_user_profile);
     }
 
     @Override
@@ -267,6 +261,11 @@ public class MainActivity extends AppCompatActivity {
         Intent i = new Intent(this, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         switch(item.getItemId())
         {
+            case R.id.nav_profile:
+                Intent intent = new Intent(MainActivity.this,UserProfilActivity.class);
+                intent.putExtra(UID_USER, id);
+                startActivity(intent);
+                break;
             case R.id.nav_indonesia:
                 LocalizationUtils.setLocale("in", getBaseContext());
                 setLangPref("in");
@@ -283,11 +282,11 @@ public class MainActivity extends AppCompatActivity {
             case R.id.nav_share:
                 Intent sharingIntent = new Intent(Intent.ACTION_SEND);
                 sharingIntent.setType("text/plain");
-                String shareBodyText = "Hitung anggaran belanjamu agar lebih teratur hanya di aplikasi ini. Dapatkan sekarang : http://play.google.com/store/apps/details?id=" + getApplicationContext().getPackageName();
+                String shareBodyText = "Mau periksa seberapa sehat Keuangan Pribadi anda ? Silahkan download aplikasi ini. Dapatkan sekarang : http://play.google.com/store/apps/details?id=" + getApplicationContext().getPackageName();
 
-                sharingIntent.putExtra(Intent.EXTRA_SUBJECT,"Financial Check");
+                sharingIntent.putExtra(Intent.EXTRA_SUBJECT,"Financial Checker");
                 sharingIntent.putExtra(Intent.EXTRA_TEXT, shareBodyText);
-                startActivity(Intent.createChooser(sharingIntent, "Financial Check"));
+                startActivity(Intent.createChooser(sharingIntent, "Financial Checker"));
                 break;
             case R.id.nav_suka:
                 Uri uri = Uri.parse("market://details?id=" + getApplicationContext().getPackageName());
