@@ -62,13 +62,11 @@
     <string name="data_belum_lengkap">Data belum Lengkap !</string>
     <string name="yakin_ingin_reset_password">Are you sure you want to reset your password ?</string>
     <string name="batal">Cancel</string>
+    <string name="hapus">Delete</string>
 
     //language
     <string name="inggris">English</string>
     <string name="indonesia">Indonesian</string>
-
-    <string name="facebook_app_id">1383676748429921</string>
-    <string name="fb_login_protocol_scheme">fb1383676748429921</string>
 
     //button
     <string name="button_selanjutnya">Next</string>
@@ -85,7 +83,7 @@
     <string name="kondisi_keuangan_anda">Your Financial Condition :</string>
     <string name="home">Home</string>
     <string name="edit_profil">Edit Profile</string>
-    <string name="edit_data_keuangan">Edit Financial Data :</string>
+    <string name="edit_data_keuangan">Manage Financial Data :</string>
     <string name="masukkan_keterangan">Enter the Description</string>
     <string name="masukkan_nominal_rp">Enter the Nominal (IDR)</string>
     <string name="edit_profile">Edit Profile :</string>

@@ -15,11 +15,11 @@ import com.bumptech.glide.Glide;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.LinkedList;
-
 import org.properti.analisa.financialcheck.R;
 import org.properti.analisa.financialcheck.model.Common;
 import org.properti.analisa.financialcheck.utils.CurrencyEditText;
+
+import java.util.LinkedList;
 
 public class SpendingAdapter extends RecyclerView.Adapter<SpendingAdapter.ListMenuViewHolder> {
 
@@ -110,16 +110,25 @@ public class SpendingAdapter extends RecyclerView.Adapter<SpendingAdapter.ListMe
             etKeterangan.setText(mCurrent.getJudul());
             etNominal.setText(mCurrent.getHarga());
 
+            dbSpending = FirebaseDatabase.getInstance().getReference("spending").child(idUser).child(listMenu.get(pos).getId());
+
             alertDialogBuilder.setCancelable(false)
                     .setPositiveButton(context.getString(R.string.simpan), new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            dbSpending = FirebaseDatabase.getInstance().getReference("spending").child(idUser).child(listMenu.get(pos).getId());
-                            Common spending = new Common(etKeterangan.getText().toString(), ""+Long.parseLong(etNominal.getText().toString()), listMenu.get(pos).getImage());
+                            Common spending = new Common(etKeterangan.getText().toString(), ""+Long.parseLong(etNominal.getText().toString().replace(".", "")), listMenu.get(pos).getImage());
                             spending.setId(listMenu.get(pos).getId());
                             dbSpending.setValue(spending);
 
                             judul.setText(etKeterangan.getText());
                             harga.setText(String.valueOf(CurrencyEditText.currencyFormatterLong(Long.parseLong(etNominal.getText().toString().replace(".", "")))));
+                        }
+                    })
+                    .setNeutralButton(context.getString(R.string.hapus), new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dbSpending.removeValue();
+
+                            listMenu.remove(pos);
+                            notifyDataSetChanged();
                         }
                     })
                     .setNegativeButton(context.getString(R.string.batal),

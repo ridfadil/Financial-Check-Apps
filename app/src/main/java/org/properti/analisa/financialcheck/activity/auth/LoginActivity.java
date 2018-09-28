@@ -7,18 +7,15 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
-import android.net.Uri;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -28,7 +25,6 @@ import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.ApiException;
@@ -49,10 +45,10 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.properti.analisa.financialcheck.R;
 import org.properti.analisa.financialcheck.activity.MainActivity;
+import org.properti.analisa.financialcheck.firebase.FirebaseApplication;
 import org.properti.analisa.financialcheck.model.Common;
 import org.properti.analisa.financialcheck.model.User;
 import org.properti.analisa.financialcheck.utils.DialogUtils;
-import org.properti.analisa.financialcheck.firebase.FirebaseApplication;
 import org.properti.analisa.financialcheck.utils.LocalizationUtils;
 
 import java.security.MessageDigest;
@@ -97,6 +93,8 @@ public class LoginActivity extends AppCompatActivity {
         SharedPreferences pref = getSharedPreferences("setting", Activity.MODE_PRIVATE);
         LocalizationUtils.setLocale(pref.getString("language", ""), getBaseContext());
 
+        loading = DialogUtils.showProgressDialog(this, "Loading", "Checking Data");
+
         FacebookSdk.sdkInitialize(getApplicationContext());
 
         printKeyHash();
@@ -109,8 +107,6 @@ public class LoginActivity extends AppCompatActivity {
         initFacebookConf();
 
         ((FirebaseApplication) getApplication()).checkUserLogin(this);
-
-        loading = DialogUtils.showProgressDialog(this, "Loading", "Checking Data");
     }
 
     private void printKeyHash() {
@@ -134,8 +130,7 @@ public class LoginActivity extends AppCompatActivity {
         btnLoginFacebook.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                firebaseAuthWithFacebook(loginResult.getAccessToken());
-                Log.e("TOKEN :", "" + loginResult.getAccessToken());
+                firebaseAuthWithFacebook(loginResult.getAccessToken().getToken());
             }
 
             @Override
@@ -179,7 +174,8 @@ public class LoginActivity extends AppCompatActivity {
         if (TextUtils.isEmpty(etEmail.getText().toString()) || TextUtils.isEmpty(etPassword.getText().toString())) {
             Toast.makeText(this, getString(R.string.data_kosong), Toast.LENGTH_SHORT).show();
             loading.dismiss();
-        } else {
+        }
+        else {
             email = etEmail.getText().toString();
             password = etPassword.getText().toString();
 
@@ -206,8 +202,9 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    private void firebaseAuthWithFacebook(AccessToken token) {
-        AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
+    private void firebaseAuthWithFacebook(String token) {
+        loading.show();
+        AuthCredential credential = FacebookAuthProvider.getCredential(token);
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -215,7 +212,8 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             FirebaseUser user = mAuth.getCurrentUser();
                             sendFacebookUserData(user);
-                        } else {
+                        }
+                        else {
                             Toast.makeText(LoginActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -223,6 +221,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
+        loading.show();
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -251,7 +250,8 @@ public class LoginActivity extends AppCompatActivity {
                 if (dataSnapshot.exists()) {
                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
                     finish();
-                } else {
+                }
+                else {
                     databaseUser = FirebaseDatabase.getInstance().getReference("users");
                     databaseUser.child(id).setValue(new User(nama, email, phone));
 
@@ -290,6 +290,7 @@ public class LoginActivity extends AppCompatActivity {
                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
                     finish();
                 }
+                loading.dismiss();
             }
 
             @Override
@@ -354,6 +355,7 @@ public class LoginActivity extends AppCompatActivity {
                         startActivity(new Intent(LoginActivity.this, MainActivity.class));
                         finish();
                     }
+                    loading.dismiss();
                 }
 
                 @Override
@@ -367,31 +369,31 @@ public class LoginActivity extends AppCompatActivity {
     private void initData() {
         final String baseImage = "gs://test-financial.appspot.com/icon/";
 
-        listSpendingMonth.add(new Common( "Makan Dalam Rumah", "0", baseImage+"profesi.PNG"));
-        listSpendingMonth.add(new Common( "Listrik Gas Air", "0", baseImage+"listrikgas.PNG"));
-        listSpendingMonth.add(new Common( "Telepon Rumah", "0", baseImage+"belihandphone.PNG"));
-        listSpendingMonth.add(new Common( "Telepon HP", "0", baseImage+"belihandphone.PNG"));
-        listSpendingMonth.add(new Common( "Sekolah + Les Anak", "0", baseImage+"pengeluaranbulanan.PNG"));
-        listSpendingMonth.add(new Common( "Cicilan Hutang Rumah", "0", baseImage+"rumahsewa.PNG"));
-        listSpendingMonth.add(new Common( "Cicilan Kendaraan", "0", baseImage+"servicemobil.PNG"));
-        listSpendingMonth.add(new Common( "Cicilan Kartu Kredit", "0", baseImage+"deposito.PNG"));
-        listSpendingMonth.add(new Common( "Asuransi", "0", baseImage+"pengeluaranbulanan.PNG"));
-        listSpendingMonth.add(new Common( "Pembantu", "0", baseImage+"pengeluaranlainnya.PNG"));
-        listSpendingMonth.add(new Common( "Mobil (Bensin dan Maintenance)", "0", baseImage+"servicemobil.PNG"));
-        listSpendingMonth.add(new Common( "Pakaian", "0", baseImage+"pengeluaranlainnya.PNG"));
+        listSpendingMonth.add(new Common( "Eating at home", "0", baseImage+"profesi.PNG"));
+        listSpendingMonth.add(new Common( "Electricity, Gas, Water", "0", baseImage+"listrikgas.PNG"));
+        listSpendingMonth.add(new Common( "House's Phone", "0", baseImage+"belihandphone.PNG"));
+        listSpendingMonth.add(new Common( "Phone, mobile phone", "0", baseImage+"belihandphone.PNG"));
+        listSpendingMonth.add(new Common( "School / Children's course", "0", baseImage+"pengeluaranbulanan.PNG"));
+        listSpendingMonth.add(new Common( "House's Instalment Debt", "0", baseImage+"rumahsewa.PNG"));
+        listSpendingMonth.add(new Common( "Transportation's Instalment", "0", baseImage+"servicemobil.PNG"));
+        listSpendingMonth.add(new Common( "Credit Card's Instalment", "0", baseImage+"deposito.PNG"));
+        listSpendingMonth.add(new Common( "Insurance", "0", baseImage+"pengeluaranbulanan.PNG"));
+        listSpendingMonth.add(new Common( "Servant", "0", baseImage+"pengeluaranlainnya.PNG"));
+        listSpendingMonth.add(new Common( "Car (Maintenance and Gasoline)", "0", baseImage+"servicemobil.PNG"));
+        listSpendingMonth.add(new Common( "Clothes", "0", baseImage+"pengeluaranlainnya.PNG"));
 
-        listSpending.add(new Common( "Makan Luar Rumah", "0", baseImage+"profesi.PNG"));
-        listSpending.add(new Common( "Beli Luxury", "0", baseImage+"aktifincome.PNG"));
-        listSpending.add(new Common( "Piknik", "0", baseImage+"rekreasi.PNG"));
+        listSpending.add(new Common( "Eating Outside's House", "0", baseImage+"profesi.PNG"));
+        listSpending.add(new Common( "Luxurious Buying", "0", baseImage+"aktifincome.PNG"));
+        listSpending.add(new Common( "Picnic", "0", baseImage+"rekreasi.PNG"));
 
-        listPassiveIncome.add(new Common( "Rumah Sewa / Kos", "0", baseImage+"rumahsewa.PNG"));
-        listPassiveIncome.add(new Common( "Usaha", "0", baseImage+"usaha.PNG"));
-        listPassiveIncome.add(new Common( "Deposito / Reksadana", "0", baseImage+"deposito.PNG"));
-        listPassiveIncome.add(new Common( "Royalti Buku", "0", baseImage+"pasifincome.PNG"));
-        listPassiveIncome.add(new Common( "Royalti Kaset", "0", baseImage+"lainlain.PNG"));
-        listPassiveIncome.add(new Common( "Royalti Sistem", "0", baseImage+"pengeluaranbulanan.PNG"));
+        listPassiveIncome.add(new Common( "House's rent / Kost", "0", baseImage+"rumahsewa.PNG"));
+        listPassiveIncome.add(new Common( "Business", "0", baseImage+"usaha.PNG"));
+        listPassiveIncome.add(new Common( "Deposit / MutualFund", "0", baseImage+"deposito.PNG"));
+        listPassiveIncome.add(new Common( "Book Royalties", "0", baseImage+"pasifincome.PNG"));
+        listPassiveIncome.add(new Common( "Cassete Royalties", "0", baseImage+"lainlain.PNG"));
+        listPassiveIncome.add(new Common( "Royaties' System", "0", baseImage+"pengeluaranbulanan.PNG"));
 
-        listActiveIncome.add(new Common( "Profesi", "0", baseImage+"usaha.PNG"));
+        listActiveIncome.add(new Common( "Occupation", "0", baseImage+"usaha.PNG"));
         listActiveIncome.add(new Common( "Trading", "0", baseImage+"trading.PNG"));
     }
 

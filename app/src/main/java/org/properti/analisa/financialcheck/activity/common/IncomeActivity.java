@@ -1,15 +1,18 @@
 package org.properti.analisa.financialcheck.activity.common;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.android.gms.ads.AdRequest;
@@ -20,13 +23,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.LinkedList;
-
 import org.properti.analisa.financialcheck.R;
 import org.properti.analisa.financialcheck.adapter.IncomeAdapter;
 import org.properti.analisa.financialcheck.model.Common;
 import org.properti.analisa.financialcheck.utils.CurrencyEditText;
 import org.properti.analisa.financialcheck.utils.LocalizationUtils;
+
+import java.util.LinkedList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -78,7 +81,7 @@ public class IncomeActivity extends AppCompatActivity {
     public void onViewClicked(View v){
         switch (v.getId()){
             case R.id.btn_back : {
-                Intent i = new Intent(IncomeActivity.this, PassiveIncomeActivity.class);
+                Intent i = new Intent(IncomeActivity.this, org.properti.analisa.financialcheck.activity.common.PassiveIncomeActivity.class);
                 i.putExtra(UID_USER, idUser);
                 startActivity(i);
                 overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
@@ -86,7 +89,7 @@ public class IncomeActivity extends AppCompatActivity {
                 break;
             }
             case R.id.btn_result : {
-                Intent i = new Intent(IncomeActivity.this, ResultActivity.class);
+                Intent i = new Intent(IncomeActivity.this, org.properti.analisa.financialcheck.activity.common.ResultActivity.class);
                 i.putExtra(UID_USER, idUser);
                 startActivity(i);
                 overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
@@ -121,9 +124,42 @@ public class IncomeActivity extends AppCompatActivity {
         });
     }
 
+    @OnClick(R.id.btn_add)
+    public void addData(){
+        LayoutInflater layoutInflater = LayoutInflater.from(IncomeActivity.this);
+        View promptView = layoutInflater.inflate(R.layout.input_dialog, null);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(IncomeActivity.this);
+        alertDialogBuilder.setView(promptView);
+
+        final EditText etKeterangan = (EditText) promptView.findViewById(R.id.et_keterangan);
+        final EditText etNominal = (EditText) promptView.findViewById(R.id.et_nominal);
+
+        new CurrencyEditText(etNominal);
+
+        alertDialogBuilder.setCancelable(true)
+                .setPositiveButton(getString(R.string.simpan), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        String idNew = dbActiveIncome.push().getKey();
+                        Common activeIncome = new Common(etKeterangan.getText().toString(), etNominal.getText().toString().replace(".", ""), "");
+                        activeIncome.setId(idNew);
+                        dbActiveIncome = FirebaseDatabase.getInstance().getReference("active_income").child(idUser).child(idNew);
+                        dbActiveIncome.setValue(activeIncome);
+
+                        listMenu.add(activeIncome);
+                        mAdapter.notifyDataSetChanged();
+                    }
+                })
+                .setNegativeButton(getString(R.string.batal), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog alert = alertDialogBuilder.create();
+        alert.show();
+    }
+
     public void toolbar(){
-        Toolbar toolbar = findViewById(R.id.toolbar); //Inisialisasi dan Implementasi id Toolbar
-        setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(getString(R.string.active_income));
     }

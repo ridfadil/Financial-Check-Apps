@@ -41,10 +41,10 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         SharedPreferences pref = getSharedPreferences("setting", Activity.MODE_PRIVATE);
         LocalizationUtils.setLocale(pref.getString("language", ""), getBaseContext());
 
-        mAuth = ((FirebaseApplication)getApplication()).getFirebaseAuth();
-
         ButterKnife.bind(this);
         loading = DialogUtils.showProgressDialog(this, "Loading", "Reseting your password");
+
+        mAuth = ((FirebaseApplication)getApplication()).getFirebaseAuth();
     }
 
     @OnClick(R.id.btn_kirim)

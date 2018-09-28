@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Pemeriksa Finansial</string>
+    <string name="app_name">Financial Checker</string>
 
     //authentication
     <string name="id_user">ID User</string>
@@ -62,13 +62,11 @@
     <string name="ya">Ya</string>
     <string name="tidak">Tidak</string>
     <string name="batal">Batal</string>
+    <string name="hapus">Hapus</string>
 
     //language
     <string name="inggris">Inggris</string>
     <string name="indonesia">Indonesia</string>
-
-    <string name="facebook_app_id">1383676748429921</string>
-    <string name="fb_login_protocol_scheme">fb1383676748429921</string>
 
     //button
     <string name="button_selanjutnya">Selanjutnya</string>
@@ -85,7 +83,7 @@
     <string name="kondisi_keuangan_anda">Kondisi keuangan Anda :</string>
     <string name="home">Beranda</string>
     <string name="edit_profil">Ubah Profil</string>
-    <string name="edit_data_keuangan">Ubah Data Keuangan :</string>
+    <string name="edit_data_keuangan">Kelola Data Keuangan :</string>
     <string name="masukkan_keterangan">Masukkan Keterangan</string>
     <string name="masukkan_nominal_rp">Masukkan Nominal (Rp.)</string>
     <string name="edit_profile">Ubah Profil :</string>

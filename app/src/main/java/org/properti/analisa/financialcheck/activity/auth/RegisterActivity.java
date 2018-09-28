@@ -72,13 +72,13 @@ public class RegisterActivity extends AppCompatActivity {
 
     @OnClick(R.id.btn_register)
     public void register(){
-        if(TextUtils.isEmpty(etNama.getText().toString()) || TextUtils.isEmpty(etEmail.getText().toString()) || TextUtils.isEmpty(etPhoneNumber.getText().toString()) || TextUtils.isEmpty(etPassword.getText().toString())){
+        if(TextUtils.isEmpty(etNama.getText().toString()) || TextUtils.isEmpty(etEmail.getText().toString()) || TextUtils.isEmpty(etPassword.getText().toString())){
             Toast.makeText(this, getString(R.string.data_belum_lengkap), Toast.LENGTH_SHORT).show();
         }
         else{
             nama = etNama.getText().toString();
             email = etEmail.getText().toString();
-            phone = etPhoneNumber.getText().toString();
+            phone = "";
             password = etPassword.getText().toString();
             registerData(nama, email, phone, password);
         }
@@ -135,42 +135,41 @@ public class RegisterActivity extends AppCompatActivity {
                             Toast.makeText(RegisterActivity.this, "Registration Successful", Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(RegisterActivity.this, MainActivity.class));
                             finish();
+                            loading.dismiss();
                         }
                     }
                 });
-
-        loading.dismiss();
 
     }
 
     private void initData() {
         final String baseImage = "gs://test-financial.appspot.com/icon/";
 
-        listSpendingMonth.add(new Common( "Makan Dalam Rumah", "0", baseImage+"profesi.PNG"));
-        listSpendingMonth.add(new Common( "Listrik Gas Air", "0", baseImage+"listrikgas.PNG"));
-        listSpendingMonth.add(new Common( "Telepon Rumah", "0", baseImage+"belihandphone.PNG"));
-        listSpendingMonth.add(new Common( "Telepon HP", "0", baseImage+"belihandphone.PNG"));
-        listSpendingMonth.add(new Common( "Sekolah + Les Anak", "0", baseImage+"pengeluaranbulanan.PNG"));
-        listSpendingMonth.add(new Common( "Cicilan Hutang Rumah", "0", baseImage+"rumahsewa.PNG"));
-        listSpendingMonth.add(new Common( "Cicilan Kendaraan", "0", baseImage+"servicemobil.PNG"));
-        listSpendingMonth.add(new Common( "Cicilan Kartu Kredit", "0", baseImage+"deposito.PNG"));
-        listSpendingMonth.add(new Common( "Asuransi", "0", baseImage+"pengeluaranbulanan.PNG"));
-        listSpendingMonth.add(new Common( "Pembantu", "0", baseImage+"pengeluaranlainnya.PNG"));
-        listSpendingMonth.add(new Common( "Mobil (Bensin dan Maintenance)", "0", baseImage+"servicemobil.PNG"));
-        listSpendingMonth.add(new Common( "Pakaian", "0", baseImage+"pengeluaranlainnya.PNG"));
+        listSpendingMonth.add(new Common( "Eating at home", "0", baseImage+"profesi.PNG"));
+        listSpendingMonth.add(new Common( "Electricity, Gas, Water", "0", baseImage+"listrikgas.PNG"));
+        listSpendingMonth.add(new Common( "House's Phone", "0", baseImage+"belihandphone.PNG"));
+        listSpendingMonth.add(new Common( "Phone, mobile phone", "0", baseImage+"belihandphone.PNG"));
+        listSpendingMonth.add(new Common( "School / Children's course", "0", baseImage+"pengeluaranbulanan.PNG"));
+        listSpendingMonth.add(new Common( "House's Instalment Debt", "0", baseImage+"rumahsewa.PNG"));
+        listSpendingMonth.add(new Common( "Transportation's Instalment", "0", baseImage+"servicemobil.PNG"));
+        listSpendingMonth.add(new Common( "Credit Card's Instalment", "0", baseImage+"deposito.PNG"));
+        listSpendingMonth.add(new Common( "Insurance", "0", baseImage+"pengeluaranbulanan.PNG"));
+        listSpendingMonth.add(new Common( "Servant", "0", baseImage+"pengeluaranlainnya.PNG"));
+        listSpendingMonth.add(new Common( "Car (Maintenance and Gasoline)", "0", baseImage+"servicemobil.PNG"));
+        listSpendingMonth.add(new Common( "Clothes", "0", baseImage+"pengeluaranlainnya.PNG"));
 
-        listSpending.add(new Common( "Makan Luar Rumah", "0", baseImage+"profesi.PNG"));
-        listSpending.add(new Common( "Beli Luxury", "0", baseImage+"aktifincome.PNG"));
-        listSpending.add(new Common( "Piknik", "0", baseImage+"rekreasi.PNG"));
+        listSpending.add(new Common( "Eating Outside's House", "0", baseImage+"profesi.PNG"));
+        listSpending.add(new Common( "Luxurious Buying", "0", baseImage+"aktifincome.PNG"));
+        listSpending.add(new Common( "Picnic", "0", baseImage+"rekreasi.PNG"));
 
-        listPassiveIncome.add(new Common( "Rumah Sewa / Kos", "0", baseImage+"rumahsewa.PNG"));
-        listPassiveIncome.add(new Common( "Usaha", "0", baseImage+"usaha.PNG"));
-        listPassiveIncome.add(new Common( "Deposito / Reksadana", "0", baseImage+"deposito.PNG"));
-        listPassiveIncome.add(new Common( "Royalti Buku", "0", baseImage+"pasifincome.PNG"));
-        listPassiveIncome.add(new Common( "Royalti Kaset", "0", baseImage+"lainlain.PNG"));
-        listPassiveIncome.add(new Common( "Royalti Sistem", "0", baseImage+"pengeluaranbulanan.PNG"));
+        listPassiveIncome.add(new Common( "House's rent / Kost", "0", baseImage+"rumahsewa.PNG"));
+        listPassiveIncome.add(new Common( "Business", "0", baseImage+"usaha.PNG"));
+        listPassiveIncome.add(new Common( "Deposit / MutualFund", "0", baseImage+"deposito.PNG"));
+        listPassiveIncome.add(new Common( "Book Royalties", "0", baseImage+"pasifincome.PNG"));
+        listPassiveIncome.add(new Common( "Cassete Royalties", "0", baseImage+"lainlain.PNG"));
+        listPassiveIncome.add(new Common( "Royaties' System", "0", baseImage+"pengeluaranbulanan.PNG"));
 
-        listActiveIncome.add(new Common( "Profesi", "0", baseImage+"usaha.PNG"));
+        listActiveIncome.add(new Common( "Occupation", "0", baseImage+"usaha.PNG"));
         listActiveIncome.add(new Common( "Trading", "0", baseImage+"trading.PNG"));
     }
 

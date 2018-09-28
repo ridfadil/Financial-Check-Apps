@@ -15,11 +15,11 @@ import com.bumptech.glide.Glide;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.LinkedList;
-
 import org.properti.analisa.financialcheck.R;
 import org.properti.analisa.financialcheck.model.Common;
 import org.properti.analisa.financialcheck.utils.CurrencyEditText;
+
+import java.util.LinkedList;
 
 public class PassiveIncomeAdapter extends RecyclerView.Adapter<PassiveIncomeAdapter.ListMenuViewHolder> {
 
@@ -109,16 +109,25 @@ public class PassiveIncomeAdapter extends RecyclerView.Adapter<PassiveIncomeAdap
             etKeterangan.setText(mCurrent.getJudul());
             etNominal.setText(mCurrent.getHarga());
 
+            dbPassiveIncome = FirebaseDatabase.getInstance().getReference("passive_income").child(idUser).child(listMenu.get(pos).getId());
+
             alertDialogBuilder.setCancelable(false)
                     .setPositiveButton(context.getString(R.string.simpan), new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            dbPassiveIncome = FirebaseDatabase.getInstance().getReference("passive_income").child(idUser).child(listMenu.get(pos).getId());
                             Common passiveIncome = new Common(etKeterangan.getText().toString(), etNominal.getText().toString().replace(".", ""), listMenu.get(pos).getImage());
                             passiveIncome.setId(listMenu.get(pos).getId());
                             dbPassiveIncome.setValue(passiveIncome);
 
                             judul.setText(etKeterangan.getText());
                             harga.setText(String.valueOf(CurrencyEditText.currencyFormatterLong(Long.parseLong(etNominal.getText().toString().replace(".", "")))));
+                        }
+                    })
+                    .setNeutralButton(context.getString(R.string.hapus), new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dbPassiveIncome.removeValue();
+
+                            listMenu.remove(pos);
+                            notifyDataSetChanged();
                         }
                     })
                     .setNegativeButton(context.getString(R.string.batal),

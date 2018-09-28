@@ -62,6 +62,7 @@
     <string name="ya">Ya</string>
     <string name="tidak">Tidak</string>
     <string name="batal">Batal</string>
+    <string name="hapus">Hapus</string>
 
     //language
     <string name="inggris">Inggris</string>
@@ -85,7 +86,7 @@
     <string name="kondisi_keuangan_anda">Kondisi keuangan Anda :</string>
     <string name="home">Beranda</string>
     <string name="edit_profil">Ubah Profil</string>
-    <string name="edit_data_keuangan">Ubah Data Keuangan :</string>
+    <string name="edit_data_keuangan">Kelola Data Keuangan :</string>
     <string name="masukkan_keterangan">Masukkan Keterangan</string>
     <string name="masukkan_nominal_rp">Masukkan Nominal (Rp.)</string>
     <string name="edit_profile">Ubah Profil :</string>

@@ -282,7 +282,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.nav_share:
                 Intent sharingIntent = new Intent(Intent.ACTION_SEND);
                 sharingIntent.setType("text/plain");
-                String shareBodyText = "Mau periksa seberapa sehat Keuangan Pribadi anda ? Silahkan download aplikasi ini. Dapatkan sekarang : http://play.google.com/store/apps/details?id=" + getApplicationContext().getPackageName();
+                String shareBodyText = "Mau periksa seberapa sehat Keuangan Pribadi anda ?\nSilahkan download aplikasi ini.\nDapatkan sekarang juga : http://play.google.com/store/apps/details?id=" + getApplicationContext().getPackageName();
 
                 sharingIntent.putExtra(Intent.EXTRA_SUBJECT,"Financial Checker");
                 sharingIntent.putExtra(Intent.EXTRA_TEXT, shareBodyText);
