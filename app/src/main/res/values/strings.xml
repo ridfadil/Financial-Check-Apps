@@ -3,103 +3,104 @@
 
     //authentication
     <string name="id_user">ID User</string>
-    <string name="login">Masuk</string>
-    <string name="lupa_password">Lupa Password ?</string>
-    <string name="belum_punya_akun">Belum punya akun ? Daftar di sini</string>
-    <string name="reg_nama">Nama Lengkap</string>
+    <string name="login">Login</string>
+    <string name="lupa_password">Forgot Password ?</string>
+    <string name="belum_punya_akun">Don\`t have account ? Please register here</string>
+    <string name="reg_nama">Full Name</string>
     <string name="reg_email">Email</string>
-    <string name="reg_no_hp">Nomor HP</string>
+    <string name="reg_no_hp">Phone</string>
     <string name="reg_password">Password</string>
-    <string name="password_lama">Password Lama</string>
-    <string name="password_baru">Password Baru</string>
-    <string name="password_baru_2">Ulangi Password Baru</string>
-    <string name="simpan">Simpan</string>
-    <string name="register">Daftar</string>
-    <string name="kirim">Kirim</string>
-    <string name="sudah_punya_akun">Sudah punya akun ? Masuk di sini</string>
-    <string name="login_berhasil">Berhasil Masuk</string>
-    <string name="register_berhasil">Berhasil Daftar</string>
+    <string name="password_lama">Old Password</string>
+    <string name="password_baru">New Password</string>
+    <string name="password_baru_2">Repeat New Password</string>
+    <string name="register">Register</string>
+    <string name="simpan">Save</string>
+    <string name="kirim">Send</string>
+    <string name="sudah_punya_akun">Have been registered ? Please login here</string>
+    <string name="login_berhasil">Login Success</string>
+    <string name="register_berhasil">Registered Success</string>
 
     //Home String
-    <string name="balanced">Saldo Anda :</string>
+    <string name="balanced">Your Balance :</string>
     <string name="tanggal_home">06 Agustus 2018</string>
     <string name="Rp.">Rp. </string>
     <string name="nominal_home">4.000.000,.-</string>
-    <string name="finalcondition_home">Kondisi Akhirmu adalah : </string>
-    <string name="monthly_spending">Pengeluaran Bulanan</string>
-    <string name="spending">Pengeluaran</string>
-    <string name="passive_income">Pemasukan Pasif</string>
-    <string name="active_income">Pemasukan Aktif</string>
-    <string name="setting">Pengaturan</string>
-    <string name="user_profil">Profil Saya</string>
+    <string name="finalcondition_home">Your Final Condition : </string>
+    <string name="monthly_spending">Monthly Spending</string>
+    <string name="spending">Spending</string>
+    <string name="passive_income">Passive Income</string>
+    <string name="active_income">Active Income</string>
+    <string name="setting">Settings</string>
+    <string name="user_profil">My Profile</string>
     <string name="harga">0.-</string>
 
     //Option Menu Home
-    <string name="bahasa">Bahasa</string>
-    <string name="tentang_kami">Tentang Kami</string>
-    <string name="butuh_bantuan">Butuh Bantuan ?</string>
-    <string name="suka_Aplikasi_ini">Suka Aplikasi ini ?</string>
-    <string name="share_this_apps">Bagikan Aplikasi ini</string>
+    <string name="bahasa">Language</string>
+    <string name="tentang_kami">About Us</string>
+    <string name="butuh_bantuan">Need Help ?</string>
+    <string name="suka_Aplikasi_ini">Like this App ?</string>
+    <string name="share_this_apps">Share this App</string>
 
     <!--dialog-->
-    <string name="data_password_belum_lengkap">Data password belum lengkap !</string>
-    <string name="password_baru_tidak_match">Password baru tidak match !</string>
-    <string name="password_lama_salah">Password lama salah !</string>
-    <string name="berhasil_disimpan">Data berhasil disimpan</string>
-    <string name="gagal_disimpan">Data gagal disimpan !</string>
-    <string name="berhasil_diubah">Data berhasil diubah</string>
-    <string name="gagal_diubah">Data gagal diubah !</string>
-    <string name="berhasil_dihapus">Data berhasil dihapus</string>
-    <string name="gagal_dihapus">Data gagal dihapus !</string>
-    <string name="data_kosong">Data belum diisi !</string>
-    <string name="gagal_login_not_match">Login Gagal (Email dan Password tidak cocok) !</string>
-    <string name="gagal_register">Gagal daftar !</string>
-    <string name="gagal_koneksi">Gagal koneksi !</string>
-    <string name="koneksi_internet_bermasalah">Koneksi internet bermasalah !</string>
-    <string name="yakin_ingin_keluar">Apakah anda yakin ingin keluar ?</string>
-    <string name="data_belum_lengkap">Data belum Lengkap !</string>
-    <string name="yakin_ingin_reset_password">Anda yakin ingin mereset password ?</string>
-    <string name="ya">Ya</string>
-    <string name="tidak">Tidak</string>
-    <string name="batal">Batal</string>
-    <string name="hapus">Hapus</string>
+    <string name="data_password_belum_lengkap">Data password hasn\'t be filled !</string>
+    <string name="password_baru_tidak_match">New Password is doesn\'t match !</string>
+    <string name="password_lama_salah">Old password not correct !</string>
+    <string name="berhasil_disimpan">Data has been saved</string>
+    <string name="gagal_disimpan">Data cannot be saved !</string>
+    <string name="berhasil_diubah">Data has been changed</string>
+    <string name="gagal_diubah">Data cannot be changed !</string>
+    <string name="berhasil_dihapus">Data is deleted successfully</string>
+    <string name="gagal_dihapus">Data cannot be deleted !</string>
+    <string name="data_kosong">Data hasn\`t been fulfilled !</string>
+    <string name="gagal_login_not_match">Login Failed (Email and Password do not match) !</string>
+    <string name="gagal_register">Register failed !</string>
+    <string name="gagal_koneksi">Connection failed !</string>
+    <string name="koneksi_internet_bermasalah">Internet connection trouble !</string>
+    <string name="yakin_ingin_keluar">Are you sure you want to quit ?</string>
+    <string name="yakin_ingin_mereset">Are you sure you want to reset data ?</string>
+    <string name="ya">Yes</string>
+    <string name="tidak">No</string>
+    <string name="data_belum_lengkap">Data has no full yet !</string>
+    <string name="yakin_ingin_reset_password">Are you sure you want to reset your password ?</string>
+    <string name="batal">Cancel</string>
+    <string name="hapus">Delete</string>
 
     //language
-    <string name="inggris">Inggris</string>
-    <string name="indonesia">Indonesia</string>
+    <string name="inggris">English</string>
+    <string name="indonesia">Indonesian</string>
+
+    //button
+    <string name="button_selanjutnya">Next</string>
+    <string name="button_result">Result</string>
+    <string name="btn_kembali">Back</string>
+
+    <string name="not_good">Not Good</string>
+    <string name="good">Good</string>
+    <string name="very_good">Very Good</string>
+    <string name="financial_independent">Financial Independent</string>
+    <string name="hi">Hi,</string>
+    <string name="email_is_empty">Email is empty !</string>
+    <string name="keluar">Logout</string>
+    <string name="kondisi_keuangan_anda">Your Financial Condition :</string>
+    <string name="home">Home</string>
+    <string name="edit_profil">Edit Profile</string>
+    <string name="edit_data_keuangan">Manage Financial Data :</string>
+    <string name="masukkan_keterangan">Enter the Description</string>
+    <string name="masukkan_nominal_rp">Enter the Nominal (IDR)</string>
+    <string name="edit_profile">Edit Profile :</string>
+    <string name="masukkan_nama">Enter the Name</string>
+    <string name="change_password">Change Password :</string>
+    <string name="transaksi">Transaction</string>
+
+    <string name="tentang">
+        <![CDATA[<b>About Us</b><br><br>Financial Check is an application that will help users in reviewing their financial condition. Its features help users check the balance of income and expenses without having to ask for Financial Advisor.<br><br>Financial Check is easy to use and will give you the best experience to manage expenses so that the pegs are not large.]]>
+    </string>
+    <string name="masukkan_email_reset">Enter the Email to reset your Password</string>
 
     <string name="facebook_app_id">1383676748429921</string>
     <string name="fb_login_protocol_scheme">fb1383676748429921</string>
-
-    //button
-    <string name="button_selanjutnya">Selanjutnya</string>
-    <string name="button_result">Hasil</string>
-    <string name="btn_kembali">Kembali</string>
-
-    <string name="not_good">Tidak Baik</string>
-    <string name="good">Baik</string>
-    <string name="very_good">Sangat Baik</string>
-    <string name="financial_independent">Independen Finansial</string>
-    <string name="hi">Hai,</string>
-    <string name="email_is_empty">Email tidak boleh kosong !</string>
-    <string name="keluar">Keluar</string>
-    <string name="kondisi_keuangan_anda">Kondisi keuangan Anda :</string>
-    <string name="home">Beranda</string>
-    <string name="edit_profil">Ubah Profil</string>
-    <string name="edit_data_keuangan">Kelola Data Keuangan :</string>
-    <string name="masukkan_keterangan">Masukkan Keterangan</string>
-    <string name="masukkan_nominal_rp">Masukkan Nominal (Rp.)</string>
-    <string name="edit_profile">Ubah Profil :</string>
-    <string name="masukkan_nama">Masukkan Nama</string>
-    <string name="change_password">Ganti Password :</string>
-    <string name="transaksi">Transaksi</string>
-
-    <string name="tentang">
-        <![CDATA[<b>Tentang Kami</b><br><br>Financial Check adalah aplikasi yang akan membantu pengguna dalam mereview kondisi keuangannya. Fitur-fiturnya membantu pengguna memeriksa keseimbangan pemasukan dan pengeluaran tanpa harus meminta bantuan Financial Advisor.<br><br>Financial Check mudah digunakan dan akan memberikan pengalaman terbaik Anda untuk mengatur pengeluaran agar tidak besar pasak daripada tiang.]]>
-    </string>
-    <string name="masukkan_email_reset">Masukkan Email untuk mereset Password</string>
-
     <string name="ad_id_banner_tes">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="ad_id_interstitial_tes">ca-app-pub-3940256099942544/1033173712</string>
     <string name="ad_id_banner_top">ca-app-pub-3950402057146083/6676024221</string>
     <string name="ad_id_banner_down">ca-app-pub-3950402057146083/1031555153</string>
     <string name="ad_id_interstitial">ca-app-pub-3950402057146083/1437559897</string>

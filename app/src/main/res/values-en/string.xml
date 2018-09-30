@@ -57,9 +57,10 @@
     <string name="gagal_koneksi">Connection failed !</string>
     <string name="koneksi_internet_bermasalah">Internet connection trouble !</string>
     <string name="yakin_ingin_keluar">Are you sure you want to quit ?</string>
+    <string name="yakin_ingin_mereset">Are you sure you want to reset data ?</string>
     <string name="ya">Yes</string>
     <string name="tidak">No</string>
-    <string name="data_belum_lengkap">Data belum Lengkap !</string>
+    <string name="data_belum_lengkap">Data has no full yet !</string>
     <string name="yakin_ingin_reset_password">Are you sure you want to reset your password ?</string>
     <string name="batal">Cancel</string>
     <string name="hapus">Delete</string>

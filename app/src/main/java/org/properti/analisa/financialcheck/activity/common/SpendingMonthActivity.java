@@ -55,8 +55,6 @@ public class SpendingMonthActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private MonthlySpendingAdapter mAdapter;
 
-    //TODO: bug fixing force close & bug fixing fitur add data
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,6 +91,7 @@ public class SpendingMonthActivity extends AppCompatActivity {
                     listMenu.add(spendingMonth);
                     total = total + Long.parseLong(spendingMonth.getHarga());
                 }
+                mAdapter.notifyDataSetChanged();
                 txtJumlahTransaksi.setText(listMenu.size()+" "+getString(R.string.transaksi));
                 txtTotalBiaya.setText(CurrencyEditText.currencyFormatterLong(total));
             }
@@ -102,6 +101,52 @@ public class SpendingMonthActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @OnClick(R.id.btn_clear)
+    public void clearData(){
+        new AlertDialog.Builder(SpendingMonthActivity.this)
+                .setTitle(getString(R.string.yakin_ingin_mereset))
+                .setPositiveButton(getString(R.string.ya), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //delete all data
+                        dbSpendingMonth = FirebaseDatabase.getInstance().getReference("spending_month").child(idUser);
+                        dbSpendingMonth.removeValue();
+                        listMenu.clear();
+
+                        //init new data
+                        final String baseImage = "gs://test-financial.appspot.com/icon/";
+                        listMenu.add(new Common( "Eating at home", "0", baseImage+"profesi.PNG"));
+                        listMenu.add(new Common( "Electricity, Gas, Water", "0", baseImage+"listrikgas.PNG"));
+                        listMenu.add(new Common( "House's Phone", "0", baseImage+"belihandphone.PNG"));
+                        listMenu.add(new Common( "Phone, mobile phone", "0", baseImage+"belihandphone.PNG"));
+                        listMenu.add(new Common( "School / Children's course", "0", baseImage+"pengeluaranbulanan.PNG"));
+                        listMenu.add(new Common( "House's Instalment Debt", "0", baseImage+"rumahsewa.PNG"));
+                        listMenu.add(new Common( "Transportation's Instalment", "0", baseImage+"servicemobil.PNG"));
+                        listMenu.add(new Common( "Credit Card's Instalment", "0", baseImage+"deposito.PNG"));
+                        listMenu.add(new Common( "Insurance", "0", baseImage+"pengeluaranbulanan.PNG"));
+                        listMenu.add(new Common( "Servant", "0", baseImage+"pengeluaranlainnya.PNG"));
+                        listMenu.add(new Common( "Car (Maintenance and Gasoline)", "0", baseImage+"servicemobil.PNG"));
+                        listMenu.add(new Common( "Clothes", "0", baseImage+"pengeluaranlainnya.PNG"));
+
+                        //set data
+                        for (int i = 0; i < listMenu.size(); i++) {
+                            String idSpendingMonth = dbSpendingMonth.push().getKey();
+                            listMenu.get(i).setId(idSpendingMonth);
+                            dbSpendingMonth.child(idSpendingMonth).setValue(listMenu.get(i));
+                        }
+
+                    }
+                })
+                .setNegativeButton(getString(R.string.tidak), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                })
+                .setCancelable(false)
+                .show();
     }
 
     @OnClick(R.id.btn_add)

@@ -12,6 +12,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -23,7 +27,6 @@ import java.util.LinkedList;
 
 public class SpendingAdapter extends RecyclerView.Adapter<SpendingAdapter.ListMenuViewHolder> {
 
-    //deklarasi global variabel
     private Context context;
     private final LinkedList<Common> listMenu;
 
@@ -32,14 +35,12 @@ public class SpendingAdapter extends RecyclerView.Adapter<SpendingAdapter.ListMe
     int pos;
     String idUser;
 
-    //konstruktor untuk menerima data adapter
     public SpendingAdapter(Context context, LinkedList<Common> listMenu, String idUser) {
         this.context = context;
         this.listMenu = listMenu;
         this.idUser = idUser;
     }
 
-    //view holder berfungsi untuk setting list item yang digunakan
     @Override
     public ListMenuViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View mItemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list_menu, null, false);
@@ -50,7 +51,6 @@ public class SpendingAdapter extends RecyclerView.Adapter<SpendingAdapter.ListMe
         return new ListMenuViewHolder(mItemView, this);
     }
 
-    //bind view holder berfungsi untuk set data ke view yang ditampilkan pada list item
     @Override
     public void onBindViewHolder(ListMenuViewHolder holder, int position) {
         final Common mCurrent = listMenu.get(position);
@@ -63,7 +63,6 @@ public class SpendingAdapter extends RecyclerView.Adapter<SpendingAdapter.ListMe
         holder.imgPen.setImageResource(R.drawable.redpen);
     }
 
-    //untuk menghitung jumlah data yang ada pada list
     @Override
     public int getItemCount() {
         return listMenu.size();
@@ -75,7 +74,8 @@ public class SpendingAdapter extends RecyclerView.Adapter<SpendingAdapter.ListMe
 
         final SpendingAdapter mAdapter;
 
-        //untuk casting view yang digunakan pada list item
+        private InterstitialAd interstitialAd;
+
         public ListMenuViewHolder(View itemView, SpendingAdapter adapter) {
             super(itemView);
             judul = itemView.findViewById(R.id.tv_judul);
@@ -84,16 +84,37 @@ public class SpendingAdapter extends RecyclerView.Adapter<SpendingAdapter.ListMe
             imgPen = itemView.findViewById(R.id.iv_pen);
             this.mAdapter = adapter;
 
+            MobileAds.initialize(context, "ca-app-pub-3940256099942544~3347511713");
+            interstitialAd = new InterstitialAd(context);
+            interstitialAd.setAdUnitId(context.getString(R.string.ad_id_interstitial_tes));
+            interstitialAd.loadAd(new AdRequest.Builder().build());
+            interstitialAd.setAdListener(new AdListener() {
+                @Override
+                public void onAdClosed() {
+                    showInputDialog();
+                }
+            });
+
             imgPen.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ShowInputialog(v);
+                    if(getAdapterPosition()==3){
+                        if (interstitialAd != null && interstitialAd.isLoaded()) {
+                            interstitialAd.show();
+                        }
+                        else {
+                            showInputDialog();
+                        }
+                    }
+                    else {
+                        showInputDialog();
+                    }
                 }
             });
 
         }
 
-        public void ShowInputialog(View view) {
+        public void showInputDialog() {
 
             LayoutInflater layoutInflater = LayoutInflater.from(context);
             View promptView = layoutInflater.inflate(R.layout.input_dialog, null);

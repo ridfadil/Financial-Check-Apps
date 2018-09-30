@@ -7,19 +7,20 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
-import android.provider.Settings;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -66,6 +67,8 @@ public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.ad_bottom)
     AdView bottomAds;
+    private InterstitialAd interstitialAd1;
+    private InterstitialAd interstitialAd2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,24 +76,52 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         SharedPreferences pref = getSharedPreferences("setting", Activity.MODE_PRIVATE);
         LocalizationUtils.setLocale(pref.getString("language", ""), getBaseContext());
+        mAuth = ((FirebaseApplication)getApplication()).getFirebaseAuth();
+        id = mAuth.getCurrentUser().getUid();
 
         init();
         ButterKnife.bind(this);
 
-        AdRequest adRequest = new AdRequest.Builder()
-                .build();
-        bottomAds.loadAd(adRequest);
+        initAd();
+        initFirebase(id);
+        actionClicked();
+    }
 
-        mAuth = ((FirebaseApplication)getApplication()).getFirebaseAuth();
-        id = mAuth.getCurrentUser().getUid();
-
+    private void initFirebase(String id){
         dbUser = FirebaseDatabase.getInstance().getReference("users").child(id);
         dbSpendingMonth = FirebaseDatabase.getInstance().getReference("spending_month").child(id);
         dbSpending = FirebaseDatabase.getInstance().getReference("spending").child(id);
         dbPassiveIncome = FirebaseDatabase.getInstance().getReference("passive_income").child(id);
         dbActiveIncome = FirebaseDatabase.getInstance().getReference("active_income").child(id);
+    }
 
-        actionClicked();
+    private void initAd() {
+        AdRequest adRequest = new AdRequest.Builder()
+                .build();
+        bottomAds.loadAd(adRequest);
+
+        MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713");
+        interstitialAd1 = new InterstitialAd(this);
+        interstitialAd1.setAdUnitId(getString(R.string.ad_id_interstitial_tes));
+        interstitialAd1.loadAd(new AdRequest.Builder().build());
+        interstitialAd1.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                startActivity(new Intent(MainActivity.this, AboutActivity.class));
+            }
+        });
+
+        interstitialAd2 = new InterstitialAd(this);
+        interstitialAd2.setAdUnitId(getString(R.string.ad_id_interstitial_tes));
+        interstitialAd2.loadAd(new AdRequest.Builder().build());
+        interstitialAd2.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                Intent intent = new Intent(MainActivity.this,UserProfilActivity.class);
+                intent.putExtra(UID_USER, id);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -262,9 +293,14 @@ public class MainActivity extends AppCompatActivity {
         switch(item.getItemId())
         {
             case R.id.nav_profile:
-                Intent intent = new Intent(MainActivity.this,UserProfilActivity.class);
-                intent.putExtra(UID_USER, id);
-                startActivity(intent);
+                if (interstitialAd2 != null && interstitialAd2.isLoaded()) {
+                    interstitialAd2.show();
+                }
+                else {
+                    Intent intent = new Intent(MainActivity.this,UserProfilActivity.class);
+                    intent.putExtra(UID_USER, id);
+                    startActivity(intent);
+                }
                 break;
             case R.id.nav_indonesia:
                 LocalizationUtils.setLocale("in", getBaseContext());
@@ -277,7 +313,12 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(i);
                 break;
             case R.id.nav_tentang:
-                startActivity(new Intent(this, AboutActivity.class));
+                if (interstitialAd1 != null && interstitialAd1.isLoaded()) {
+                    interstitialAd1.show();
+                }
+                else {
+                    startActivity(new Intent(this, AboutActivity.class));
+                }
                 break;
             case R.id.nav_share:
                 Intent sharingIntent = new Intent(Intent.ACTION_SEND);

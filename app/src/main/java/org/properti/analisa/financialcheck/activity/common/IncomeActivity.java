@@ -113,6 +113,7 @@ public class IncomeActivity extends AppCompatActivity {
                     listMenu.add(activeIncome);
                     total = total + Long.parseLong(activeIncome.getHarga());
                 }
+                mAdapter.notifyDataSetChanged();
                 txtJumlahTransaksi.setText(listMenu.size()+" "+getString(R.string.transaksi));
                 txtTotalBiaya.setText(CurrencyEditText.currencyFormatterLong(total));
             }
@@ -122,6 +123,42 @@ public class IncomeActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @OnClick(R.id.btn_clear)
+    public void clearData(){
+        new AlertDialog.Builder(IncomeActivity.this)
+                .setTitle(getString(R.string.yakin_ingin_mereset))
+                .setPositiveButton(getString(R.string.ya), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //delete all data
+                        dbActiveIncome = FirebaseDatabase.getInstance().getReference("active_income").child(idUser);
+                        dbActiveIncome.removeValue();
+                        listMenu.clear();
+
+                        //init new data
+                        final String baseImage = "gs://test-financial.appspot.com/icon/";
+                        listMenu.add(new Common( "Occupation", "0", baseImage+"usaha.PNG"));
+                        listMenu.add(new Common( "Trading", "0", baseImage+"trading.PNG"));
+
+                        //set data
+                        for (int i = 0; i < listMenu.size(); i++) {
+                            String idActive = dbActiveIncome.push().getKey();
+                            listMenu.get(i).setId(idActive);
+                            dbActiveIncome.child(idActive).setValue(listMenu.get(i));
+                        }
+
+                    }
+                })
+                .setNegativeButton(getString(R.string.tidak), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                })
+                .setCancelable(false)
+                .show();
     }
 
     @OnClick(R.id.btn_add)

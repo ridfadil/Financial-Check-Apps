@@ -12,8 +12,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -58,6 +61,7 @@ public class ResultActivity extends AppCompatActivity {
     AdView topAds;
     @BindView(R.id.ad_bottom)
     AdView bottomAds;
+    private InterstitialAd interstitialAd;
 
     String id;
     int imageSource;
@@ -73,8 +77,6 @@ public class ResultActivity extends AppCompatActivity {
 
     User user;
 
-    //TODO: ubah default bahasa ke bahasa inggris pada data
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,19 +85,37 @@ public class ResultActivity extends AppCompatActivity {
         LocalizationUtils.setLocale(pref.getString("language", ""), getBaseContext());
         ButterKnife.bind(this);
         toolbar();
+        initAd();
 
-        AdRequest adRequest = new AdRequest.Builder()
-                .build();
-        topAds.loadAd(adRequest);
-        bottomAds.loadAd(adRequest);
-
-        mAuth = ((FirebaseApplication)getApplication()).getFirebaseAuth();
         id = getIntent().getStringExtra(UID_USER);
+        initFirebase(id);
+    }
+
+    private void initFirebase(String id) {
+        mAuth = ((FirebaseApplication)getApplication()).getFirebaseAuth();
         dbUser = FirebaseDatabase.getInstance().getReference("users").child(id);
         dbSpendingMonth = FirebaseDatabase.getInstance().getReference("spending_month").child(id);
         dbSpending = FirebaseDatabase.getInstance().getReference("spending").child(id);
         dbPassiveIncome = FirebaseDatabase.getInstance().getReference("passive_income").child(id);
         dbActiveIncome = FirebaseDatabase.getInstance().getReference("active_income").child(id);
+    }
+
+    private void initAd() {
+        AdRequest adRequest = new AdRequest.Builder()
+                .build();
+        topAds.loadAd(adRequest);
+        bottomAds.loadAd(adRequest);
+
+        MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713");
+        interstitialAd = new InterstitialAd(this);
+        interstitialAd.setAdUnitId(getString(R.string.ad_id_interstitial_tes));
+        interstitialAd.loadAd(new AdRequest.Builder().build());
+        interstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                finish();
+            }
+        });
     }
 
     @Override
@@ -223,7 +243,12 @@ public class ResultActivity extends AppCompatActivity {
     public void onViewClicked(View v) {
         switch (v.getId()){
             case R.id.btn_home_result : {
-                finish();
+                if (interstitialAd != null && interstitialAd.isLoaded()) {
+                    interstitialAd.show();
+                }
+                else {
+                    finish();
+                }
                 break;
             }
             case R.id.btn_edit_spending_month : {
@@ -271,7 +296,12 @@ public class ResultActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            finish();
+            if (interstitialAd != null && interstitialAd.isLoaded()) {
+                interstitialAd.show();
+            }
+            else {
+                finish();
+            }
         }
         return super.onOptionsItemSelected(item);
     }

@@ -113,6 +113,7 @@ public class PassiveIncomeActivity extends AppCompatActivity {
                     listMenu.add(passiveIncome);
                     total = total + Long.parseLong(passiveIncome.getHarga());
                 }
+                mAdapter.notifyDataSetChanged();
                 txtJumlahTransaksi.setText(listMenu.size()+" "+getString(R.string.transaksi));
                 txtTotalBiaya.setText(CurrencyEditText.currencyFormatterLong(total));
             }
@@ -122,6 +123,46 @@ public class PassiveIncomeActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @OnClick(R.id.btn_clear)
+    public void clearData(){
+        new AlertDialog.Builder(PassiveIncomeActivity.this)
+                .setTitle(getString(R.string.yakin_ingin_mereset))
+                .setPositiveButton(getString(R.string.ya), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //delete all data
+                        dbPassiveIncome = FirebaseDatabase.getInstance().getReference("passive_income").child(idUser);
+                        dbPassiveIncome.removeValue();
+                        listMenu.clear();
+
+                        //init new data
+                        final String baseImage = "gs://test-financial.appspot.com/icon/";
+                        listMenu.add(new Common( "House's rent / Kost", "0", baseImage+"rumahsewa.PNG"));
+                        listMenu.add(new Common( "Business", "0", baseImage+"usaha.PNG"));
+                        listMenu.add(new Common( "Deposit / MutualFund", "0", baseImage+"deposito.PNG"));
+                        listMenu.add(new Common( "Book Royalties", "0", baseImage+"pasifincome.PNG"));
+                        listMenu.add(new Common( "Cassete Royalties", "0", baseImage+"lainlain.PNG"));
+                        listMenu.add(new Common( "Royaties' System", "0", baseImage+"pengeluaranbulanan.PNG"));
+
+                        //set data
+                        for (int i = 0; i < listMenu.size(); i++) {
+                            String idPassive = dbPassiveIncome.push().getKey();
+                            listMenu.get(i).setId(idPassive);
+                            dbPassiveIncome.child(idPassive).setValue(listMenu.get(i));
+                        }
+
+                    }
+                })
+                .setNegativeButton(getString(R.string.tidak), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                })
+                .setCancelable(false)
+                .show();
     }
 
     @OnClick(R.id.btn_add)

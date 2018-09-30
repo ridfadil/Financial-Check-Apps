@@ -153,12 +153,12 @@ public class UserProfilActivity extends AppCompatActivity {
 
                 tvProfilNamaUser.setText(user.getNama());
                 tvProfilEmail.setText(user.getEmail());
-                if(user.getEmail().equalsIgnoreCase("")){
-                    tvProfilNoHp.setText("-");
-                }
-                else{
-                    tvProfilNoHp.setText(user.getPhone());
-                }
+//                if(user.getPhone().equalsIgnoreCase("")){
+//                    tvProfilNoHp.setText("-");
+//                }
+//                else{
+//                    tvProfilNoHp.setText(user.getPhone());
+//                }
             }
 
             @Override

@@ -59,6 +59,7 @@
     <string name="yakin_ingin_keluar">Apakah anda yakin ingin keluar ?</string>
     <string name="data_belum_lengkap">Data belum Lengkap !</string>
     <string name="yakin_ingin_reset_password">Anda yakin ingin mereset password ?</string>
+    <string name="yakin_ingin_mereset">Anda yakin ingin mengatur ulang data ?</string>
     <string name="ya">Ya</string>
     <string name="tidak">Tidak</string>
     <string name="batal">Batal</string>

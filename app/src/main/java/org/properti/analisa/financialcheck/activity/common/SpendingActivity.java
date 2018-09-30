@@ -113,6 +113,7 @@ public class SpendingActivity extends AppCompatActivity {
                     listMenu.add(spending);
                     total = total + Long.parseLong(spending.getHarga());
                 }
+                mAdapter.notifyDataSetChanged();
                 txtJumlahTransaksi.setText(listMenu.size()+" "+getString(R.string.transaksi));
                 txtTotalBiaya.setText(CurrencyEditText.currencyFormatterLong(total));
             }
@@ -122,6 +123,43 @@ public class SpendingActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @OnClick(R.id.btn_clear)
+    public void clearData(){
+        new AlertDialog.Builder(SpendingActivity.this)
+                .setTitle(getString(R.string.yakin_ingin_mereset))
+                .setPositiveButton(getString(R.string.ya), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //delete all data
+                        dbSpending = FirebaseDatabase.getInstance().getReference("spending").child(idUser);
+                        dbSpending.removeValue();
+                        listMenu.clear();
+
+                        //init new data
+                        final String baseImage = "gs://test-financial.appspot.com/icon/";
+                        listMenu.add(new Common( "Eating Outside's House", "0", baseImage+"profesi.PNG"));
+                        listMenu.add(new Common( "Luxurious Buying", "0", baseImage+"aktifincome.PNG"));
+                        listMenu.add(new Common( "Picnic", "0", baseImage+"rekreasi.PNG"));
+
+                        //set data
+                        for (int i = 0; i < listMenu.size(); i++) {
+                            String idSpending = dbSpending.push().getKey();
+                            listMenu.get(i).setId(idSpending);
+                            dbSpending.child(idSpending).setValue(listMenu.get(i));
+                        }
+
+                    }
+                })
+                .setNegativeButton(getString(R.string.tidak), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                })
+                .setCancelable(false)
+                .show();
     }
 
     @OnClick(R.id.btn_add)

@@ -20,6 +20,8 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
@@ -43,6 +45,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.properti.analisa.financialcheck.R;
 import org.properti.analisa.financialcheck.activity.MainActivity;
 import org.properti.analisa.financialcheck.firebase.FirebaseApplication;
@@ -129,8 +133,26 @@ public class LoginActivity extends AppCompatActivity {
         btnLoginFacebook.setReadPermissions("email", "public_profile");
         btnLoginFacebook.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
-            public void onSuccess(LoginResult loginResult) {
-                firebaseAuthWithFacebook(loginResult.getAccessToken().getToken());
+            public void onSuccess(final LoginResult loginResult) {
+                GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
+                    @Override
+                    public void onCompleted(JSONObject object, GraphResponse response) {
+                        Log.d("response", response.toString());
+                        try {
+                            Log.e("TOKEN :", "" + loginResult.getAccessToken());
+                            User user = new User(object.getString("name"), object.getString("email"), "");
+                            firebaseAuthWithFacebook(loginResult.getAccessToken().getToken(), user);
+                        }
+                        catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
+                Bundle parameters = new Bundle();
+                parameters.putString("fields","id, name, email");
+                request.setParameters(parameters);
+                request.executeAsync();
             }
 
             @Override
@@ -174,8 +196,7 @@ public class LoginActivity extends AppCompatActivity {
         if (TextUtils.isEmpty(etEmail.getText().toString()) || TextUtils.isEmpty(etPassword.getText().toString())) {
             Toast.makeText(this, getString(R.string.data_kosong), Toast.LENGTH_SHORT).show();
             loading.dismiss();
-        }
-        else {
+        } else {
             email = etEmail.getText().toString();
             password = etPassword.getText().toString();
 
@@ -202,7 +223,7 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    private void firebaseAuthWithFacebook(String token) {
+    private void firebaseAuthWithFacebook(String token, final User dataUser) {
         loading.show();
         AuthCredential credential = FacebookAuthProvider.getCredential(token);
         mAuth.signInWithCredential(credential)
@@ -211,9 +232,8 @@ public class LoginActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             FirebaseUser user = mAuth.getCurrentUser();
-                            sendFacebookUserData(user);
-                        }
-                        else {
+                            sendFacebookUserData(user, dataUser);
+                        } else {
                             Toast.makeText(LoginActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -237,10 +257,10 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
-    private void sendFacebookUserData(FirebaseUser user) {
-        final String nama = user.getDisplayName();
-        final String email = user.getEmail();
-        final String phone = user.getPhoneNumber();
+    private void sendFacebookUserData(FirebaseUser user, User dataUser) {
+        final String nama = dataUser.getNama();
+        final String email = dataUser.getEmail();
+        final String phone = "";
         final String id = user.getUid();
 
         ref = FirebaseDatabase.getInstance().getReference();
@@ -355,7 +375,6 @@ public class LoginActivity extends AppCompatActivity {
                         startActivity(new Intent(LoginActivity.this, MainActivity.class));
                         finish();
                     }
-                    loading.dismiss();
                 }
 
                 @Override
