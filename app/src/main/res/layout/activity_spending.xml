@@ -14,13 +14,13 @@
         android:orientation="horizontal"
         android:padding="8dp">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:layout_weight="1">
 
             <TextView
+                android:id="@+id/lbl_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/spending"
@@ -32,22 +32,34 @@
                 android:id="@+id/txt_jumlah_transaksi"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="4dp"
+                android:layout_below="@+id/lbl_title"
+                tools:text="10 Transaksi"
                 android:textSize="10sp"
                 android:textStyle="bold" />
-        </LinearLayout>
 
-        <TextView
-            android:id="@+id/txt_total_biaya"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginLeft="16dp"
-            android:padding="4dp"
-            android:textColor="@color/blueFirst"
-            android:textSize="17sp"
-            android:textStyle="bold"
-            tools:text="Rp. xxx"/>
+            <TextView
+                android:id="@+id/txt_total_biaya"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="54dp"
+                android:layout_toRightOf="@id/lbl_title"
+                android:textColor="@color/blueFirst"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                tools:text="xxx"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txt_jumlah_transaksi"
+                android:layout_marginTop="8dp"
+                android:text="@string/based_on_own_currency"
+                android:textColor="@color/blueFirst"
+                android:textStyle="italic"
+                android:textSize="14sp" />
+
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -90,7 +102,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/white"
             android:text="@string/btn_kembali"
-            android:background="@color/colorPrimary"/>
+            android:background="@drawable/custom_button"/>
 
         <Button
             android:id="@+id/btn_next"
@@ -100,7 +112,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/white"
             android:text="@string/button_selanjutnya"
-            android:background="@color/colorPrimary"/>
+            android:background="@drawable/custom_button"/>
 
     </LinearLayout>
 

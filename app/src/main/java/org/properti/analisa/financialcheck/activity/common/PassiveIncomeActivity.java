@@ -15,8 +15,11 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -55,6 +58,8 @@ public class PassiveIncomeActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private PassiveIncomeAdapter mAdapter;
 
+    private InterstitialAd interstitialAd;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,9 +69,7 @@ public class PassiveIncomeActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         toolbar();
 
-        AdRequest adRequest = new AdRequest.Builder()
-                .build();
-        bottomAds.loadAd(adRequest);
+        initAd();
 
         idUser = getIntent().getStringExtra(UID_USER);
         dbPassiveIncome = FirebaseDatabase.getInstance().getReference("passive_income").child(idUser);
@@ -77,15 +80,41 @@ public class PassiveIncomeActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
-    @OnClick({R.id.btn_next, R.id.btn_back})
-    public void onViewClicked(View v){
-        switch (v.getId()){
-            case R.id.btn_back : {
+    private void initAd() {
+        AdRequest adRequest = new AdRequest.Builder()
+                .build();
+        bottomAds.loadAd(adRequest);
+
+        MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713");
+        interstitialAd = new InterstitialAd(this);
+        interstitialAd.setAdUnitId(getString(R.string.ad_id_interstitial_tes));
+        interstitialAd.loadAd(new AdRequest.Builder().build());
+        interstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
                 Intent i = new Intent(PassiveIncomeActivity.this, SpendingActivity.class);
                 i.putExtra(UID_USER, idUser);
                 startActivity(i);
                 overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
                 finish();
+            }
+        });
+    }
+
+    @OnClick({R.id.btn_next, R.id.btn_back})
+    public void onViewClicked(View v){
+        switch (v.getId()){
+            case R.id.btn_back : {
+                if (interstitialAd != null && interstitialAd.isLoaded()) {
+                    interstitialAd.show();
+                }
+                else {
+                    Intent i = new Intent(PassiveIncomeActivity.this, SpendingActivity.class);
+                    i.putExtra(UID_USER, idUser);
+                    startActivity(i);
+                    overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                    finish();
+                }
                 break;
             }
             case R.id.btn_next : {
@@ -115,7 +144,7 @@ public class PassiveIncomeActivity extends AppCompatActivity {
                 }
                 mAdapter.notifyDataSetChanged();
                 txtJumlahTransaksi.setText(listMenu.size()+" "+getString(R.string.transaksi));
-                txtTotalBiaya.setText(CurrencyEditText.currencyFormatterLong(total));
+                txtTotalBiaya.setText(CurrencyEditText.currencyFormat(total));
             }
 
             @Override

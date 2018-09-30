@@ -55,7 +55,7 @@ public class MonthlySpendingAdapter extends RecyclerView.Adapter<MonthlySpending
     public void onBindViewHolder(ListMenuViewHolder holder, int position) {
         final Common mCurrent = listMenu.get(position);
         holder.judul.setText(mCurrent.getJudul());
-        holder.harga.setText(CurrencyEditText.currencyFormatterLong(Long.parseLong(mCurrent.getHarga())));
+        holder.harga.setText(CurrencyEditText.currencyFormat(Long.parseLong(mCurrent.getHarga())));
         Glide.with(context).
                 load(mCurrent.getImage()).
                 placeholder(R.drawable.pengeluaranbulanan).
@@ -143,7 +143,7 @@ public class MonthlySpendingAdapter extends RecyclerView.Adapter<MonthlySpending
                             dbSpendingMonth.setValue(spendingMonth);
 
                             judul.setText(etKeterangan.getText());
-                            harga.setText(String.valueOf(CurrencyEditText.currencyFormatterLong(Long.parseLong(etNominal.getText().toString().replace(".", "")))));
+                            harga.setText(String.valueOf(CurrencyEditText.currencyFormat(Long.parseLong(etNominal.getText().toString().replace(".", "")))));
                         }
                     })
                     .setNeutralButton(context.getString(R.string.hapus), new DialogInterface.OnClickListener() {

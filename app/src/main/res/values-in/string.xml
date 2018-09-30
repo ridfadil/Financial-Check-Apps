@@ -91,6 +91,7 @@
     <string name="masukkan_nama">Masukkan Nama</string>
     <string name="change_password">Ganti Password :</string>
     <string name="transaksi">Transaksi</string>
+    <string name="based_on_own_currency">*berdasarkan mata uang sendiri</string>
 
     <string name="tentang">
         <![CDATA[<b>Tentang Kami</b><br><br>Financial Check adalah aplikasi yang akan membantu pengguna dalam mereview kondisi keuangannya. Fitur-fiturnya membantu pengguna memeriksa keseimbangan pemasukan dan pengeluaran tanpa harus meminta bantuan Financial Advisor.<br><br>Financial Check mudah digunakan dan akan memberikan pengalaman terbaik Anda untuk mengatur pengeluaran agar tidak besar pasak daripada tiang.]]>

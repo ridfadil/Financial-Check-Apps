@@ -55,7 +55,7 @@ public class SpendingAdapter extends RecyclerView.Adapter<SpendingAdapter.ListMe
     public void onBindViewHolder(ListMenuViewHolder holder, int position) {
         final Common mCurrent = listMenu.get(position);
         holder.judul.setText(mCurrent.getJudul());
-        holder.harga.setText(CurrencyEditText.currencyFormatterLong(Long.parseLong(mCurrent.getHarga())));
+        holder.harga.setText(CurrencyEditText.currencyFormat(Long.parseLong(mCurrent.getHarga())));
         Glide.with(context).
                 load(mCurrent.getImage()).
                 placeholder(R.drawable.pengeluaranlainnya).
@@ -98,7 +98,7 @@ public class SpendingAdapter extends RecyclerView.Adapter<SpendingAdapter.ListMe
             imgPen.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(getAdapterPosition()==3){
+                    if(getAdapterPosition()==2){
                         if (interstitialAd != null && interstitialAd.isLoaded()) {
                             interstitialAd.show();
                         }
@@ -141,7 +141,7 @@ public class SpendingAdapter extends RecyclerView.Adapter<SpendingAdapter.ListMe
                             dbSpending.setValue(spending);
 
                             judul.setText(etKeterangan.getText());
-                            harga.setText(String.valueOf(CurrencyEditText.currencyFormatterLong(Long.parseLong(etNominal.getText().toString().replace(".", "")))));
+                            harga.setText(String.valueOf(CurrencyEditText.currencyFormat(Long.parseLong(etNominal.getText().toString().replace(".", "")))));
                         }
                     })
                     .setNeutralButton(context.getString(R.string.hapus), new DialogInterface.OnClickListener() {

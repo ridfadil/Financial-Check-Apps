@@ -133,7 +133,7 @@ public class ResultActivity extends AppCompatActivity {
                     totalSpendingMonth = totalSpendingMonth + Long.parseLong(spendingMonth.getHarga());
                 }
                 final long finalTotalSpendingMonth = totalSpendingMonth;
-                txtMonthlySpending.setText(CurrencyEditText.currencyFormatterLong(finalTotalSpendingMonth));
+                txtMonthlySpending.setText(CurrencyEditText.currencyFormat(finalTotalSpendingMonth));
                 dbSpending.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -146,7 +146,7 @@ public class ResultActivity extends AppCompatActivity {
                         }
 
                         final long finalTotalSpending = totalSpending;
-                        txtSpending.setText(CurrencyEditText.currencyFormatterLong(finalTotalSpending));
+                        txtSpending.setText(CurrencyEditText.currencyFormat(finalTotalSpending));
                         dbPassiveIncome.addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -159,7 +159,7 @@ public class ResultActivity extends AppCompatActivity {
                                 }
 
                                 final long finalTotalPassiveIncome = totalPassiveIncome;
-                                txtPassiveIncome.setText(CurrencyEditText.currencyFormatterLong(finalTotalPassiveIncome));
+                                txtPassiveIncome.setText(CurrencyEditText.currencyFormat(finalTotalPassiveIncome));
                                 dbActiveIncome.addValueEventListener(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -171,7 +171,7 @@ public class ResultActivity extends AppCompatActivity {
                                             totalActiveIncome = totalActiveIncome + Long.parseLong(activeIncome.getHarga());
                                         }
                                         final long finalTotalActiveIncome = totalActiveIncome;
-                                        txtActiveIncome.setText(CurrencyEditText.currencyFormatterLong(finalTotalActiveIncome));
+                                        txtActiveIncome.setText(CurrencyEditText.currencyFormat(finalTotalActiveIncome));
                                         dbUser.addValueEventListener(new ValueEventListener() {
                                             @Override
                                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -243,12 +243,7 @@ public class ResultActivity extends AppCompatActivity {
     public void onViewClicked(View v) {
         switch (v.getId()){
             case R.id.btn_home_result : {
-                if (interstitialAd != null && interstitialAd.isLoaded()) {
-                    interstitialAd.show();
-                }
-                else {
-                    finish();
-                }
+                finish();
                 break;
             }
             case R.id.btn_edit_spending_month : {

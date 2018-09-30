@@ -6,9 +6,6 @@
         <shape xmlns:android="http://schemas.android.com/apk/res/android">
             <solid android:color="@color/blueFirst"/>
             <corners android:radius="5dp"/>
-            <stroke
-                android:width="2dip"
-                android:color="@color/blueFirst" />
             <padding android:left="0dip" android:top="0dip" android:right="0dip" android:bottom="0dip" />
         </shape>
     </item>
@@ -18,9 +15,6 @@
         <shape xmlns:android="http://schemas.android.com/apk/res/android">
             <solid android:color="@color/blueFirst"/>
             <corners android:radius="5dp"/>
-            <stroke
-                android:width="2dip"
-                android:color="@color/colorPrimary" />
             <padding android:left="0dip" android:top="0dip" android:right="0dip" android:bottom="0dip" />
         </shape>
     </item>
@@ -28,11 +22,8 @@
     <!-- default -->
     <item>
         <shape xmlns:android="http://schemas.android.com/apk/res/android">
-            <solid android:color="@color/blueFirst"/>
+            <solid android:color="@color/colorPrimary"/>
             <corners android:radius="5dp"/>
-            <stroke
-                android:width="2dip"
-                android:color="@color/colorPrimary" />
             <padding android:left="0dip" android:top="0dip" android:right="0dip" android:bottom="0dip" />
         </shape>
     </item>

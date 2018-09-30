@@ -15,8 +15,11 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -55,6 +58,8 @@ public class IncomeActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private IncomeAdapter mAdapter;
 
+    private InterstitialAd interstitialAd;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,9 +69,7 @@ public class IncomeActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         toolbar();
 
-        AdRequest adRequest = new AdRequest.Builder()
-                .build();
-        bottomAds.loadAd(adRequest);
+        initAd();
 
         idUser = getIntent().getStringExtra(UID_USER);
         dbActiveIncome = FirebaseDatabase.getInstance().getReference("active_income").child(idUser);
@@ -75,6 +78,27 @@ public class IncomeActivity extends AppCompatActivity {
         mAdapter = new IncomeAdapter(IncomeActivity.this, listMenu, idUser);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+    private void initAd() {
+        AdRequest adRequest = new AdRequest.Builder()
+                .build();
+        bottomAds.loadAd(adRequest);
+
+        MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713");
+        interstitialAd = new InterstitialAd(this);
+        interstitialAd.setAdUnitId(getString(R.string.ad_id_interstitial_tes));
+        interstitialAd.loadAd(new AdRequest.Builder().build());
+        interstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                Intent i = new Intent(IncomeActivity.this, ResultActivity.class);
+                i.putExtra(UID_USER, idUser);
+                startActivity(i);
+                overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                finish();
+            }
+        });
     }
 
     @OnClick({R.id.btn_result, R.id.btn_back})
@@ -89,11 +113,16 @@ public class IncomeActivity extends AppCompatActivity {
                 break;
             }
             case R.id.btn_result : {
-                Intent i = new Intent(IncomeActivity.this, org.properti.analisa.financialcheck.activity.common.ResultActivity.class);
-                i.putExtra(UID_USER, idUser);
-                startActivity(i);
-                overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-                finish();
+                if (interstitialAd != null && interstitialAd.isLoaded()) {
+                    interstitialAd.show();
+                }
+                else {
+                    Intent i = new Intent(IncomeActivity.this, ResultActivity.class);
+                    i.putExtra(UID_USER, idUser);
+                    startActivity(i);
+                    overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                    finish();
+                }
                 break;
             }
         }
@@ -115,7 +144,7 @@ public class IncomeActivity extends AppCompatActivity {
                 }
                 mAdapter.notifyDataSetChanged();
                 txtJumlahTransaksi.setText(listMenu.size()+" "+getString(R.string.transaksi));
-                txtTotalBiaya.setText(CurrencyEditText.currencyFormatterLong(total));
+                txtTotalBiaya.setText(CurrencyEditText.currencyFormat(total));
             }
 
             @Override

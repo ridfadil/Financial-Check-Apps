@@ -93,7 +93,7 @@ public class SpendingMonthActivity extends AppCompatActivity {
                 }
                 mAdapter.notifyDataSetChanged();
                 txtJumlahTransaksi.setText(listMenu.size()+" "+getString(R.string.transaksi));
-                txtTotalBiaya.setText(CurrencyEditText.currencyFormatterLong(total));
+                txtTotalBiaya.setText(CurrencyEditText.currencyFormat(total));
             }
 
             @Override

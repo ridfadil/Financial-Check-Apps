@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.facebook.login.LoginManager;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -67,15 +68,18 @@ public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.ad_bottom)
     AdView bottomAds;
-    private InterstitialAd interstitialAd1;
-    private InterstitialAd interstitialAd2;
+    private InterstitialAd intersLangIndo;
+    private InterstitialAd intersLangEng;
+    private InterstitialAd intersAbout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         SharedPreferences pref = getSharedPreferences("setting", Activity.MODE_PRIVATE);
         LocalizationUtils.setLocale(pref.getString("language", ""), getBaseContext());
+
         mAuth = ((FirebaseApplication)getApplication()).getFirebaseAuth();
         id = mAuth.getCurrentUser().getUid();
 
@@ -100,26 +104,41 @@ public class MainActivity extends AppCompatActivity {
                 .build();
         bottomAds.loadAd(adRequest);
 
+        final Intent i = new Intent(this, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
         MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713");
-        interstitialAd1 = new InterstitialAd(this);
-        interstitialAd1.setAdUnitId(getString(R.string.ad_id_interstitial_tes));
-        interstitialAd1.loadAd(new AdRequest.Builder().build());
-        interstitialAd1.setAdListener(new AdListener() {
+
+        intersLangIndo = new InterstitialAd(this);
+        intersLangIndo.setAdUnitId(getString(R.string.ad_id_interstitial_tes));
+        intersLangIndo.loadAd(new AdRequest.Builder().build());
+        intersLangIndo.setAdListener(new AdListener() {
             @Override
             public void onAdClosed() {
-                startActivity(new Intent(MainActivity.this, AboutActivity.class));
+                LocalizationUtils.setLocale("in", getBaseContext());
+                setLangPref("in");
+                startActivity(i);
             }
         });
 
-        interstitialAd2 = new InterstitialAd(this);
-        interstitialAd2.setAdUnitId(getString(R.string.ad_id_interstitial_tes));
-        interstitialAd2.loadAd(new AdRequest.Builder().build());
-        interstitialAd2.setAdListener(new AdListener() {
+        intersLangEng = new InterstitialAd(this);
+        intersLangEng.setAdUnitId(getString(R.string.ad_id_interstitial_tes));
+        intersLangEng.loadAd(new AdRequest.Builder().build());
+        intersLangEng.setAdListener(new AdListener() {
             @Override
             public void onAdClosed() {
-                Intent intent = new Intent(MainActivity.this,UserProfilActivity.class);
-                intent.putExtra(UID_USER, id);
-                startActivity(intent);
+                LocalizationUtils.setLocale("en", getBaseContext());
+                setLangPref("en");
+                startActivity(i);
+            }
+        });
+
+        intersAbout = new InterstitialAd(this);
+        intersAbout.setAdUnitId(getString(R.string.ad_id_interstitial_tes));
+        intersAbout.loadAd(new AdRequest.Builder().build());
+        intersAbout.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                startActivity(new Intent(MainActivity.this, AboutActivity.class));
             }
         });
     }
@@ -177,25 +196,30 @@ public class MainActivity extends AppCompatActivity {
 
                                         //pengecekan
                                         String kondisi = "";
+                                        int txtColor = 0;
                                         if(finalTotalPassiveIncome==0 && totalActiveIncome==0 && finalTotalSpending==0 && finalTotalSpendingMonth==0){
                                             kondisi = "-";
                                         }
                                         else if(finalTotalSpendingMonth + finalTotalSpending > finalTotalPassiveIncome + totalActiveIncome){
                                             kondisi = getString(R.string.not_good);
+                                            txtColor = R.color.red;
+
                                         }
                                         else if(finalTotalSpendingMonth + finalTotalSpending == finalTotalPassiveIncome + totalActiveIncome){
                                             kondisi = getString(R.string.good);
+                                            txtColor = R.color.txt_green;
                                         }
                                         else if(finalTotalSpendingMonth + finalTotalSpending < finalTotalPassiveIncome + totalActiveIncome){
                                             kondisi = getString(R.string.very_good);
+                                            txtColor = R.color.txt_green;
                                         }
                                         else if(finalTotalPassiveIncome > finalTotalSpendingMonth + finalTotalSpending){
                                             kondisi = getString(R.string.financial_independent);
                                         }
-
+                                        
                                         txtFinancialCondition.setText(kondisi);
-                                        txtFinancialTotal.setText(CurrencyEditText.currencyFormatterLong(finalTotalPassiveIncome + totalActiveIncome - finalTotalSpendingMonth - finalTotalSpending));
-
+                                        txtFinancialCondition.setTextColor(getResources().getColor(txtColor));
+                                        txtFinancialTotal.setText(CurrencyEditText.currencyFormat(finalTotalPassiveIncome + totalActiveIncome - finalTotalSpendingMonth - finalTotalSpending));
                                     }
 
                                     @Override
@@ -293,28 +317,33 @@ public class MainActivity extends AppCompatActivity {
         switch(item.getItemId())
         {
             case R.id.nav_profile:
-                if (interstitialAd2 != null && interstitialAd2.isLoaded()) {
-                    interstitialAd2.show();
-                }
-                else {
-                    Intent intent = new Intent(MainActivity.this,UserProfilActivity.class);
-                    intent.putExtra(UID_USER, id);
-                    startActivity(intent);
-                }
+                Intent intent = new Intent(MainActivity.this,UserProfilActivity.class);
+                intent.putExtra(UID_USER, id);
+                startActivity(intent);
                 break;
             case R.id.nav_indonesia:
-                LocalizationUtils.setLocale("in", getBaseContext());
-                setLangPref("in");
-                startActivity(i);
+                if (intersLangIndo != null && intersLangIndo.isLoaded()) {
+                    intersLangIndo.show();
+                }
+                else {
+                    LocalizationUtils.setLocale("in", getBaseContext());
+                    setLangPref("in");
+                    startActivity(i);
+                }
                 break;
             case R.id.nav_inggris:
-                LocalizationUtils.setLocale("en", getBaseContext());
-                setLangPref("en");
-                startActivity(i);
+                if (intersLangEng != null && intersLangEng.isLoaded()) {
+                    intersLangEng.show();
+                }
+                else {
+                    LocalizationUtils.setLocale("en", getBaseContext());
+                    setLangPref("en");
+                    startActivity(i);
+                }
                 break;
             case R.id.nav_tentang:
-                if (interstitialAd1 != null && interstitialAd1.isLoaded()) {
-                    interstitialAd1.show();
+                if (intersAbout != null && intersAbout.isLoaded()) {
+                    intersAbout.show();
                 }
                 else {
                     startActivity(new Intent(this, AboutActivity.class));
@@ -351,6 +380,7 @@ public class MainActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int which) {
                                 //logout akun google
                                 mAuth.signOut();
+                                LoginManager.getInstance().logOut();
                                 Intent i = new Intent(MainActivity.this, LoginActivity.class);
                                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(i);

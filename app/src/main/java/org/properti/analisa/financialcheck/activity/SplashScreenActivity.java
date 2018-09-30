@@ -50,6 +50,12 @@ public class SplashScreenActivity extends AppCompatActivity {
         }, SPLASH_TIME_OUT);
     }
 
+    public void setLangPref(String lang){
+        SharedPreferences.Editor editor = getSharedPreferences("setting", MODE_PRIVATE).edit();
+        editor.putString("language", lang);
+        editor.apply();
+    }
+
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
