@@ -87,7 +87,7 @@ public class IncomeActivity extends AppCompatActivity {
 
         MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713");
         interstitialAd = new InterstitialAd(this);
-        interstitialAd.setAdUnitId(getString(R.string.ad_id_interstitial_tes));
+        interstitialAd.setAdUnitId(getString(R.string.ad_id_interstitial));
         interstitialAd.loadAd(new AdRequest.Builder().build());
         interstitialAd.setAdListener(new AdListener() {
             @Override

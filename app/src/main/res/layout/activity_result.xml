@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         ads:adSize="BANNER"
-        ads:adUnitId="@string/ad_id_banner_tes" />
+        ads:adUnitId="@string/ad_id_banner_top" />
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
@@ -415,6 +415,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         ads:adSize="BANNER"
-        ads:adUnitId="@string/ad_id_banner_tes" />
+        ads:adUnitId="@string/ad_id_banner_down" />
 
 </LinearLayout>

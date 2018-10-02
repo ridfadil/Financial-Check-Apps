@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
         MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713");
 
         intersLangIndo = new InterstitialAd(this);
-        intersLangIndo.setAdUnitId(getString(R.string.ad_id_interstitial_tes));
+        intersLangIndo.setAdUnitId(getString(R.string.ad_id_interstitial));
         intersLangIndo.loadAd(new AdRequest.Builder().build());
         intersLangIndo.setAdListener(new AdListener() {
             @Override
@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         intersLangEng = new InterstitialAd(this);
-        intersLangEng.setAdUnitId(getString(R.string.ad_id_interstitial_tes));
+        intersLangIndo.setAdUnitId(getString(R.string.ad_id_interstitial));
         intersLangEng.loadAd(new AdRequest.Builder().build());
         intersLangEng.setAdListener(new AdListener() {
             @Override
@@ -133,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         intersAbout = new InterstitialAd(this);
-        intersAbout.setAdUnitId(getString(R.string.ad_id_interstitial_tes));
+        intersLangIndo.setAdUnitId(getString(R.string.ad_id_interstitial));
         intersAbout.loadAd(new AdRequest.Builder().build());
         intersAbout.setAdListener(new AdListener() {
             @Override

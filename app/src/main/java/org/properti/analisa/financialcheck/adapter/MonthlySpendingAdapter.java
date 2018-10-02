@@ -87,7 +87,7 @@ public class MonthlySpendingAdapter extends RecyclerView.Adapter<MonthlySpending
 
             MobileAds.initialize(context, "ca-app-pub-3940256099942544~3347511713");
             interstitialAd = new InterstitialAd(context);
-            interstitialAd.setAdUnitId(context.getString(R.string.ad_id_interstitial_tes));
+            interstitialAd.setAdUnitId(context.getString(R.string.ad_id_interstitial));
             interstitialAd.loadAd(new AdRequest.Builder().build());
             interstitialAd.setAdListener(new AdListener() {
                 @Override

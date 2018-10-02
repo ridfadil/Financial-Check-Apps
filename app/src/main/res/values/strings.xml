@@ -100,9 +100,11 @@
 
     <string name="facebook_app_id">1383676748429921</string>
     <string name="fb_login_protocol_scheme">fb1383676748429921</string>
+
     <string name="ad_id_banner_tes">ca-app-pub-3940256099942544/6300978111</string>
     <string name="ad_id_interstitial_tes">ca-app-pub-3940256099942544/1033173712</string>
-    <string name="ad_id_banner_top">ca-app-pub-3950402057146083/6676024221</string>
-    <string name="ad_id_banner_down">ca-app-pub-3950402057146083/1031555153</string>
-    <string name="ad_id_interstitial">ca-app-pub-3950402057146083/1437559897</string>
+
+    <string name="ad_id_banner_top">ca-app-pub-3950402057146083/9517809985</string>
+    <string name="ad_id_banner_down">ca-app-pub-3950402057146083/1892393412</string>
+    <string name="ad_id_interstitial">ca-app-pub-3950402057146083/8485721922</string>
 </resources>
